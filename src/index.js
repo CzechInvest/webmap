@@ -56,3 +56,5 @@ export class CiMap {
 }
 
 window.CiMap = CiMap;
+
+new CiMap();

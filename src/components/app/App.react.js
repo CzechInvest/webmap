@@ -1,10 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import './App.scss';
+import Map from '../map/Map.react';
+import View from '../view/View.react';
+import TileLayer from '../tileLayer/TileLayer.react';
+import ZoomControls from '../controls/ZoomControls.react';
+
+
 
 const App = ({ title }) => (
   <div className="cimap-app">
-    { title } a moz
+    <ZoomControls />
+    <Map>
+      <View />
+      <TileLayer />
+    </Map>
   </div>
 );
 
