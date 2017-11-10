@@ -146,6 +146,26 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
+          {
+            test: /icons\/.*\.svg$/,
+            use: [
+              {
+                loader: 'babel-loader'
+              },
+              {
+                loader: 'svg-sprite-loader',
+                options: {
+                  runtimeGenerator: require.resolve('svg-sprite-loader/examples/custom-runtime-generator/svg-to-icon-component-runtime-generator.js'),
+                  runtimeOptions: {
+                    iconModule: './src/Icon.js'
+                  }
+                }
+              },
+              {
+                loader: 'svgo-loader'
+              }
+            ]
+          },
           // Process JS with Babel.
           {
             test: /\.(js|jsx)$/,
