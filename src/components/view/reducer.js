@@ -2,9 +2,9 @@ import * as actions from './actions';
 import { Record } from 'immutable';
 
 const InitialState = new Record({
-  x: 0,
-  y: 0,
-  z: 4,
+  x: 1744000,
+  y: 6442975,
+  z: 7,
   projCode: 'EPSG:3857'
 });
 const initialState = new InitialState();
