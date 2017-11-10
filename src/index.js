@@ -21,10 +21,127 @@ export class CiMap {
   _getDefaultState() {
     return {
       app: {
-        title: 'jojo'
+        title: 'jojo',
+      },
+      map: {
+        categories: [
+          {
+            title: 'Doprava',
+            icon: 'transport',
+            layers: [
+              {
+                name: 'silnicni',
+                title: 'Silniční'
+              },
+              {
+                name: 'zeleznicni',
+                title: 'Železniční',
+              },
+              {
+                name: 'letecka',
+                title: 'Letecká'
+              },
+              {
+                name: 'vodni',
+                title: 'Vodní'
+              }
+            ]
+          },
+          {
+            title: 'Podnik. sítě',
+            icon: 'business',
+            layers: [
+              {
+                name: 'dodavatele',
+                title: 'Dodavatele',
+                source: '/web-data/podnikatelska_sit/dodavatele.geojson',
+                visible: false
+              }
+            ]
+          },
+          {
+            title: 'VVI & Vzdělání',
+            icon: 'science',
+            layers: [
+              {
+                name: 'pi_vtp',
+                title: 'VTParky ',
+                source: '/web-data/vzdelavani/pi_vtp.geojson',
+                visible: false,
+                style: {
+                  fill: '#7B1FA2'
+                }
+              },
+              {
+                name: 'whoiswho',
+                title: 'Who is Who ',
+                source: '/web-data/vzdelavani/whoiswho.geojson',
+                visible: true,
+                style: {
+                  fill: '#FFC400'
+                }
+              }
+            ]
+          },
+        {
+            title: 'Start Up',
+            icon: 'startup',
+            layers: [
+              // {
+              //   name: 'business_angels',
+              //   title: 'Business angels',
+              //   source: '/web-data/startup/business_angels.geojson',
+              //   visible: false
+              // },
+              {
+                name: 'coworking',
+                title: 'coworking',
+                source: '/web-data/startup/coworking.geojson',
+                visible: true,
+                style: {
+                  fill: '#AFB42B',
+                  label: 'name'
+                }
+              },
+              {
+                name: 'sub_bic',
+                title: 'ESA BIC SUPy',
+                source: '/web-data/startup/sub_bic.geojson',
+                visible: true,
+                style: {
+                  fill: '#FF3D00'
+                }
+              }
+            ]
+          },
+          {
+            title: 'Veř. Podpora',
+            icon: 'handshake',
+            layers: []
+          },
+          {
+            title: 'Nemovitosti',
+            icon: 'estate',
+            layers: []
+          },
+          {
+            title: 'Socioekonom.',
+            icon: 'socioeconomic',
+            layers: [
+              {
+                name: 'kraje',
+                title: 'Kraje',
+                source: '/web-data/socioekonomicka/kraje.geojson',
+                visible: true
+              }
+            ]
+          }
+        ]
       }
     };
   }
+
+
 
   _render() {
     ReactDOM.render(

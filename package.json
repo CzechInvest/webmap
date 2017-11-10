@@ -45,6 +45,7 @@
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.6",
     "promise": "8.0.1",
+    "rc-checkbox": "^2.0.3",
     "react": "^16.1.0",
     "react-dev-utils": "^4.0.1",
     "react-dom": "^16.1.0",

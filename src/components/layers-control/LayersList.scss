@@ -1,0 +1,48 @@
+@import '../../theme.scss';
+
+.layers-list {
+  min-width: 200px;
+  h3 {
+    margin: 0;
+    color: #aaa;
+  }
+  .list-item {
+    height: 2.5rem;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #ddd;
+    color: #444;
+    .rc-checkbox {
+      margin-right: 0.5rem;
+      .rc-checkbox-inner {
+        width: 1.125rem;
+        height: 1.125rem;
+        transition: none;
+        &:after {
+          width: 0.4rem;
+          height: 0.75rem;
+          left: 0.3rem;
+          animation: none;
+        }
+      }
+
+      &.rc-checkbox-checked {
+        .rc-checkbox-inner {
+          background-color: $secondary-color;
+          border-color: $secondary-color;
+        }
+      }
+      &:hover .rc-checkbox-inner,
+      .rc-checkbox-input:focus + .rc-checkbox-inner {
+        border-color: $secondary-color;
+      }
+    }
+    .icon {
+      fill: $primary-color;
+      margin: 0.15rem 0.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+}
