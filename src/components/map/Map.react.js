@@ -6,7 +6,7 @@ import Map from 'ol/map';
 import './Map.scss';
 
 
-class MapComponent extends React.PureComponent {
+class MapComponent extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
     children: PropTypes.oneOfType([PropTypes.object, PropTypes.array])

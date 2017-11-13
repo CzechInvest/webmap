@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Tile from 'ol/layer/tile';
 import OSM from 'ol/source/osm';
 
-class TileLayer extends React.PureComponent {
+class TileLayer extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
   }
