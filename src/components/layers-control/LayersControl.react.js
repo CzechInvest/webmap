@@ -1,90 +1,85 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types';
-import Control from 'ol/control/control';
-import VectorLayer from 'ol/layer/vector';
-import VectorSource from 'ol/source/vector';
-import GeoJSON from 'ol/format/geojson';
-import Fill from 'ol/style/fill';
-import Stroke from 'ol/style/stroke';
-import Style from 'ol/style/style';
-import Text from 'ol/style/text';
-import Circle from 'ol/style/circle';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import classnames from 'classnames';
 
-import CategoryLayersMenu from './Menu.react';
+import Icon from '../../Icon';
+import LayersList from './LayersList.react'
+import Backdrop from './Backdrop.react'
+import './Menu.scss';
 
 
-function createStyle(config = {}) {
-  const style = new Style({
-    image: new Circle({
-      radius: 7,
-      stroke: new Stroke({
-        color: 'white',
-        width: 2
-      }),
-      fill: new Fill({
-        color: config.fill
-      })
-    }),
-    text: new Text({
-      font: '13px Calibri,sans-serif',
-      textBaseline: 'top',
-      offsetY: 6,
-      fill: new Fill({
-        color: config.fill
-      }),
-      stroke: new Stroke({
-        color: '#fff',
-        width: 2
-      })
-    })
-  });
-  if (config.label) {
-    return feature => {
-      style.getText().setText(feature.get(config.label));
-      return style;
-    }
+class LayersControl extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeItem: null,
+      activeIndex: -1,
+      style: {}
+    };
   }
-  return [style];
-}
 
-export default class LayersControl extends React.Component {
+  open(category, target) {
 
-  componentDidMount() {
-    const map = this.context.map;
-
-    const categories = this.context.store.getState().map.categories;
-    categories.forEach(category => {
-      category.layers.forEach(layer => {
-        if (layer.source) {
-
-          const vectorLayer = new VectorLayer({
-            source: new VectorSource({
-              url: layer.source,
-              format: new GeoJSON()
-            }),
-            visible: layer.visible,
-            style: layer.style ? createStyle(layer.style) : undefined
-          });
-          vectorLayer.set('name', layer.name);
-          map.addLayer(vectorLayer);
-        }
-      })
+    var triggerBounds = target.getBoundingClientRect();
+    const style = {
+      position: 'absolute',
+      left: triggerBounds.left+'px',
+      top: (triggerBounds.bottom+5)+'px'
+    };
+    this.setState({
+      activeItem: category,
+      activeIndex: this.props.categories.indexOf(category),
+      style
     });
   }
 
-  componentWillUnmount() {
-    document.body.removeChild(this.el);
+  close() {
+    this.setState({
+      activeItem: null,
+      activeIndex: -1
+    });
+  }
+
+
+  renderItem(category, index) {
+    let targetEl;
+    const classes = classnames('category', {active: this.state.activeIndex === index});
+    return (
+      <button
+        key={category.title}
+        className={classes}
+        onClick={(e) => this.open(category, targetEl)}>
+        <span className="title">{ category.title }</span>
+        <div
+          ref={(el) => { targetEl = el }}
+          className="icon-box">
+          <Icon glyph={category.icon} />
+        </div>
+      </button>
+    );
   }
 
   render() {
     return (
-      <CategoryLayersMenu />
+      <div className="layers-menu">
+        {this.props.categories.map(this.renderItem.bind(this))}
+
+        {this.state.activeItem &&
+        <Backdrop onClose={() => this.close()}>
+          <div className="panel" style={this.state.style}>
+            <LayersList
+              category={this.props.categories[this.state.activeIndex]}
+              activeIndex={this.state.activeIndex} />
+          </div>
+        </Backdrop>}
+      </div>
     )
   }
 }
 
-LayersControl.contextTypes = {
-  map: PropTypes.object,
-  store: PropTypes.object.isRequired
-};
+export default connect(state => ({
+  categories: state.map.categories
+}), dispatch => bindActionCreators({
+}, dispatch))(LayersControl);
