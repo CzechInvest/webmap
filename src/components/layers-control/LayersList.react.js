@@ -16,14 +16,13 @@ class LayersList extends React.Component {
     const category = this.props.category;
     const layerItems = category.layers.map(layer => {
       return (
-        <div className="list-item" key={layer.name}>
+        <label className="list-item" key={layer.name}>
           <Icon glyph={category.icon} />
-          <label>
-            <Checkbox
-              checked={layer.visible}
-              onChange={() => this.props.setLayerVisibility(layer.name, !layer.visible)} />
-            {layer.title}</label>
-        </div>
+          <Checkbox
+            checked={layer.visible}
+            onChange={() => this.props.setLayerVisibility(layer.name, !layer.visible)} />
+          <span>{layer.title}</span>
+        </label>
       );
     });
     return (

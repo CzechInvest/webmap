@@ -3,14 +3,22 @@
 .layers-menu {
   position: absolute;
   top: 0;
-  left: 0;
+/*  left: 0;
   right: 0;
+  justify-content: center;*/
+  left: 50%;
+  transform: translate(-50%, 0);
+  /*max-width: calc(100% - 1rem);*/
+  max-width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  align-items: center;
   padding: 0.5rem;
-  pointer-events: none;
+  padding-bottom: 0.85rem;
+  overflow-x: auto;
   z-index: 90;
+  /*pointer-events: none;*/
   .category {
     background: none;
     border: none;
@@ -19,6 +27,7 @@
     pointer-events: auto;
     padding: 0;
     margin: 0 0.5rem;
+    box-sizing: border-box;
     .title {
       display: inline-block;
       text-transform: uppercase;
@@ -38,12 +47,12 @@
       border-radius: 5px;
       border: 2px solid $primary-color;
       margin: 0 auto;
-      
       opacity: 0.7;
+
       box-shadow:
         0px 4px 5px -3px rgba(0, 0, 0, 0.2),
-        0px 8px 12px 1px rgba(0, 0, 0, 0.14),
-        0px 3px 15px 3px rgba(0, 0, 0, 0.12);
+        0px 6px 8px 1px rgba(0, 0, 0, 0.14),
+        0px 3px 10px 3px rgba(0, 0, 0, 0.12);
 
       .icon {
         width: 2.5rem;
@@ -55,6 +64,12 @@
     &:hover, &.active {
       .icon-box {
         opacity: 1;
+      }
+    }
+    @media (max-height: 640px) {
+      margin: 0 1rem;
+      .title {
+        display: none;
       }
     }
   }

@@ -21,11 +21,11 @@ class LayersControl extends React.Component {
   }
 
   open(category, target) {
-
-    var triggerBounds = target.getBoundingClientRect();
+    console.log('open')
+    const triggerBounds = target.getBoundingClientRect();
     const style = {
       position: 'absolute',
-      left: triggerBounds.left+'px',
+      left: Math.max(0, triggerBounds.left)+'px',
       top: (triggerBounds.bottom+5)+'px'
     };
     this.setState({
@@ -33,6 +33,21 @@ class LayersControl extends React.Component {
       activeIndex: this.props.categories.indexOf(category),
       style
     });
+  }
+
+  componentDidUpdate() {
+    console.log('componentDidUpdate');
+    if (this.popupEl) {
+      const left = parseInt(this.state.style.left);
+      var xOverflow = Math.max(0, left + this.popupEl.offsetWidth - window.innerWidth);
+      if (xOverflow > 1) {
+        const newStyle = Object.assign({}, this.state.style);
+        newStyle.left = (left - xOverflow)+'px';
+        this.setState({
+          style: newStyle
+        });
+      }
+    }
   }
 
   close() {
@@ -65,10 +80,14 @@ class LayersControl extends React.Component {
     return (
       <div className="layers-menu">
         {this.props.categories.map(this.renderItem.bind(this))}
+        <span>&nbsp;</span>
 
         {this.state.activeItem &&
         <Backdrop onClose={() => this.close()}>
-          <div className="panel" style={this.state.style}>
+          <div
+            className="panel"
+            style={this.state.style}
+            ref={(el) => { this.popupEl = el }}>
             <LayersList
               category={this.props.categories[this.state.activeIndex]}
               activeIndex={this.state.activeIndex} />
