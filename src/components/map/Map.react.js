@@ -60,8 +60,7 @@ class MapComponent extends React.Component {
   }
 
   createLayers() {
-    const categories = this.context.store.getState().map.categories;
-    categories.forEach(category => {
+    this.props.categories.forEach(category => {
       category.layers.forEach(layer => {
         if (layer.source) {
 
@@ -106,15 +105,12 @@ class MapComponent extends React.Component {
   }
 }
 
-MapComponent.contextTypes = {
-  store: PropTypes.object.isRequired
-};
-
 MapComponent.childContextTypes = {
   map: PropTypes.instanceOf(Map)
 };
 
 export default connect(state => ({
   title: state.app.title,
+  categories: state.map.categories
 }), dispatch => bindActionCreators({
 }, dispatch))(MapComponent);
