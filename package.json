@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
+    "geobuf": "^3.0.0",
     "immutable": "^3.8.1",
     "ol": "^4.5.0",
     "react-redux": "^5.0.6",

@@ -6,46 +6,12 @@ import Map from 'ol/map';
 import './Map.scss';
 import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
+import Cluster from 'ol/source/cluster';
 import GeoJSON from 'ol/format/geojson';
-import Fill from 'ol/style/fill';
-import Stroke from 'ol/style/stroke';
-import Style from 'ol/style/style';
-import Text from 'ol/style/text';
-import Circle from 'ol/style/circle';
 
-function createStyle(config = {}) {
-  const style = new Style({
-    image: new Circle({
-      radius: config.radius || 7,
-      stroke: new Stroke({
-        color: 'white',
-        width: 2
-      }),
-      fill: new Fill({
-        color: config.fill
-      })
-    }),
-    text: new Text({
-      font: '13px Calibri,sans-serif',
-      textBaseline: 'top',
-      offsetY: 6,
-      fill: new Fill({
-        color: '#444'
-      }),
-      stroke: new Stroke({
-        color: config.fill,
-        width: 2
-      })
-    })
-  });
-  if (config.label) {
-    return feature => {
-      style.getText().setText(feature.get(config.label));
-      return style;
-    }
-  }
-  return [style];
-}
+import createLayerStyle from './styles';
+import FilteredPointLayers from './layers';
+import Geobuf from './formats';
 
 
 class MapComponent extends React.Component {
@@ -62,20 +28,43 @@ class MapComponent extends React.Component {
   createLayers() {
     this.props.categories.forEach(category => {
       category.layers.forEach(layer => {
-        if (layer.source) {
-
-          const vectorLayer = new VectorLayer({
-            source: new VectorSource({
-              url: layer.source,
-              format: new GeoJSON()
-            }),
-            visible: layer.visible,
-            style: layer.style ? createStyle(layer.style) : undefined
+        if (layer.source) { // temporary check until all layers will be properly configured
+          let vectorLayer;
+          let source = new VectorSource({
+            url: layer.source,
+            format: layer.source.endsWith('.pbf')? Geobuf() : new GeoJSON()
           });
-          vectorLayer.set('name', layer.name);
+
+          if (layer.filter) {
+            vectorLayer = FilteredPointLayers({
+              source: source
+            });
+          } else {
+            vectorLayer = new VectorLayer({
+              source: layer.type === 'point' ? new Cluster({source}) : source,
+              visible: layer.visible,
+              style: createLayerStyle(layer)
+            });
+          }
+          vectorLayer.set('name', layer.name.split(':')[0]);
           this.map.addLayer(vectorLayer);
         }
-      })
+
+        if (layer.filter) {
+          const [layername, filtername] = layer.name.split(':');
+          const olLayer = this.map.getLayers().getArray().find((l) => {
+            return l.get('name') === layername;
+          });
+          olLayer.setActive(filtername, layer.visible);
+          olLayer.addFilter({
+            name: filtername,
+            filter: feature => {
+              return feature.get(layer.filter.attribute).indexOf(layer.filter.value) !== -1;
+            },
+            style: createLayerStyle(layer)
+          })
+        }
+      });
     });
   }
 

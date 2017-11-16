@@ -25,11 +25,16 @@ export default function mapReducer(state = initialState, action) {
     }
 
     case actions.SET_LAYER_VISIBILITY: {
+      const [layerName, filter] = action.payload.layerName.split(':');
       const olLayer = window.map.getLayers().getArray().find((l) => {
-        return l.get('name') === action.payload.layerName;
+        return l.get('name') === layerName;
       });
       if (olLayer) {
-        olLayer.setVisible(action.payload.visible);
+        if (filter) {
+          olLayer.setActive(filter, action.payload.visible);
+        } else {
+          olLayer.setVisible(action.payload.visible);
+        }
       }
 
       const categories = state.get('categories');

@@ -52,10 +52,82 @@ export class CiMap {
             icon: 'business',
             layers: [
               {
-                name: 'dodavatele',
-                title: 'Dodavatele',
-                source: '/web-data/podnikatelska_sit/dodavatele.geojson',
-                visible: false
+                name: 'dodavatele:automobilovy_prumysl',
+                title: 'Automobilový průmysl',
+                source: 'web-data/podnikatelska_sit/dodavatele.geojson',
+                type: 'point',
+                filter: {
+                  attribute: 'sectors',
+                  value: 'Automobilový průmysl'
+                },
+                visible: true,
+                style: {
+                  fill: [30,30,30,0.5],
+                  label: 'name'
+                }
+              },
+              {
+                name: 'dodavatele:letecky_prumysl',
+                title: 'Letecký průmysl',
+                filter: {
+                  attribute: 'sectors',
+                  value: 'Letecký průmysl'
+                },
+                visible: true,
+                style: {
+                  fill: [41,182,246,0.5],
+                  label: 'name'
+                }
+              },
+              {
+                name: 'dodavatele:elektronika',
+                title: 'Elektronika a elektrotechnika',
+                filter: {
+                  attribute: 'sectors',
+                  value: 'Elektronika a elektrotechnika'
+                },
+                visible: false,
+                style: {
+                  fill: [150,50,30,0.5],
+                  label: 'name'
+                }
+              },
+              {
+                name: 'dodavatele:energetika',
+                title: 'Energetika',
+                filter: {
+                  attribute: 'sectors',
+                  value: 'Energetika'
+                },
+                visible: false,
+                style: {
+                  fill: [80,50,200,0.5],
+                  label: 'name'
+                }
+              },
+              {
+                name: 'dodavatele:zdravotnictvo',
+                title: 'Zdravotnická technika, biotechnologie a farmaceutický průmysl',
+                filter: {
+                  attribute: 'sectors',
+                  value: 'Zdravotnická technika, biotechnologie a farmaceutický průmysl'
+                },
+                visible: false,
+                style: {
+                  fill: [124,179,66,0.5]
+                }
+              },
+              {
+                name: 'dodavatele:top10',
+                title: '10 největších firem podle sektorů',
+                filter: {
+                  attribute: 'sectors',
+                  value: '10 největších firem podle sektorů'
+                },
+                visible: false,
+                style: {
+                  fill: [100,100,30,0.5]
+                }
               }
             ]
           },
@@ -66,7 +138,8 @@ export class CiMap {
               {
                 name: 'pi_vtp',
                 title: 'VTParky ',
-                source: '/web-data/vzdelavani/pi_vtp.geojson',
+                source: 'web-data/vzdelavani/pi_vtp.geojson',
+                type: 'point',
                 visible: false,
                 style: {
                   fill: '#7B1FA2'
@@ -74,11 +147,11 @@ export class CiMap {
               },
               {
                 name: 'whoiswho',
-                title: 'Who is Who ',
-                source: '/web-data/vzdelavani/whoiswho.geojson',
-                visible: true,
+                title: 'Who is Who',
+                source: 'web-data/vzdelavani/whoiswho.geojson',
+                visible: false,
                 style: {
-                  fill: '#FFC400'
+                  fill: [255,193,7, 0.5]
                 }
               }
             ]
@@ -90,14 +163,15 @@ export class CiMap {
               // {
               //   name: 'business_angels',
               //   title: 'Business angels',
-              //   source: '/web-data/startup/business_angels.geojson',
+              //   source: 'web-data/startup/business_angels.geojson',
               //   visible: false
               // },
               {
                 name: 'coworking',
                 title: 'coworking',
-                source: '/web-data/startup/coworking.geojson',
-                visible: true,
+                source: 'web-data/startup/coworking.geojson',
+                type: 'point',
+                visible: false,
                 style: {
                   fill: '#AFB42B',
                   label: 'name'
@@ -106,10 +180,11 @@ export class CiMap {
               {
                 name: 'sub_bic',
                 title: 'ESA BIC SUPy',
-                source: '/web-data/startup/sub_bic.geojson',
-                visible: true,
+                source: 'web-data/startup/sub_bic.geojson',
+                type: 'point',
+                visible: false,
                 style: {
-                  fill: '#FF3D00'
+                  fill: '#FF3D00',
                 }
               }
             ]
@@ -131,8 +206,14 @@ export class CiMap {
               {
                 name: 'kraje',
                 title: 'Kraje',
-                source: '/web-data/socioekonomicka/kraje.geojson',
-                visible: true
+                // source: 'web-data/socioekonomicka/kraje.geojson',
+                source: 'web-data/socioekonomicka/kraje.pbf',
+                type: 'polygon',
+                visible: true,
+                style: {
+                  fill: [255,255,255,0.2],
+                  stroke: 'red'
+                }
               }
             ]
           }
