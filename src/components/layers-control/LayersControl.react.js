@@ -35,6 +35,17 @@ class LayersControl extends React.Component {
     });
   }
 
+  close() {
+    this.setState({
+      activeItem: null,
+      activeIndex: -1
+    });
+  }
+
+  toggle(category, target) {
+    this.state.activeItem === category ? this.close() : this.open(category, target);
+  }
+
   componentDidUpdate() {
     console.log('componentDidUpdate');
     if (this.popupEl) {
@@ -50,14 +61,6 @@ class LayersControl extends React.Component {
     }
   }
 
-  close() {
-    this.setState({
-      activeItem: null,
-      activeIndex: -1
-    });
-  }
-
-
   renderItem(category, index) {
     let targetEl;
     const classes = classnames('category', {
@@ -68,7 +71,7 @@ class LayersControl extends React.Component {
       <button
         key={category.title}
         className={classes}
-        onClick={(e) => this.open(category, targetEl)}>
+        onClick={(e) => this.toggle(category, targetEl)}>
         <span className="title">{ category.title }</span>
         <div
           ref={(el) => { targetEl = el }}
