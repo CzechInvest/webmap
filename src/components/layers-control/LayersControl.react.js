@@ -60,7 +60,10 @@ class LayersControl extends React.Component {
 
   renderItem(category, index) {
     let targetEl;
-    const classes = classnames('category', {active: this.state.activeIndex === index});
+    const classes = classnames('category', {
+      open: this.state.activeIndex === index,
+      active: Boolean(category.layers.find((l) => {return l.visible}))
+    });
     return (
       <button
         key={category.title}
