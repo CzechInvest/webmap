@@ -9,20 +9,27 @@ import Icon from '../../Icon';
 import { setLayerVisibility } from '../map/actions';
 import './LayersList.scss';
 
+function cssColor(color) {
+  if (Array.isArray(color)) {
+    return `rgba(${color.join(',')})`;
+  }
+  return color;
+}
 
 class LayersList extends React.Component {
 
   render() {
     const category = this.props.category;
     const layerItems = category.layers.map(layer => {
-      let legendColor = layer.style? layer.style.fill : '';
-      if (Array.isArray(legendColor)) {
-        legendColor = `rgba(${legendColor.join(',')})`;
+      const legendStyle = {};
+      if (layer.style) {
+        legendStyle.fill = cssColor(layer.style.fill);
+        legendStyle.stroke = cssColor(layer.style.stroke);
       }
       return (
         <div className="list-item" key={layer.name}>
           <label className="list-item-checkbox">
-            <Icon glyph={category.icon} style={{fill: legendColor}} />
+            <Icon glyph={category.icon} style={legendStyle} />
             <Checkbox
               checked={layer.visible}
               onChange={() => this.props.setLayerVisibility(layer.name, !layer.visible)} />
