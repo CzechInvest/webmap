@@ -2,17 +2,35 @@
 
 .layers-list {
   min-width: 200px;
+  padding-top: 0.5rem;
   h3 {
-    margin: 0;
+    display: none;
+    margin: 0.25rem 0.5rem;
     color: #aaa;
+    @media (max-height: 640px) {
+      display: block;
+    }
   }
   .list-item {
-    height: 2.5rem;
+    padding: 0 0.75rem;
+    &:hover {
+      background-color: #fbfbfb;
+    }
+    &:not(:last-child) > * {
+      border-bottom: 1px solid #ddd;
+    }
+  }
+  .list-item-checkbox {
+    min-height: 2.85rem;
+    line-height: 1.35rem;
     display: flex;
-    align-items: flex-end;
-    padding-bottom: 2px;
-    border-bottom: 1px solid #ddd;
+/*    align-items: flex-end;
+    padding-bottom: 2px;*/
+    padding: 0;
+    align-items: center;
     color: #444;
+    cursor: pointer;
+    box-sizing: border-box;
     .rc-checkbox {
       margin-right: 0.5rem;
       .rc-checkbox-inner {
@@ -40,11 +58,14 @@
     }
     .icon {
       fill: $primary-color;
-      margin: 0.15rem 0.5rem;
+      margin-right: 0.5rem;
       min-width: 1.5rem;
       min-height: 1.5rem;
       width: 1.5rem;
       height: 1.5rem;
+    }
+    .title {
+      max-width: 18rem;
     }
   }
 }

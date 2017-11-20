@@ -15,14 +15,20 @@ class LayersList extends React.Component {
   render() {
     const category = this.props.category;
     const layerItems = category.layers.map(layer => {
+      let legendColor = layer.style? layer.style.fill : '';
+      if (Array.isArray(legendColor)) {
+        legendColor = `rgba(${legendColor.join(',')})`;
+      }
       return (
-        <label className="list-item" key={layer.name}>
-          <Icon glyph={category.icon} />
-          <Checkbox
-            checked={layer.visible}
-            onChange={() => this.props.setLayerVisibility(layer.name, !layer.visible)} />
-          <span>{layer.title}</span>
-        </label>
+        <div className="list-item" key={layer.name}>
+          <label className="list-item-checkbox">
+            <Icon glyph={category.icon} style={{fill: legendColor}} />
+            <Checkbox
+              checked={layer.visible}
+              onChange={() => this.props.setLayerVisibility(layer.name, !layer.visible)} />
+            <span className="title">{layer.title}</span>
+          </label>
+        </div>
       );
     });
     return (
