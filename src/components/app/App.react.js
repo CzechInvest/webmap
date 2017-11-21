@@ -4,14 +4,15 @@ import { connect } from 'react-redux';
 import './App.scss';
 import Map from '../map/Map.react';
 import View from '../view/View.react';
-import TileLayer from '../tileLayer/TileLayer.react';
+import Baselayer from '../baselayer/Baselayer.react';
 
 
 const App = ({ title }) => (
   <div className="cimap-app">
     <Map>
-      <View />
-      <TileLayer />
+      <View>
+        <Baselayer />
+      </View>
     </Map>
   </div>
 );

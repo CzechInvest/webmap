@@ -6,12 +6,6 @@ import View from 'ol/view';
 
 
 class ViewComponent extends Component {
-  static propTypes = {
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-    z: PropTypes.number.isRequired,
-    projCode: PropTypes.string.isRequired
-  }
 
   shouldComponentUpdate() {
     return false;
@@ -33,7 +27,7 @@ class ViewComponent extends Component {
   }
 
   render() {
-    return null;
+    return this.props.children;
   }
 }
 
@@ -41,6 +35,15 @@ class ViewComponent extends Component {
 ViewComponent.contextTypes = {
   map: PropTypes.object
 };
+
+
+ViewComponent.propTypes = {
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  z: PropTypes.number.isRequired,
+  projCode: PropTypes.string.isRequired,
+  children: PropTypes.object.isRequired
+}
 
 export default connect(state => ({
   x: state.view.x,
