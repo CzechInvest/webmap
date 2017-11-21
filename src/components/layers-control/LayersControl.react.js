@@ -20,7 +20,6 @@ class LayersControl extends React.Component {
   }
 
   open(index, target) {
-    console.log('open')
     const triggerBounds = target.getBoundingClientRect();
     const style = {
       position: 'absolute',
@@ -46,7 +45,9 @@ class LayersControl extends React.Component {
   componentDidUpdate() {
     if (this.popupEl) {
       const left = parseInt(this.state.style.left);
-      var xOverflow = Math.max(0, left + this.popupEl.offsetWidth - window.innerWidth);
+      // window.innerWidth doesn't work without 'user-scalable=no' in meta header
+      const maxWidth = document.body.getBoundingClientRect().width;
+      var xOverflow = Math.max(0, left + this.popupEl.offsetWidth - maxWidth);
       if (xOverflow > 1) {
         const newStyle = Object.assign({}, this.state.style);
         newStyle.left = (left - xOverflow)+'px';
