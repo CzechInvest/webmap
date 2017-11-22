@@ -8,6 +8,14 @@ import Circle from 'ol/style/circle';
 import Icon from 'ol/style/icon';
 
 
+export function cssColor(color) {
+  if (Array.isArray(color)) {
+    return `rgba(${color.join(',')})`;
+  }
+  return color;
+}
+
+
 export function createLayerStyle(layer) {
   if (layer.style) {
     if (layer.type === 'polygon') {
@@ -100,7 +108,7 @@ function generateSvg(colors) {
         cx="16" cy="16" r={r}
         fill="transparent"
         strokeWidth="5"
-        stroke={color}
+        stroke={cssColor(color)}
         strokeDasharray={dashArray}
         strokeDashoffset={offset} />
     )
@@ -157,4 +165,4 @@ export function generateColoredDonutStyle(colors, isGroup, text) {
   return style;
 }
 
-export default {createLayerStyle, generateColoredDonutStyle};
+export default {cssColor, createLayerStyle, generateColoredDonutStyle};
