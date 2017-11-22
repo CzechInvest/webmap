@@ -62,8 +62,7 @@ export default function FilteredPointLayer(config) {
         const colors = [];
         activeFilters.forEach(filter => {
           if (group.find(f => filter.filter(f))) {
-            const color = filter.color;
-            colors.push(Array.isArray(color) ? `rgba(${color.join(',')})` : color);
+            colors.push(filter.color);
           }
         });
         if (group.length > 1) {
