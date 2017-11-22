@@ -5,16 +5,15 @@ import './App.scss';
 import Map from '../map/Map.react';
 import View from '../view/View.react';
 import Baselayer from '../baselayer/Baselayer.react';
-import LayersControl from '../layers-control/LayersControl.react';
+import CategoriesMenu from '../categories/Menu.react';
 
 
 const App = ({ title }) => (
   <div className="cimap-app">
     <Map>
-      <View>
-        <Baselayer />
-      </View>
-      <LayersControl />
+      <View />
+      <BaseLayer />
+      <CategoriesMenu />
     </Map>
   </div>
 );

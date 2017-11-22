@@ -27,45 +27,45 @@ class MapComponent extends React.Component {
 
   createLayers() {
 
-    this.props.categories.forEach(category => {
-      category.layers.forEach(layer => {
+    this.props.layers.forEach(l => {
+    const layer = l.toJS();
 
-        if (layer.source) { // temporary check until all layers will be properly configured
-          let vectorLayer;
-          let source = new VectorSource({
-            url: layer.source,
-            format: layer.source.endsWith('.pbf')? Geobuf() : new GeoJSON()
-          });
-
-          if (layer.filter) {
-            vectorLayer = FilteredPointLayer({
-              source: source,
-              label: layer.style.label
-            });
-          } else {
-            vectorLayer = new VectorLayer({
-              source: layer.type === 'point' ? new Cluster({source}) : source,
-              visible: layer.visible,
-              style: createLayerStyle(layer)
-            });
-          }
-          vectorLayer.set('name', layer.name.split(':')[0]);
-          this.map.addLayer(vectorLayer);
-        }
+      if (layer.source) { // temporary check until all layers will be properly configured
+        let vectorLayer;
+        let source = new VectorSource({
+          url: layer.source,
+          format: layer.source.endsWith('.pbf')? Geobuf() : new GeoJSON(),
+          style: createLayerStyle(layer)
+        });
 
         if (layer.filter) {
-          const [layername, filtername] = layer.name.split(':');
-          const olLayer = this.map.getLayers().getArray().find(l => l.get('name') === layername);
-          olLayer.setActive(filtername, layer.visible);
-          olLayer.addFilter({
-            name: filtername,
-            filter: feature => {
-              return feature.get(layer.filter.attribute).indexOf(layer.filter.value) !== -1;
-            },
-            color: layer.style.fill
-          })
+          vectorLayer = FilteredPointLayer({
+            source: source,
+            label: layer.style.label
+          });
+        } else {
+          vectorLayer = new VectorLayer({
+            source: layer.type === 'point' ? new Cluster({source}) : source,
+            visible: layer.visible,
+            style: createLayerStyle(layer)
+          });
         }
-      });
+        vectorLayer.set('name', layer.name.split(':')[0]);
+        this.map.addLayer(vectorLayer);
+      }
+
+      if (layer.filter) {
+        const [layername, filtername] = layer.name.split(':');
+        const olLayer = this.map.getLayers().getArray().find(l => l.get('name') === layername);
+        olLayer.setActive(filtername, layer.visible);
+        olLayer.addFilter({
+          name: filtername,
+          filter: feature => {
+            return feature.get(layer.filter.attribute).indexOf(layer.filter.value) !== -1;
+          },
+          color: layer.style.fill
+        })
+      }
     });
   }
 
@@ -102,6 +102,6 @@ MapComponent.childContextTypes = {
 
 export default connect(state => ({
   title: state.app.title,
-  categories: state.map.categories
+  layers: state.layers.layers
 }), dispatch => bindActionCreators({
 }, dispatch))(MapComponent);

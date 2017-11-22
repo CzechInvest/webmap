@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
+import './Backdrop.scss';
 
 
 export default class Backdrop extends React.Component {

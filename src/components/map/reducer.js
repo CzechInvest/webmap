@@ -1,5 +1,5 @@
 import * as actions from './actions';
-import { Record, fromJS, toJS } from 'immutable';
+import { Record } from 'immutable';
 
 const InitialState = new Record({
   lat: 0,
@@ -22,35 +22,6 @@ export default function mapReducer(state = initialState, action) {
     case actions.SET_CENTER: {
       return state.set('lat', action.payload.lat)
         .set('lng', action.payload.lng);
-    }
-
-    case actions.SET_LAYER_VISIBILITY: {
-      const [layerName, filter] = action.payload.layerName.split(':');
-      const olLayer = window.map.getLayers().getArray().find((l) => {
-        return l.get('name') === layerName;
-      });
-      if (olLayer) {
-        if (filter) {
-          olLayer.setActive(filter, action.payload.visible);
-        } else {
-          olLayer.setVisible(action.payload.visible);
-        }
-      }
-
-      const categories = state.get('categories');
-      let layerIndex;
-      const categoryIndex = categories.findIndex(category => {
-        layerIndex = category.layers.findIndex(layer => {
-          return layer.name === action.payload.layerName;
-        });
-        return layerIndex !== -1;
-      });
-
-      const keyPath = [categoryIndex, 'layers', layerIndex, 'visible'];
-      return state.set(
-        'categories',
-        fromJS(state.categories).setIn(keyPath, action.payload.visible).toJS()
-      );
     }
 
     default:

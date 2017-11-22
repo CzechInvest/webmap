@@ -1,6 +1,6 @@
 @import '../../theme.scss';
 
-.layers-menu {
+.categories-menu {
   position: absolute;
   top: 0;
 /*  left: 0;
@@ -89,21 +89,8 @@
   }
 }
 
-.menu, .backdrop {
-  width: 100%;
-  height: 100%;
+.popup-panel {
   position: absolute;
-  overflow: hidden;
-  left: 0;
-  top: 0;
-}
-.menu {
-  z-index: 80;
-}
-.backdrop {
-  background-color: rgba(0,0,0,0.25);
-}
-.panel {
   background-color: #fff;
   border-radius: 5px;
   border: 2px solid $primary-color;

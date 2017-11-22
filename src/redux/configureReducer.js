@@ -5,12 +5,16 @@ import map from '../components/map/reducer';
 import view from '../components/view/reducer';
 import lang from '../components/lang/reducer';
 import baselayer from '../components/baselayer/reducer';
+import categories from '../components/categories/reducer';
+import layers from '../components/layers/reducer';
 
 const reducers = {
   app,
   map,
-  view,
   lang,
+  categories,
+  view,
+  layers,
   baselayer
 };
 
