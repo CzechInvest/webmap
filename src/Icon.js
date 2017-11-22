@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 
-
 export default class Icon extends PureComponent {
   render() {
     const {className, glyph, ...restProps} = this.props;
@@ -19,9 +18,10 @@ Icon.defaultProps = {
 };
 
 
-var svgIcons = require.context('../icons', false, /.*\.svg$/)
+const svgIcons = require.context('../icons', false, /.*\.svg$/)
+
 function requireAll (requireContext) {
   return requireContext.keys().map(requireContext)
 }
 
-const icons = requireAll(svgIcons)
+requireAll(svgIcons)

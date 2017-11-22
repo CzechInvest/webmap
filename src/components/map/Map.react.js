@@ -9,8 +9,8 @@ import VectorSource from 'ol/source/vector';
 import Cluster from 'ol/source/cluster';
 import GeoJSON from 'ol/format/geojson';
 
-import createLayerStyle from './styles';
-import FilteredPointLayers from './layers';
+import { createLayerStyle } from './styles';
+import FilteredPointLayer from './layers';
 import Geobuf from './formats';
 
 
@@ -26,8 +26,10 @@ class MapComponent extends React.Component {
   }
 
   createLayers() {
+
     this.props.categories.forEach(category => {
       category.layers.forEach(layer => {
+
         if (layer.source) { // temporary check until all layers will be properly configured
           let vectorLayer;
           let source = new VectorSource({
@@ -36,8 +38,9 @@ class MapComponent extends React.Component {
           });
 
           if (layer.filter) {
-            vectorLayer = FilteredPointLayers({
-              source: source
+            vectorLayer = FilteredPointLayer({
+              source: source,
+              label: layer.style.label
             });
           } else {
             vectorLayer = new VectorLayer({
@@ -52,16 +55,14 @@ class MapComponent extends React.Component {
 
         if (layer.filter) {
           const [layername, filtername] = layer.name.split(':');
-          const olLayer = this.map.getLayers().getArray().find((l) => {
-            return l.get('name') === layername;
-          });
+          const olLayer = this.map.getLayers().getArray().find(l => l.get('name') === layername);
           olLayer.setActive(filtername, layer.visible);
           olLayer.addFilter({
             name: filtername,
             filter: feature => {
               return feature.get(layer.filter.attribute).indexOf(layer.filter.value) !== -1;
             },
-            style: createLayerStyle(layer)
+            color: layer.style.fill
           })
         }
       });
@@ -86,7 +87,7 @@ class MapComponent extends React.Component {
     return (
       <div
         id="map"
-        ref={node => {this.mapEl = node;} }
+        ref={node => {this.mapEl = node} }
       >
         { this.props.children }
       </div>
@@ -97,6 +98,7 @@ class MapComponent extends React.Component {
 MapComponent.childContextTypes = {
   map: PropTypes.instanceOf(Map)
 };
+
 
 export default connect(state => ({
   title: state.app.title,

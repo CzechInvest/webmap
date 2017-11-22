@@ -1,6 +1,7 @@
 import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import Cluster from 'ol/source/cluster';
+import { generateColoredDonutStyle } from './styles';
 
 
 function FilteredClusterSource(rootSource) {
@@ -15,13 +16,17 @@ function FilteredClusterSource(rootSource) {
   };
 
   function filterActiveFeatures() {
+    // For Debugging
+    // const unique = rootSource.getFeatures().reduce((set, f) => {
+    //   f.get('sectors').forEach(set.add.bind(set));
+    //   return set;
+    // }, new Set());
+    // console.log(Array.from(unique));
+    // console.log(rootSource.getFeatures().map((f) => {return f.get('sectors')}));
+
     clusterSource.getSource().clear();
     clusterSource.getSource().addFeatures(
-      rootSource.getFeatures().filter( f => {
-        return filters.find(filter => {
-          return filter.filter(f);
-        })
-      })
+      rootSource.getFeatures().filter(f => filters.find(filter => filter.filter(f)))
     );
     console.log(`## Active Features: ${clusterSource.getSource().getFeatures().length} / ${rootSource.getFeatures().length}`);
   }
@@ -52,13 +57,23 @@ export default function FilteredPointLayer(config) {
     Object.assign(config, {
       source: FilteredClusterSource(config.source),
       visible: false,
-      style(f, res) {
-        const f1 = f.get('features')[0];
-        const filter = activeFilters.find(filter => {
-          return filter.filter(f1);
+      style: (feature, res) => {
+        const group = feature.get('features');
+        const colors = [];
+        activeFilters.forEach(filter => {
+          if (group.find(f => filter.filter(f))) {
+            const color = filter.color;
+            colors.push(Array.isArray(color) ? `rgba(${color.join(',')})` : color);
+          }
         });
-        if (filter) {
-          return Array.isArray(filter.style) ? filter.style : filter.style(f, res);
+        if (group.length > 1) {
+          return generateColoredDonutStyle(colors, true, group.length.toString());
+        } else {
+          if (res < 200 && config.label) {
+            const label = group[0].get(config.label);
+            return generateColoredDonutStyle(colors, false, label);
+          }
+          return generateColoredDonutStyle(colors);
         }
       }
     })
@@ -71,9 +86,7 @@ export default function FilteredPointLayer(config) {
       } else {
         activeFiltersList.delete(fname);
       }
-      activeFilters = filters.filter(f => {
-        return activeFiltersList.has(f.name);
-      });
+      activeFilters = filters.filter(f => activeFiltersList.has(f.name));
       olLayer.getSource().setActiveFilters(activeFilters);
       olLayer.setVisible(activeFilters.length > 0);
     },
