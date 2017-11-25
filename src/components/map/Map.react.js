@@ -84,10 +84,13 @@ class MapComponent extends React.Component {
     return false;
   }
 
+  getChildContext() {
+    return { map: this.map };
+  }
+
   componentDidMount() {
     this.createLayers();
     this.map.setTarget(this.mapEl);
-    window.map = this.map;
   }
 
   componentWillReceiveProps(props) {
@@ -116,6 +119,10 @@ class MapComponent extends React.Component {
     );
   }
 }
+
+MapComponent.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+};
 
 MapComponent.childContextTypes = {
   map: PropTypes.instanceOf(Map)

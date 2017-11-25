@@ -1,61 +1,100 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './components/app/App.react';
-import configureStore from './redux/configureStore';
-import { Provider } from 'react-redux';
-import { startApp } from './components/app/actions';
+import app from './createApp';
+import { setZoom, setCenter } from './components/view/actions';
+import { setBaselayerStyle, setBaselayerVisibility, setBaselayerOpacity } from './components/baselayer/actions';
+import Proj from 'ol/proj'
+
+export default class Cimap {
 
 
-export class CiMap {
-  constructor(divSelector = '#cimap', config) {
-    this._container = document.querySelector(divSelector);;
-    this._config = config || this._getDefaultState();
-    if (!this._container) {
-      console.warn(`There is no element: ${divSelector}`);
-      return null;
-    }
-    this._store = configureStore(this._config);
-    this._render();
-  }
-
-  _getDefaultState() {
-    return {
-      app: {
-        title: 'jojo',
-      }
-    };
+ /**
+   * @classdesc
+   * The map is the core component of CzechInvest web map.
+   * @constructor
+   * @param {string} target element query selector ( default #cimap).
+   * @param {object} options map options.
+   * @api
+ */
+  constructor(target, options) {
+    this._app = new app(target, options);
   }
 
 
-  _render() {
-    ReactDOM.render(
-      <Provider store={this._store}>
-        <App />
-      </Provider>, this._container
-    );
+  /**
+   * Set the center of the current map view.
+   * @param {number} x The x coorinate (longitude) of the view.
+   * @param {number} y The y coorinate (latitude) of the view.
+   * @param {string} projCode Optional. The output projection code. Default EPSG:4326.
+   * @api
+   */
+  setCenter(x, y, projCode = 'EPSG:4326') {
+    this._app.dispatch(setCenter(x , y, projCode));
+  };
 
-    if (module.hot) {
-      this._renderHotReload();
-    }
-    this._store.dispatch(startApp());
+
+  /**
+   * Get the view center.
+   * @param {string} projCode Optional. The output projection code. Default EPSG:4326.
+   * @return {Array<number, number>} The center of the view.
+   * @api
+  */
+  getCenter(projCode = 'EPSG:4326') {
+    const x = this._app.getIn('view', ['x']);
+    const y = this._app.getIn('view', ['y']);
+    const projCodeSource = this._app.getIn('view', ['projCode']);
+    return Proj.transform([x, y], projCodeSource, projCode.toUpperCase());
+  };
+
+
+  /**
+   * Set zoom of the current map view.
+   * @param {number} z The zoom level.
+   * @api
+   */
+  setZoom(zoom) {
+    this._app.dispatch(setZoom(zoom));
+  };
+
+
+  /**
+   * Set zoom of the current map view.
+   * @return {number} The current zoom level.
+   * @api
+  */
+  getZoom() {
+    return this._app.getIn('view', ['z']);
+  };
+
+
+  /**
+   * Set style of baselayer.
+   * @param {string} style The designed style of base layer.
+   * @api
+  */
+  setBaselayerStyle(style) {
+    this._app.dispatch(setBaselayerStyle(style));
   }
 
-  _renderHotReload() {
-    module.hot.accept('./components/app/App.react', () => {
-      const NextApp = require('./components/app/App.react').default;
-      ReactDOM.render(
-        <Provider store={this._store}>
-          <NextApp />
-        </Provider>, this._container);
-    });
+
+  /**
+   * Set visibility of baselayer.
+   * @param {bool} visible Visibility of base layer.
+   * @api
+  */
+  setBaselayerVisibility(visible) {
+    this._app.dispatch(setBaselayerVisibility(visible));
   }
 
 
-  destroy() {
-    ReactDOM.unmountComponentAtNode(this._container);
+  /**
+   * Set opacity of baselayer.
+   * @param {number} opacity Opacity of base layer (range: 0 - 1).
+   * @api
+  */
+  setBaselayerOpacity(opacity) {
+    this._app.dispatch(setBaselayerOpacity(opacity));
   }
+
+
 }
 
-window.CiMap = CiMap;
-
-new CiMap();
+window.ci = { Map: Cimap };

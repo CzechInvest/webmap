@@ -8,10 +8,11 @@ export const setZoom = zoom => ({
   }
 });
 
-export const setCenter = ({ x, y }) => ({
+export const setCenter = (x, y, projCode) => ({
   type: SET_CENTER,
   payload: {
     x,
-    y
+    y,
+    projCode
   }
 });

@@ -19,8 +19,24 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>CzechInvest Web App Map</title>
+    <style>
+      #cimap {
+        width: 100%;
+        height: 100%;
+      }
+      #cimap2 {
+        width: 500px;
+        height: 500px;
+      }
+    </style>
+    <script>
+      function onLoad() {
+        // export to global variable for easy testing
+        map = new ci.Map('#cimap');
+      }
+    </script>
   </head>
-  <body>
+  <body onload="onLoad()">
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>

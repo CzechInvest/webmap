@@ -22,6 +22,12 @@ export default function baselayerReducer(state = initialState, action) {
     }
 
 
+    case actions.SET_BASELAYER_OPACITY: {
+      return state.set('opacity', action.payload.opacity);
+    }
+
+
+
     default:
       return state;
   }
