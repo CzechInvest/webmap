@@ -143,20 +143,19 @@ const normalDonutText = new Text({
   })
 });
 
-const cache = {};
+const iconCache = {};
 export function generateColoredDonutStyle(colors, isGroup, text) {
   const key = JSON.stringify(colors);
-  let svg = cache[key];
-  if (!svg) {
-    svg = generateSvg(colors);
-    cache[key] = svg;
+  let icon = iconCache[key];
+  if (!icon) {
+    const svg = generateSvg(colors);
+    icon = new Icon({
+      src: 'data:image/svg+xml,' + escape(svg)
+    });
+    iconCache[key] = icon;
   }
-  const style = new Style({
-    image: new Icon({
-      src: 'data:image/svg+xml,' + escape(svg),
-      scale: isGroup ? 1 : 0.75
-    })
-  });
+  icon.setScale(isGroup ? 1 : 0.75);
+  const style = new Style({image: icon});
   if (text) {
     const textStyle = isGroup ? groupDonutText : normalDonutText;
     textStyle.setText(text);
