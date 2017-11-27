@@ -7,8 +7,15 @@
     display: none;
     margin: 0.25rem 0.5rem;
     color: #aaa;
-    @media (max-height: 640px) {
-      display: block;
+  }
+  .category-visibility {
+    text-align: left;
+    margin: 0.25em 0.75em;
+    button {
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      background-color: #f0f0f0;
+      padding: 0.25em 0.5em;
     }
   }
   .list-item {
@@ -66,6 +73,16 @@
     }
     .title {
       max-width: 18rem;
+    }
+  }
+  @media (max-height: 640px) {
+    h3 {
+      display: block;
+    }
+    .category-visibility button {
+      position: absolute;
+      right: 1em;
+      top: 0.75em;
     }
   }
 }

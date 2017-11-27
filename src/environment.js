@@ -38,27 +38,27 @@ export default {
   ],
   layers: [
     {
-      name: 'silnicni',
+      id: 'silnicni',
       title: 'Silniční',
       catId: 0
     },
     {
-      name: 'zeleznicni',
+      id: 'zeleznicni',
       title: 'Železniční',
       catId: 0
     },
     {
-      name: 'letecka',
+      id: 'letecka',
       title: 'Letecká',
       catId: 0
     },
     {
-      name: 'vodni',
+      id: 'vodni',
       title: 'Vodní',
       catId: 0
     },
     {
-      name: 'dodavatele:automobilovy_prumysl',
+      id: 'dodavatele:automobilovy_prumysl',
       title: 'Automobilový průmysl',
       source: 'web-data/podnikatelska_sit/dodavatele.geojson',
       type: 'point',
@@ -74,7 +74,7 @@ export default {
       catId: 1
     },
     {
-      name: 'dodavatele:letecky_prumysl',
+      id: 'dodavatele:letecky_prumysl',
       title: 'Letecký průmysl',
       filter: {
         attribute: 'sectors',
@@ -88,7 +88,7 @@ export default {
       catId: 1
     },
     {
-      name: 'dodavatele:elektronika',
+      id: 'dodavatele:elektronika',
       title: 'Elektronika a elektrotechnika',
       filter: {
         attribute: 'sectors',
@@ -102,7 +102,7 @@ export default {
       catId: 1
     },
     {
-      name: 'dodavatele:energetika',
+      id: 'dodavatele:energetika',
       title: 'Energetika',
       filter: {
         attribute: 'sectors',
@@ -116,7 +116,35 @@ export default {
       catId: 1
     },
     {
-      name: 'dodavatele:strojirenstvi',
+      id: 'dodavatele:ict',
+      title: 'ICT Informační a komunikační',
+      filter: {
+        attribute: 'sectors',
+        value: 'ICT Informační a komunikační technologie'
+      },
+      visible: false,
+      style: {
+        fill: [255,235,59,0.7],
+        label: 'name'
+      },
+      catId: 1
+    },
+    {
+      id: 'dodavatele:zpracovani_kovu',
+      title: 'Zpracování kovů',
+      filter: {
+        attribute: 'sectors',
+        value: 'Zpracování kovů'
+      },
+      visible: false,
+      style: {
+        fill: [180,70,100,0.7],
+        label: 'name'
+      },
+      catId: 1
+    },
+    {
+      id: 'dodavatele:strojirenstvi',
       title: 'Strojírenství',
       filter: {
         attribute: 'sectors',
@@ -130,7 +158,7 @@ export default {
       catId: 1
     },
     {
-      name: 'dodavatele:zdravotnictvo',
+      id: 'dodavatele:zdravotnictvo',
       title: 'Zdravotnická technika, biotechnologie a farmaceutický průmysl',
       filter: {
         attribute: 'sectors',
@@ -143,7 +171,7 @@ export default {
       catId: 1
     },
     {
-      name: 'dodavatele:top10',
+      id: 'dodavatele:top10',
       title: '10 největších firem podle sektorů',
       filter: {
         attribute: 'sectors',
@@ -157,7 +185,7 @@ export default {
     },
 
     {
-      name: 'pi_vtp',
+      id: 'pi_vtp',
       title: 'VTParky ',
       source: 'web-data/vzdelavani/pi_vtp.geojson',
       type: 'point',
@@ -168,7 +196,7 @@ export default {
       catId: 2
     },
     {
-      name: 'whoiswho',
+      id: 'whoiswho',
       title: 'Who is Who',
       source: 'web-data/vzdelavani/whoiswho.geojson',
       type: 'point',
@@ -179,7 +207,7 @@ export default {
       catId: 2
     },
     {
-      name: 'coworking',
+      id: 'coworking',
       title: 'Coworking',
       source: 'web-data/startup/coworking.geojson',
       type: 'point',
@@ -191,7 +219,7 @@ export default {
       catId: 3
     },
     {
-      name: 'sub_bic',
+      id: 'sub_bic',
       title: 'ESA BIC SUPy',
       source: 'web-data/startup/sub_bic.geojson',
       visible: false,
@@ -201,7 +229,7 @@ export default {
       catId: 3
     },
     {
-      name: 'kraje',
+      id: 'kraje',
       title: 'Kraje',
       source: 'web-data/socioekonomicka/kraje.pbf',
       type: 'polygon',

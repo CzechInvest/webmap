@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import Map from 'ol/map';
 import './Map.scss';
 import VectorLayer from 'ol/layer/vector';
@@ -27,6 +28,7 @@ class MapComponent extends React.Component {
 
   createLayers() {
 
+    this.map.layerById = {};
     this.props.layers.forEach(l => {
     const layer = l.toJS();
 
@@ -34,8 +36,7 @@ class MapComponent extends React.Component {
         let vectorLayer;
         let source = new VectorSource({
           url: layer.source,
-          format: layer.source.endsWith('.pbf')? Geobuf() : new GeoJSON(),
-          style: createLayerStyle(layer)
+          format: layer.source.endsWith('.pbf')? Geobuf() : new GeoJSON()
         });
 
         if (layer.filter) {
@@ -50,21 +51,22 @@ class MapComponent extends React.Component {
             style: createLayerStyle(layer)
           });
         }
-        vectorLayer.set('name', layer.name.split(':')[0]);
+        vectorLayer.set('id', layer.id.split(':')[0]);
         this.map.addLayer(vectorLayer);
+        this.map.layerById[layer.id.split(':')[0]] = vectorLayer;
       }
 
       if (layer.filter) {
-        const [layername, filtername] = layer.name.split(':');
-        const olLayer = this.map.getLayers().getArray().find(l => l.get('name') === layername);
-        olLayer.setActive(filtername, layer.visible);
+        const [id, filtername] = layer.id.split(':');
+        const olLayer = this.map.layerById[id];
         olLayer.addFilter({
           name: filtername,
           filter: feature => {
             return feature.get(layer.filter.attribute).indexOf(layer.filter.value) !== -1;
           },
           color: layer.style.fill
-        })
+        });
+        olLayer.setActive(filtername, layer.visible);
       }
     });
   }
@@ -83,6 +85,24 @@ class MapComponent extends React.Component {
     window.map = this.map;
   }
 
+  componentWillReceiveProps(props) {
+    console.log('componentWillReceiveProps');
+    const { layers, visibleLayers } = props;
+    // console.log(visibleLayers.toJS());
+    layers.toList().forEach(layer => {
+      const [id, filter] = layer.id.split(':');
+      const olLayer = this.map.layerById[id];
+      const visible = visibleLayers.indexOf(layer.id) !== -1;
+      if (olLayer) {
+        if (filter) {
+          olLayer.setActive(filter, visible);
+        } else {
+          olLayer.setVisible(visible);
+        }
+      }
+    });
+  }
+
   render() {
     return (
       <div
@@ -99,9 +119,14 @@ MapComponent.childContextTypes = {
   map: PropTypes.instanceOf(Map)
 };
 
+const visibleLayersSelector = createSelector(
+  state => state.layers.layers,
+  (layers) => layers.toList().filter(l => l.visible).map(l => l.id)
+)
 
 export default connect(state => ({
   title: state.app.title,
-  layers: state.layers.layers
+  layers: state.layers.layers,
+  visibleLayers: visibleLayersSelector(state)
 }), dispatch => bindActionCreators({
 }, dispatch))(MapComponent);

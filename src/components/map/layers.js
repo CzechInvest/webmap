@@ -10,9 +10,12 @@ function FilteredClusterSource(rootSource) {
     distance: 30
   });
   let filters = [];
+  let filteringScheduled;
   clusterSource.setActiveFilters = activeFilters => {
     filters = activeFilters;
-    filterActiveFeatures();
+    if (!filteringScheduled) {
+      filteringScheduled = setTimeout(filterActiveFeatures);
+    }
   };
 
   function filterActiveFeatures() {
@@ -29,6 +32,7 @@ function FilteredClusterSource(rootSource) {
       rootSource.getFeatures().filter(f => filters.find(filter => filter.filter(f)))
     );
     console.log(`## Active Features: ${clusterSource.getSource().getFeatures().length} / ${rootSource.getFeatures().length}`);
+    filteringScheduled = null;
   }
 
   clusterSource._loadFeatures = clusterSource.loadFeatures;
@@ -51,7 +55,7 @@ function FilteredClusterSource(rootSource) {
 export default function FilteredPointLayer(config) {
   let filters = [];
   let activeFilters = [];
-  let activeFiltersList = new Set();
+  const activeFiltersList = new Set();
 
   const olLayer = new VectorLayer(
     Object.assign(config, {
@@ -79,7 +83,13 @@ export default function FilteredPointLayer(config) {
   );
 
   Object.assign(olLayer, {
+    isActive(fname) {
+      return activeFiltersList.has(fname);
+    },
     setActive(fname, active) {
+      if (active === this.isActive(fname)) {
+        return;
+      }
       if (active) {
         activeFiltersList.add(fname);
       } else {
