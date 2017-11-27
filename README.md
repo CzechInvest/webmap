@@ -22,4 +22,9 @@ The build is minified and the filenames include the hashes.<br>
 
 ### `npm run docs`
 
-Run creation of documentation.<br>
+Run creation of documentation.
+The output is placed into docs directory.<br>
+
+### `npm run docsmd`
+
+Create documentation in markdown language.<br>
