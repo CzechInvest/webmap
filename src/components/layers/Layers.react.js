@@ -7,12 +7,7 @@ import Layer from './Layer.react';
 import { setVisibleLayers } from './actions';
 import './Layers.scss';
 
-
 class Layers extends React.Component {
-  static propTypes = {
-    category: PropTypes.object,
-    layers: PropTypes.object,
-  }
 
   render() {
     const { category, layers, setVisibleLayers } = this.props;
@@ -39,6 +34,11 @@ class Layers extends React.Component {
       </div>
     )
   }
+}
+
+Layers.propTypes = {
+  category: PropTypes.object,
+  layers: PropTypes.object,
 }
 
 export default connect(state => ({

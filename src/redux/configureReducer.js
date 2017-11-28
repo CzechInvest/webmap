@@ -9,7 +9,6 @@ import layers from '../components/layers/reducer';
 
 const reducers = {
   app,
-  map,
   lang,
   categories,
   view,

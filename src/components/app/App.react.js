@@ -6,7 +6,7 @@ import CategoriesMenu from '../categories/Menu.react';
 import Identification from '../identification/Identification.react';
 
 
-const App = () => (
+export default () => (
   <Map>
     <View>
       <Baselayer />

@@ -20,14 +20,49 @@
     -->
     <title>CzechInvest Web App Map</title>
     <style>
+
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Helvetica';
+      }
+
+      :focus {
+        outline:none;
+      }
+
+      ::-moz-focus-inner {
+        border:0;
+      }
+
+      @media (max-height: 800px) {
+        html {
+          font-size: 0.8335em;
+        }
+      }
+
       #cimap {
         width: 100%;
         height: 100%;
       }
+
+      #cimap:empty {
+        display: none;
+      }
+
       #cimap2 {
         width: 500px;
         height: 500px;
       }
+
+      #cimap2:empty {
+        display: none;
+      }
+      
     </style>
     <script>
       function onLoad() {

@@ -16,10 +16,6 @@ import Geobuf from './formats';
 
 
 class MapComponent extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
-  }
 
   constructor() {
     super();
@@ -84,10 +80,6 @@ class MapComponent extends React.Component {
     return false;
   }
 
-  getChildContext() {
-    return { map: this.map };
-  }
-
   componentDidMount() {
     this.createLayers();
     this.map.setTarget(this.mapEl);
@@ -134,7 +126,6 @@ const visibleLayersSelector = createSelector(
 )
 
 export default connect(state => ({
-  title: state.app.title,
   layers: state.layers.layers,
   datasets: state.layers.datasets,
   visibleLayers: visibleLayersSelector(state)
