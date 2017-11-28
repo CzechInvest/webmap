@@ -23,7 +23,7 @@ export default class Cimap {
    * Set the center of the current map view.
    * @param {number} x The x coorinate (longitude) of the view.
    * @param {number} y The y coorinate (latitude) of the view.
-   * @param {string} projCode Optional. The output projection code. Default EPSG:4326.
+   * @param {string} projCode Optional. The projection code of coordinates.
    * @api
    */
   setCenter(x, y, projCode = 'EPSG:4326') {
@@ -67,10 +67,10 @@ export default class Cimap {
 
   /**
    * Set style of baselayer.
-   * @param {string} style The designed style of base layer.
+   * @param {string} style Possible values 'bright-v9', 'dark-v9', 'bright-v9', 'light-v9', 'streets-v9', 'satellite-v9'
    * @api
   */
-  setBaselayerStyle(style) {
+  setBaselayerStyle(style = 'dark-v9') {
     this._app.dispatch(setBaselayerStyle(style));
   }
 
