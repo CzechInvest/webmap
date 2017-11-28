@@ -9,6 +9,12 @@
 # production
 /build
 
+# documentation
+/docs
+
+# submodule
+public/web-data/
+
 # misc
 .DS_Store
 .env.local

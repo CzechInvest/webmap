@@ -12,8 +12,9 @@ import Identification from '../identification/Identification.react';
 const App = ({ title }) => (
   <div className="cimap-app">
     <Map>
-      <View />
-      <BaseLayer />
+      <View>
+        <Baselayer />
+      </View>
       <CategoriesMenu />
       <Identification />
     </Map>

@@ -1,0 +1,3 @@
+[submodule "public/web-data"]
+	path = public/web-data
+	url = https://github.com/CzechInvest/web-data.git
