@@ -3,10 +3,8 @@ import { Record } from 'immutable';
 export default Record({
   id: null,
   catId: null,
-  name: '',
+  datasetId: null,
   title: '',
-  source: '',
-  type: '',
   visible: false,
   filter: null,
   style: {

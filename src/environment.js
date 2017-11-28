@@ -36,6 +36,98 @@ export default {
       icon: 'socioeconomic',
     }
   ],
+  datasets: [
+    {
+      id: 'dodavatele',
+      title: 'Dodavatele',
+      src: 'web-data/podnikatelska_sit/dodavatele.geojson',
+      geometryType: 'point',
+      attributes: []
+    },
+    {
+      id: 'pi_vtp',
+      src: 'web-data/vzdelavani/pi_vtp.geojson',
+      geometryType: 'point'
+    },
+    {
+      id: 'whoiswho',
+      src: 'web-data/vzdelavani/whoiswho.geojson',
+      geometryType: 'point',
+    },
+    {
+      id: 'coworking',
+      src: 'web-data/startup/coworking.geojson',
+      geometryType: 'point',
+      attributes: [
+        {
+          property: 'name',
+          label: 'Název'
+        },
+        {
+          property: 'address',
+          label: 'Adresa'
+        },
+        {
+          property: 'url',
+          label: 'Url',
+          type: 'html',
+          template: '<a target="_blank" href="${value}">${value}</a>'
+        }
+      ],
+    },
+    {
+      id: 'sub_bic',
+      src: 'web-data/startup/sub_bic.geojson',
+      geometryType: 'point'
+    },
+    {
+      id: 'kraje',
+      src: 'web-data/socioekonomicka/kraje.pbf',
+      geometryType: 'polygon',
+      attributes: [
+        {
+          property: 'Nazev',
+          label: 'Název'
+        },
+        {
+          property: 'Populace',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'Pracovní_síla',
+          label: 'Pracovní síla',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'Počet_nezam',
+          label: 'Počet nezam.',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'Míra_nezam',
+          label: 'Míra nezam.',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 2}]
+        },
+        {
+          property: 'Počet_nezam_na_prac_místo',
+          label: 'Počet nezam. na prac místo',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 2}]
+        },
+        {
+          property: 'Mzdy',
+          type: 'number',
+          template: '${value} Kč',
+          format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 0}],
+          xformat: ['cs-CZ', {style: 'currency', currency: 'CZK'}]
+        }
+      ],
+    }
+  ],
   layers: [
     {
       id: 'silnicni',
@@ -58,10 +150,9 @@ export default {
       catId: 0
     },
     {
-      id: 'dodavatele:automobilovy_prumysl',
+      id: 'automobilovy_prumysl',
       title: 'Automobilový průmysl',
-      source: 'web-data/podnikatelska_sit/dodavatele.geojson',
-      type: 'point',
+      datasetId: 'dodavatele',
       filter: {
         attribute: 'sectors',
         value: 'Automobilový průmysl'
@@ -74,8 +165,9 @@ export default {
       catId: 1
     },
     {
-      id: 'dodavatele:letecky_prumysl',
+      id: 'letecky_prumysl',
       title: 'Letecký průmysl',
+      datasetId: 'dodavatele',
       filter: {
         attribute: 'sectors',
         value: 'Letecký průmysl'
@@ -88,8 +180,9 @@ export default {
       catId: 1
     },
     {
-      id: 'dodavatele:elektronika',
+      id: 'elektronika',
       title: 'Elektronika a elektrotechnika',
+      datasetId: 'dodavatele',
       filter: {
         attribute: 'sectors',
         value: 'Elektronika a elektrotechnika'
@@ -102,8 +195,9 @@ export default {
       catId: 1
     },
     {
-      id: 'dodavatele:energetika',
+      id: 'energetika',
       title: 'Energetika',
+      datasetId: 'dodavatele',
       filter: {
         attribute: 'sectors',
         value: 'Energetika'
@@ -116,8 +210,9 @@ export default {
       catId: 1
     },
     {
-      id: 'dodavatele:ict',
+      id: 'ict',
       title: 'ICT Informační a komunikační',
+      datasetId: 'dodavatele',
       filter: {
         attribute: 'sectors',
         value: 'ICT Informační a komunikační technologie'
@@ -130,8 +225,9 @@ export default {
       catId: 1
     },
     {
-      id: 'dodavatele:zpracovani_kovu',
+      id: 'zpracovani_kovu',
       title: 'Zpracování kovů',
+      datasetId: 'dodavatele',
       filter: {
         attribute: 'sectors',
         value: 'Zpracování kovů'
@@ -144,8 +240,9 @@ export default {
       catId: 1
     },
     {
-      id: 'dodavatele:strojirenstvi',
+      id: 'strojirenstvi',
       title: 'Strojírenství',
+      datasetId: 'dodavatele',
       filter: {
         attribute: 'sectors',
         value: 'Strojírenství'
@@ -158,8 +255,9 @@ export default {
       catId: 1
     },
     {
-      id: 'dodavatele:zdravotnictvo',
+      id: 'zdravotnictvo',
       title: 'Zdravotnická technika, biotechnologie a farmaceutický průmysl',
+      datasetId: 'dodavatele',
       filter: {
         attribute: 'sectors',
         value: 'Zdravotnická technika - biotechnologie a farmaceutický průmysl'
@@ -171,8 +269,9 @@ export default {
       catId: 1
     },
     {
-      id: 'dodavatele:top10',
+      id: 'top10',
       title: '10 největších firem podle sektorů',
+      datasetId: 'dodavatele',
       filter: {
         attribute: 'sectors',
         value: '10 největších firem podle sektorů'
@@ -187,10 +286,10 @@ export default {
     {
       id: 'pi_vtp',
       title: 'VTParky ',
-      source: 'web-data/vzdelavani/pi_vtp.geojson',
-      type: 'point',
+      datasetId: 'pi_vtp',
       visible: false,
       style: {
+        type: 'circle',
         fill: '#7B1FA2'
       },
       catId: 2
@@ -198,10 +297,10 @@ export default {
     {
       id: 'whoiswho',
       title: 'Who is Who',
-      source: 'web-data/vzdelavani/whoiswho.geojson',
-      type: 'point',
+      datasetId: 'whoiswho',
       visible: false,
       style: {
+        type: 'circle',
         fill: [255,193,7, 0.7]
       },
       catId: 2
@@ -209,10 +308,10 @@ export default {
     {
       id: 'coworking',
       title: 'Coworking',
-      source: 'web-data/startup/coworking.geojson',
-      type: 'point',
+      datasetId: 'coworking',
       visible: true,
       style: {
+        type: 'circle',
         fill: '#AFB42B',
         label: 'name'
       },
@@ -221,9 +320,10 @@ export default {
     {
       id: 'sub_bic',
       title: 'ESA BIC SUPy',
-      source: 'web-data/startup/sub_bic.geojson',
+      datasetId: 'sub_bic',
       visible: false,
       style: {
+        type: 'circle',
         fill: '#FF3D00'
       },
       catId: 3
@@ -231,9 +331,8 @@ export default {
     {
       id: 'kraje',
       title: 'Kraje',
-      source: 'web-data/socioekonomicka/kraje.pbf',
-      type: 'polygon',
-      visible: false,
+      datasetId: 'kraje',
+      visible: true,
       style: {
         fill: [255,255,255,0.25],
         stroke: 'red'

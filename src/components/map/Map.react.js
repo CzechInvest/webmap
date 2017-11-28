@@ -29,14 +29,17 @@ class MapComponent extends React.Component {
   createLayers() {
 
     this.map.layerById = {};
-    this.props.layers.forEach(l => {
-    const layer = l.toJS();
+    const layerByDataset = {};
+    const { layers, datasets } = this.props;
+    layers.forEach(l => {
+      const layer = l.toJS();
 
-      if (layer.source) { // temporary check until all layers will be properly configured
+      if (layer.datasetId && !layerByDataset[layer.datasetId]) {
+        const dataset = datasets.get(layer.datasetId);
         let vectorLayer;
         let source = new VectorSource({
-          url: layer.source,
-          format: layer.source.endsWith('.pbf')? Geobuf() : new GeoJSON()
+          url: dataset.src,
+          format: dataset.src.endsWith('.pbf')? Geobuf() : new GeoJSON()
         });
 
         if (layer.filter) {
@@ -46,27 +49,29 @@ class MapComponent extends React.Component {
           });
         } else {
           vectorLayer = new VectorLayer({
-            source: layer.type === 'point' ? new Cluster({source}) : source,
+            source: dataset.geometryType === 'point' ? new Cluster({source}) : source,
             visible: layer.visible,
             style: createLayerStyle(layer)
           });
         }
-        vectorLayer.set('id', layer.id.split(':')[0]);
+        vectorLayer.set('id', layer.id);
+        vectorLayer.set('dataset', layer.datasetId);
         this.map.addLayer(vectorLayer);
-        this.map.layerById[layer.id.split(':')[0]] = vectorLayer;
+        this.map.layerById[layer.id] = vectorLayer;
+        layerByDataset[layer.datasetId] = vectorLayer;
       }
 
       if (layer.filter) {
-        const [id, filtername] = layer.id.split(':');
-        const olLayer = this.map.layerById[id];
+        const olLayer = layerByDataset[layer.datasetId];
+        this.map.layerById[layer.id] = olLayer;
         olLayer.addFilter({
-          name: filtername,
+          name: layer.id,
           filter: feature => {
             return feature.get(layer.filter.attribute).indexOf(layer.filter.value) !== -1;
           },
           color: layer.style.fill
         });
-        olLayer.setActive(filtername, layer.visible);
+        olLayer.setActive(layer.id, layer.visible);
       }
     });
   }
@@ -86,16 +91,13 @@ class MapComponent extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log('componentWillReceiveProps');
     const { layers, visibleLayers } = props;
-    // console.log(visibleLayers.toJS());
     layers.toList().forEach(layer => {
-      const [id, filter] = layer.id.split(':');
-      const olLayer = this.map.layerById[id];
+      const olLayer = this.map.layerById[layer.id];
       const visible = visibleLayers.indexOf(layer.id) !== -1;
       if (olLayer) {
-        if (filter) {
-          olLayer.setActive(filter, visible);
+        if (layer.filter) {
+          olLayer.setActive(layer.id, visible);
         } else {
           olLayer.setVisible(visible);
         }
@@ -127,6 +129,7 @@ const visibleLayersSelector = createSelector(
 export default connect(state => ({
   title: state.app.title,
   layers: state.layers.layers,
+  datasets: state.layers.datasets,
   visibleLayers: visibleLayersSelector(state)
 }), dispatch => bindActionCreators({
 }, dispatch))(MapComponent);

@@ -18,10 +18,10 @@ export function cssColor(color) {
 
 export function createLayerStyle(layer) {
   if (layer.style) {
-    if (layer.type === 'polygon') {
-      return createPolygonStyle(layer.style);
+    if (layer.style.type === 'circle') {
+      return createPointStyle(layer.style);
     }
-    return createPointStyle(layer.style);
+    return createPolygonStyle(layer.style);
   }
 }
 
