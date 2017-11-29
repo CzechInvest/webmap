@@ -106,6 +106,7 @@ class MapComponent extends React.Component {
         id="map"
         ref={node => {this.mapEl = node} }
       >
+        <img className="logo-ci" src="img/logo-cz.png" alt="CzechInvest" />
         { this.props.children }
       </div>
     );
