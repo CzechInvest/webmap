@@ -26,24 +26,32 @@ class Category extends React.Component {
     };
   }
 
-  componentDidUpdate() {
-    const iconBounds = this.targetEl.getBoundingClientRect();
-    let x = iconBounds.left;
-    let y = iconBounds.bottom + 10;
+  setTargetEl(el) {
+    this.targetEl = el;
+    this.updatePosition();
+  }
 
-    if (this.popupEl) {
+  setPopupEl(el) {
+    this.popupEl = el;
+    this.updatePosition();
+  }
+
+  updatePosition() {
+    if (this.targetEl && this.popupEl) {
+      const iconBounds = this.targetEl.getBoundingClientRect();
+      let x = iconBounds.left;
+      let y = iconBounds.bottom + 10;
+
       // window.innerWidth doesn't work without 'user-scalable=no' in meta header
       const maxWidth = document.body.getBoundingClientRect().width;
       const xOverflow = Math.max(0, x + this.popupEl.offsetWidth - maxWidth);
       if (xOverflow > 1) {
         x -= xOverflow;
       }
-    }
 
-    if (x !== this.state.x || y !== this.state.y) {
-      this.setState({
-        x, y
-      });
+      if (x !== this.state.x || y !== this.state.y) {
+        this.setState({x, y});
+      }
     }
   }
 
@@ -68,7 +76,7 @@ class Category extends React.Component {
           <span className="title">{ title }</span>
           <div
             className="icon-box"
-            ref={(el) => { this.targetEl = el }}
+            ref={(el) => { this.setTargetEl(el) }}
           >
             <Icon glyph={icon} />
           </div>
@@ -78,7 +86,7 @@ class Category extends React.Component {
             <div
               className="popup-panel"
               style={style}
-              ref={(el) => { this.popupEl = el }}>
+              ref={(el) => { this.setPopupEl(el) }}>
               <Layers />
             </div>
           </Backdrop>
