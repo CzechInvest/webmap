@@ -4,13 +4,22 @@ import { connect } from 'react-redux';
 import Category from './Category.react';
 import './Category.scss';
 
+import Backdrop from '../../Backdrop.react';
+import DistrictsComparator from '../districts/DistrictsComparator.react';
 
 class CategoriesMenu extends React.Component {
 
   render() {
+    const categories = this.props.categories;
+    const districtCategory = categories.get(6);
     return (
       <div className="categories-menu">
-        {this.props.categories.toList().map(c => <Category key={c.id} {...c.toJS()} />)}
+        {categories.toList().filter(c => c !== districtCategory).map(c => <Category key={c.id} {...c.toJS()} />)}
+        <Category {...districtCategory.toJS()}>
+          <Backdrop>
+            <DistrictsComparator />
+          </Backdrop>
+        </Category>
       </div>
     )
   }

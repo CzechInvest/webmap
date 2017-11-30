@@ -20,7 +20,7 @@ export default class Backdrop extends React.Component {
   render() {
     return ReactDOM.createPortal(
       <div>
-        <div className="backdrop" onClick={this.props.onClose}></div>
+        {this.props.onClose && <div className="backdrop" onClick={this.props.onClose}></div>}
         {this.props.children}
       </div>,
       this.el,

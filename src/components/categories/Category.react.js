@@ -81,7 +81,7 @@ class Category extends React.Component {
             <Icon glyph={icon} />
           </div>
         </button>
-        { open &&
+        { open && (this.props.children ||
           <Backdrop onClose={closeCategory}>
             <div
               className="popup-panel"
@@ -90,7 +90,7 @@ class Category extends React.Component {
               <Layers />
             </div>
           </Backdrop>
-        }
+        )}
       </div>
     );
   }
