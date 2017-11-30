@@ -39,16 +39,6 @@ Object.keys(COLORS).forEach(key => {
   });
 });
 
-const hoverStyle = new Style({
-  fill: new Fill({
-    color: [255,255,255, 0.5]
-  }),
-  stroke: new Stroke({
-    color: '#29B6F6',
-    width: 2
-  })
-});
-
 const featureId = f => f.get('Kod');
 
 class DistrictsComparator extends React.Component {
@@ -67,8 +57,8 @@ class DistrictsComparator extends React.Component {
     });
     this.hoverOverlay = new VectorLayer({
       source: new VectorSource(),
-      style: hoverStyle,
-      zIndex: 2
+      zIndex: 2,
+      style: f => STYLES[f.get('Kod')]
     });
     this.context.map.addLayer(this.hoverOverlay);
     this.context.map.addLayer(this.selectionOverlay);
