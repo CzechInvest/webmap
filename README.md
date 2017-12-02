@@ -19,12 +19,19 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br>
 
+### `npm run deploy`
 
-### `npm run docs`
+It runs build on current branch && creates doc && deploy (push) content of ```build``` directory into origin branch ```gh-pages```.
+
+App: [https://czechinvest.github.io/webmap/](https://czechinvest.github.io/webmap/)
+API Documentation: [https://czechinvest.github.io/webmap/doc](https://czechinvest.github.io/webmap/doc)
+
+
+### `npm run doc`
 
 Run creation of documentation.
 The output is placed into docs directory.<br>
 
-### `npm run docsmd`
+### `npm run docmd`
 
 Create documentation in markdown language.<br>
