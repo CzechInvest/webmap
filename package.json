@@ -37,6 +37,7 @@
     "extract-text-webpack-plugin": "3.0.0",
     "file-loader": "0.11.2",
     "fs-extra": "^4.0.1",
+    "gh-pages": "^1.1.0",
     "html-webpack-plugin": "^2.30.1",
     "jest": "^20.0.4",
     "jsdoc": "^3.5.5",
@@ -67,8 +68,9 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "docs": "./node_modules/.bin/jsdoc src/index.js --destination docs",
-    "docsmd": "./node_modules/.bin/jsdoc2md src/index.js"
+    "doc": "./node_modules/.bin/jsdoc src/index.js --destination 'build/doc'",
+    "docmd": "./node_modules/.bin/jsdoc2md src/index.js",
+    "deploy": "npm run build && npm run doc && node scripts/deploy.js"
   },
   "babel": {
     "presets": [
