@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -7,7 +6,6 @@ import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import Observable from 'ol/observable';
 import Fill from 'ol/style/fill';
-import Stroke from 'ol/style/stroke';
 import Style from 'ol/style/style';
 
 import { cssColor } from '../map/styles';
@@ -40,27 +38,40 @@ Object.keys(COLORS).forEach(key => {
 });
 
 const featureId = f => f.get('Kod');
+const throttle = (callback, interval, optThis) => {
+  if (optThis) {
+    callback = callback.bind(optThis);
+  }
+  let timer;
+  let lastCall = 0;
+  let lastArgs;
+  const fn = (...args) => {
+    const now = performance.now();
+    if (now - lastCall >= interval) {
+      callback(...args);
+      lastCall = now;
+      timer = null;
+    } else {
+      lastArgs = args;
+      if (!timer) {
+        timer = setTimeout(
+          () => fn(...lastArgs),
+          interval - (now - lastCall)
+        );
+      }
+    }
+  }
+  return fn;
+}
 
 class DistrictsComparator extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.highlightFeature = this.highlightFeature.bind(this);
-    this.toggleSelection = this.toggleSelection.bind(this);
-  }
-
-  initializeOverlays() {
+  initializeOverlay() {
     this.selectionOverlay = new VectorLayer({
       source: new VectorSource(),
       zIndex: 2,
       style: f => STYLES[f.get('Kod')]
     });
-    this.hoverOverlay = new VectorLayer({
-      source: new VectorSource(),
-      zIndex: 2,
-      style: f => STYLES[f.get('Kod')]
-    });
-    this.context.map.addLayer(this.hoverOverlay);
     this.context.map.addLayer(this.selectionOverlay);
     if (this.olLayer.getSource().getFeatures().length) {
       this.initializeSelection();
@@ -73,44 +84,49 @@ class DistrictsComparator extends React.Component {
   initializeSelection() {
     const { districts } = this.props;
     const activeFeatures = this.olLayer.getSource().getFeatures().filter(f => districts.has(featureId(f)));
-    this.selectionOverlay.getSource().clear();
     this.selectionOverlay.getSource().addFeatures(activeFeatures);
   }
 
   isSelected(feature) {
-    return this.selectionOverlay.getSource().getFeatures().find(f => f === feature);
+    return this.props.districts.has(featureId(feature));
+    // return this.selectionOverlay.getSource().getFeatures().find(f => f === feature);
   }
 
-  addDistrictToCompare(feature) {
+  selectDistrict(feature) {
     const properties = feature.getProperties();
     delete properties.geometry;
+    this.selectionOverlay.getSource().addFeature(feature);
     this.props.addDistrictToCompare(featureId(feature), properties);
   }
 
-  toggleSelection(feature) {
+  unselectDistrict(feature) {
     if (this.isSelected(feature)) {
       this.selectionOverlay.getSource().removeFeature(feature);
-      this.props.removeDistrictToCompare(featureId(feature));
-    } else {
-      this.selectionOverlay.getSource().addFeature(feature);
-      // it should be already added with hover,
-      // but in some circumstances it may not be true
-      this.addDistrictToCompare(feature);
+    }
+    this.props.removeDistrictToCompare(featureId(feature));
+  }
+
+  toggleSelection(feature) {
+    const isSelected = this.isSelected(feature);
+
+    if (feature === this.temporarySelected) {
+      this.temporarySelected = null;
+    } else if (isSelected) {
+      this.unselectDistrict(feature);
+    }
+    if (!isSelected) {
+      this.selectDistrict(feature);
     }
   }
 
-  highlightFeature(feature) {
-    const source = this.hoverOverlay.getSource();
-    const currentHighlight = source.getFeatures()[0];
-    if (currentHighlight !== feature) {
-      source.clear();
-      if (currentHighlight && !this.isSelected(currentHighlight)) {
-        this.props.removeDistrictToCompare(featureId(currentHighlight));
-      }
-      if (feature) {
-        source.addFeature(feature);
-        this.addDistrictToCompare(feature);
-      }
+  hoverChanged(prevFeature, feature) {
+    if (prevFeature && prevFeature === this.temporarySelected) {
+      this.unselectDistrict(prevFeature);
+      this.temporarySelected = null;
+    }
+    if (feature && !this.isSelected(feature)) {
+      this.selectDistrict(feature);
+      this.temporarySelected = feature;
     }
   }
 
@@ -120,23 +136,28 @@ class DistrictsComparator extends React.Component {
     this.olLayer = map.layerById[layer.id];
 
     setLayerVisibility(layer.id, true);
-    this.initializeOverlays();
+    this.initializeOverlay();
 
     const layerFilter = ol => (ol === this.olLayer);
-    this.moveListener = map.on('pointermove', (e) => {
-      this.highlightFeature(
-        map.forEachFeatureAtPixel(e.pixel, f => f, {layerFilter})
-      );
-    });
+
     this.clickListener = map.on('singleclick', (e) => {
-      map.forEachFeatureAtPixel(e.pixel, this.toggleSelection, {layerFilter});
+      const f = map.forEachFeatureAtPixel(e.pixel, f => f, {layerFilter});
+      this.toggleSelection(f);
       e.stopPropagation();
     });
+
+    let prevFeature;
+    this.moveListener = map.on('pointermove', throttle(e => {
+      const f = map.forEachFeatureAtPixel(e.pixel, f => f, {layerFilter});
+      if (f !== prevFeature) {
+        this.hoverChanged(prevFeature, f);
+        prevFeature = f;
+      }
+    }, 80));
   }
 
   componentWillUnmount() {
     const { layer, setLayerVisibility } = this.props;
-    this.context.map.removeLayer(this.hoverOverlay);
     this.context.map.removeLayer(this.selectionOverlay);
     Observable.unByKey(this.moveListener);
     Observable.unByKey(this.clickListener);
