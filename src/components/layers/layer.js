@@ -4,7 +4,7 @@ export default Record({
   id: null,
   catId: null,
   datasetId: null,
-  title: '',
+  title: {},
   visible: false,
   filter: null,
   style: {

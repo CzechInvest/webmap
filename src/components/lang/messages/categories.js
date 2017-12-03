@@ -1,0 +1,2 @@
+export default
+{"transport":{"cs":"Doprava","en":"Transport","sk":"Doleva"},"business":{"cs":"Podnik. sítě","en":"Bussiness Net.","sk":"Biznis"},"science":{"cs":"VVI & Vzdělání","en":"Science","sk":"veda"},"startup":{"cs":"StartUp","en":"Start Up","sk":"startup"},"handshake":{"cs":"Veř. Podpora","en":"Support","sk":"rukotres"},"estate":{"cs":"Nemovitosti","en":"Real Es.","sk":"nehnutelnosti"},"socioeconomic":{"cs":"Socioekonom.","en":"Socio Economic","sk":"ekonomia"}}

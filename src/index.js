@@ -161,7 +161,8 @@ export default class Cimap {
 */
 Cimap.Lang = {
   CS: 'cs',
-  EN: 'en'
+  EN: 'en',
+  SK: 'sk'
 }
 
 

@@ -2,8 +2,10 @@ import * as actions from './actions';
 import { Record, OrderedMap } from 'immutable';
 import env from '../../environment';
 import Category from './category';
+import lang from '../lang/messages/categories';
 
-const catgs = new OrderedMap(env.categories.map(c => [ c.id, new Category(c) ]));
+const catgs = new OrderedMap(env.categories.map(c => [ c.id, new Category(c) ]))
+  .map( c => c.set('title', lang[c.id]) );
 
 const InitialState = new Record({
   categories: catgs,

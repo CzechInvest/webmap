@@ -10,22 +10,23 @@ import './Layers.scss';
 class Layers extends React.Component {
 
   render() {
-    const { category, layers, setVisibleLayers } = this.props;
-    const categoryLayers = layers.filter(l => l.catId === category.id);
+    const { category: { id, title }, layers, setVisibleLayers, lang } = this.props;
+    const categoryLayers = layers.filter(l => l.catId === id);
     const hideCategoryLayers = () => {
-      const visibleLayers = layers.toList().filter(l => (l.catId !== category.id && l.visible));
+      const visibleLayers = layers.toList().filter(l => (l.catId !== id && l.visible));
       setVisibleLayers(visibleLayers.map(l => l.id));
     }
     const showCategoryLayers = () => {
       const visibleLayers = layers.toList()
-        .filter(l => ((l.catId !== category.id && l.visible) || l.catId === category.id));
+        .filter(l => ((l.catId !== id && l.visible) || l.catId === id));
       setVisibleLayers(visibleLayers.map(l => l.id));
     }
-    const allHidden = !categoryLayers.find(l => l.catId === category.id && l.visible);
+    const allHidden = !categoryLayers.find(l => l.catId === id && l.visible);
+    
     return (
       <div
         className="layers-list">
-        <h3>{category.title}</h3>
+        <h3>{title[lang]}</h3>
         <div className="category-visibility">
           {!allHidden && <button onClick={hideCategoryLayers}>Hide all</button>}
           {allHidden && <button onClick={showCategoryLayers}>Show all</button>}
@@ -39,11 +40,13 @@ class Layers extends React.Component {
 Layers.propTypes = {
   category: PropTypes.object,
   layers: PropTypes.object,
+  lang: PropTypes.string
 }
 
 export default connect(state => ({
   category: state.categories.categories.get(state.categories.activeId),
-  layers: state.layers.layers
+  layers: state.layers.layers,
+  lang: state.lang.selectedLanguage
 }), dispatch => bindActionCreators({
   setVisibleLayers
 }, dispatch))(Layers);
