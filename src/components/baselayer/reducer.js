@@ -2,7 +2,7 @@ import * as actions from './actions';
 import { Record } from 'immutable';
 
 const InitialState = new Record({
-  styleId: 'dark-v9',
+  styleId: 'light-v9',
   token: 'pk.eyJ1IjoiZmlsaXB6YXZhIiwiYSI6ImNqMmdlM3J1NzA2d2EyeHRoNmQ1djg2NGUifQ.JS_hvk8MMHglEhhtRE2ZVA',
   visible: true,
   opacity: 1,

@@ -3,8 +3,11 @@ import { Record, OrderedMap } from 'immutable';
 import env from '../../environment';
 import Layer from './layer';
 import DataSet from './dataset';
+import lang from '../lang/messages/layers';
 
-const lrs = new OrderedMap(env.layers.map((l, i) => [ l.id, new Layer(l) ]));
+
+const lrs = new OrderedMap(env.layers.map((l, i) => [ l.id, new Layer(l) ]))
+  .map( l => l.set('title', lang[l.id]) );
 const datasets = new OrderedMap(env.datasets.map((ds, i) => [ ds.id, new DataSet(ds) ]));
 
 const InitialState = new Record({

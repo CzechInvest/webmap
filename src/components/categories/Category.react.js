@@ -7,16 +7,11 @@ import { openCategory, closeCategory } from './actions';
 import Backdrop from '../backdrop/Backdrop.react';
 import Layers from '../layers/Layers.react';
 
+
 import Icon from '../../Icon';
 
 
 class Category extends React.Component {
-  static propTypes = {
-    activeId: PropTypes.number,
-    layers: PropTypes.object,
-    openCategory: PropTypes.func.isRequired,
-    closeCategory: PropTypes.func.isRequired
-  }
 
   constructor(props) {
     super(props);
@@ -56,7 +51,7 @@ class Category extends React.Component {
   }
 
   render() {
-    const { id, title, icon, activeId, layers, openCategory, closeCategory } = this.props;
+    const { id, title, icon, activeId, layers, openCategory, closeCategory, lang } = this.props;
     const open = id === activeId;
     const classes = classnames('category', {
       open: open,
@@ -70,10 +65,11 @@ class Category extends React.Component {
     return (
       <div>
         <button
+          title={title[lang]}
           className={classes}
           onClick={() => { open ? closeCategory() : openCategory(id)}}
         >
-          <span className="title">{ title }</span>
+          <span className="title">{ title[lang] }</span>
           <div
             className="icon-box"
             ref={(el) => { this.setTargetEl(el) }}
@@ -96,9 +92,18 @@ class Category extends React.Component {
   }
 }
 
-export default connect(state => ({
+Category.propTypes = {
+  activeId: PropTypes.string,
+  layers: PropTypes.object,
+  lang: PropTypes.string.isRequired,
+  openCategory: PropTypes.func.isRequired,
+  closeCategory: PropTypes.func.isRequired
+}
+
+export default connect( (state, props) => ({
   activeId: state.categories.activeId,
-  layers: state.layers.layers
+  layers: state.layers.layers,
+  lang: state.lang.selectedLanguage,
 }), dispatch => bindActionCreators({
   openCategory,
   closeCategory

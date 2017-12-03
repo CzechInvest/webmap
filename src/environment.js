@@ -1,38 +1,31 @@
 export default {
   categories: [
     {
-      id: 0,
-      title: 'Doprava',
+      id: 'transport',
       icon: 'transport'
     },
     {
-      id: 1,
-      title: 'Podnik. sítě',
+      id: 'business',
       icon: 'business'
     },
     {
-      id: 2,
-      title: 'VVI & Vzdělání',
+      id: 'science',
       icon: 'science'
     },
     {
-      id: 3,
-      title: 'Start Up',
+      id: 'startup',
       icon: 'startup'
     },
     {
-      id: 4,
-      title: 'Veř. Podpora',
+      id: 'handshake',
       icon: 'handshake'
     },
     {
-      id: 5,
-      title: 'Nemovitosti',
+      id: 'estate',
       icon: 'estate'
     },
     {
-      id: 6,
-      title: 'Socioekonom.',
+      id: 'socioeconomic',
       icon: 'socioeconomic',
     }
   ],
@@ -71,6 +64,7 @@ export default {
           property: 'url',
           label: 'Url',
           type: 'html',
+          // eslint-disable-next-line
           template: '<a target="_blank" href="${value}">${value}</a>'
         }
       ],
@@ -121,6 +115,7 @@ export default {
         {
           property: 'Mzdy',
           type: 'number',
+          // eslint-disable-next-line
           template: '${value} Kč',
           format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 0}],
           xformat: ['cs-CZ', {style: 'currency', currency: 'CZK'}]
@@ -132,22 +127,22 @@ export default {
     {
       id: 'silnicni',
       title: 'Silniční',
-      catId: 0
+      catId: 'transport'
     },
     {
       id: 'zeleznicni',
       title: 'Železniční',
-      catId: 0
+      catId: 'transport'
     },
     {
       id: 'letecka',
       title: 'Letecká',
-      catId: 0
+      catId: 'transport'
     },
     {
       id: 'vodni',
       title: 'Vodní',
-      catId: 0
+      catId: 'transport'
     },
     {
       id: 'automobilovy_prumysl',
@@ -162,7 +157,7 @@ export default {
         fill: [30,30,30,0.7],
         label: 'name'
       },
-      catId: 1
+      catId: 'business'
     },
     {
       id: 'letecky_prumysl',
@@ -177,7 +172,7 @@ export default {
         fill: [41,182,246,0.7],
         label: 'name'
       },
-      catId: 1
+      catId: 'business'
     },
     {
       id: 'elektronika',
@@ -192,7 +187,7 @@ export default {
         fill: [150,50,30,0.7],
         label: 'name'
       },
-      catId: 1
+      catId: 'business'
     },
     {
       id: 'energetika',
@@ -207,7 +202,7 @@ export default {
         fill: [80,50,200,0.7],
         label: 'name'
       },
-      catId: 1
+      catId: 'business'
     },
     {
       id: 'ict',
@@ -222,7 +217,7 @@ export default {
         fill: [255,235,59,0.7],
         label: 'name'
       },
-      catId: 1
+      catId: 'business'
     },
     {
       id: 'zpracovani_kovu',
@@ -237,7 +232,7 @@ export default {
         fill: [180,70,100,0.7],
         label: 'name'
       },
-      catId: 1
+      catId: 'business'
     },
     {
       id: 'strojirenstvi',
@@ -252,7 +247,7 @@ export default {
         fill: [244,81,30,0.7],
         label: 'name'
       },
-      catId: 1
+      catId: 'business'
     },
     {
       id: 'zdravotnictvo',
@@ -266,7 +261,7 @@ export default {
       style: {
         fill: [124,179,66,0.7]
       },
-      catId: 1
+      catId: 'business'
     },
     {
       id: 'top10',
@@ -280,7 +275,7 @@ export default {
       style: {
         fill: [100,100,30,0.7]
       },
-      catId: 1
+      catId: 'business'
     },
 
     {
@@ -292,7 +287,7 @@ export default {
         type: 'circle',
         fill: '#7B1FA2'
       },
-      catId: 2
+      catId: 'science'
     },
     {
       id: 'whoiswho',
@@ -303,7 +298,7 @@ export default {
         type: 'circle',
         fill: [255,193,7, 0.7]
       },
-      catId: 2
+      catId: 'science'
     },
     {
       id: 'coworking',
@@ -315,7 +310,7 @@ export default {
         fill: '#AFB42B',
         label: 'name'
       },
-      catId: 3
+      catId: 'startup'
     },
     {
       id: 'sub_bic',
@@ -326,7 +321,7 @@ export default {
         type: 'circle',
         fill: '#FF3D00'
       },
-      catId: 3
+      catId: 'startup'
     },
     {
       id: 'kraje',
@@ -337,7 +332,7 @@ export default {
         fill: [255,255,255,0.25],
         stroke: 'red'
       },
-      catId: 6
+      catId: 'socioeconomic'
     }
   ]
 };
