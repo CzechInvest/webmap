@@ -1,11 +1,12 @@
 import app from './createApp';
 import { setZoom, setCenter } from './components/view/actions';
 import { setBaselayerStyle, setBaselayerVisibility, setBaselayerOpacity } from './components/baselayer/actions';
+import { setLanguage } from './components/lang/actions';
+import { openCategory, closeCategory } from './components/categories/actions';
+import { setLayerVisibility } from './components/layers/actions';
 import Proj from 'ol/proj'
 
 export default class Cimap {
-
-
  /**
    * @classdesc
    * The map is the core component of CzechInvest web map.
@@ -67,10 +68,10 @@ export default class Cimap {
 
   /**
    * Set style of baselayer.
-   * @param {string} style Possible values 'bright-v9', 'dark-v9', 'bright-v9', 'light-v9', 'streets-v9', 'satellite-v9'
+   * @param {Cimap.MapBoxStyle} style Mapbox default style.
    * @api
   */
-  setBaselayerStyle(style = 'dark-v9') {
+  setBaselayerStyle(style = Cimap.MapBoxStyle.LIGHT) {
     this._app.dispatch(setBaselayerStyle(style));
   }
 
@@ -94,7 +95,90 @@ export default class Cimap {
     this._app.dispatch(setBaselayerOpacity(opacity));
   }
 
+  /**
+   * Get list of category IDs.
+   * @api
+  */
+  getCategoryList() {
+    return this._app.getIn('categories', ['categories']).keySeq().toArray();
+  }
 
+
+  /**
+   * Open category popup.
+   * @param {Cimap.Lang} categoryID ID of category.
+   * @api
+  */
+  openCategory(categoryID) {
+    this._app.dispatch(openCategory(categoryID, 10, 10));
+  }
+
+
+  /**
+   * Close category popup.
+   * @api
+  */
+  closeCategory(categoryID) {
+    this._app.dispatch(closeCategory());
+  }
+
+
+  /**
+   * Set visibility of layer.
+   * @param {string} layerID Identificator of category.
+   * @param {bool} visible Should be layer visible or hided.
+   * @api
+  */
+  setLayerVisibility(layerID, visible) {
+    this._app.dispatch(setLayerVisibility(layerID, visible));
+  }
+
+
+  /**
+   * Get list of layer IDs.
+   * @api
+  */
+  getLayerList(layerID, visible) {
+    return this._app.getIn('layers', ['layers']).keySeq().toArray();
+  }
+
+
+  /**
+   * Set language
+   * @param {Cimap.Lang} lang Language in ISO 639-1 Code.
+   * @api
+  */
+  setLanguage(lang = Cimap.Lang.CS) {
+    this._app.dispatch(setLanguage(lang));
+  }
 }
 
-window.ci = { Map: Cimap };
+
+/**
+ * Languages (ISO 639-1).
+ * @readonly
+ * @enum {string}
+*/
+Cimap.Lang = {
+  CS: 'cs',
+  EN: 'en'
+}
+
+
+/**
+ * Mapbox baselayer style.
+ * @readonly
+ * @enum {string}
+*/
+Cimap.MapBoxStyle = {
+    LIGHT: 'light-v9',
+    BRIGHT: 'bright-v9',
+    DARK: 'dark-v9',
+    STREETS: 'streets-v9',
+    SATELLITE: 'satellite-v9'
+};
+
+
+window.ci = {
+  Map: Cimap,
+}
