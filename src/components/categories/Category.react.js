@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { openCategory, closeCategory } from './actions';
-import Backdrop from '../../Backdrop.react';
+import Backdrop from '../backdrop/Backdrop.react';
 import Layers from '../layers/Layers.react';
 
 import Icon from '../../Icon';
