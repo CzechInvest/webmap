@@ -5,64 +5,16 @@ import { connect } from 'react-redux';
 import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import Observable from 'ol/observable';
-import Fill from 'ol/style/fill';
-import Style from 'ol/style/style';
+// import throttle from 'lodash/throttle';
+import debounce from 'lodash/debounce';
 
-import { cssColor } from '../map/styles';
+import { MapStyles } from './styles.js';
 import { addDistrictToCompare, removeDistrictToCompare } from './actions';
 import { setLayerVisibility } from '../layers/actions';
-import './DistrictsComparator.scss';
+import DistrictsPanel from './DistrictsPanel.react.js';
 
-const COLORS = {
-  19: [255,235,59 ,0.5],
-  27: [76,175,80 ,0.5],
-  35: [255,87,34 ,0.5],
-  43: [63,81,181 ,0.5],
-  51: [233,30,99 ,0.5],
-  60: [156,39,176 ,0.5],
-  78: [69,90,100 ,0.6],
-  86: [118,255,3 ,0.5],
-  108: [213,0,0 ,0.5],
-  94: [121,85,72 ,0.6],
-  116: [0,137,123 ,0.5],
-  124: [48,63,159 ,0.5],
-  132: [10,10,10, 0.6],
-  141: [196,160,0, 0.5]
-}
-
-const STYLES = {};
-Object.keys(COLORS).forEach(key => {
-  STYLES[key] = new Style({
-    fill: new Fill({color: COLORS[key]})
-  });
-});
 
 const featureId = f => f.get('Kod');
-const throttle = (callback, interval, optThis) => {
-  if (optThis) {
-    callback = callback.bind(optThis);
-  }
-  let timer;
-  let lastCall = 0;
-  let lastArgs;
-  const fn = (...args) => {
-    const now = performance.now();
-    if (now - lastCall >= interval) {
-      callback(...args);
-      lastCall = now;
-      timer = null;
-    } else {
-      lastArgs = args;
-      if (!timer) {
-        timer = setTimeout(
-          () => fn(...lastArgs),
-          interval - (now - lastCall)
-        );
-      }
-    }
-  }
-  return fn;
-}
 
 class DistrictsComparator extends React.Component {
 
@@ -70,7 +22,7 @@ class DistrictsComparator extends React.Component {
     this.selectionOverlay = new VectorLayer({
       source: new VectorSource(),
       zIndex: 2,
-      style: f => STYLES[f.get('Kod')]
+      style: f => MapStyles[f.get('Kod')]
     });
     this.context.map.addLayer(this.selectionOverlay);
     if (this.olLayer.getSource().getFeatures().length) {
@@ -107,6 +59,7 @@ class DistrictsComparator extends React.Component {
   }
 
   toggleSelection(feature) {
+    if (!feature) return;
     const isSelected = this.isSelected(feature);
 
     if (feature === this.temporarySelected) {
@@ -147,13 +100,13 @@ class DistrictsComparator extends React.Component {
     });
 
     let prevFeature;
-    this.moveListener = map.on('pointermove', throttle(e => {
+    this.moveListener = map.on('pointermove', debounce(e => {
       const f = map.forEachFeatureAtPixel(e.pixel, f => f, {layerFilter});
       if (f !== prevFeature) {
         this.hoverChanged(prevFeature, f);
         prevFeature = f;
       }
-    }, 80));
+    }, 50));
   }
 
   componentWillUnmount() {
@@ -165,24 +118,8 @@ class DistrictsComparator extends React.Component {
   }
 
   render() {
-    const { districts, dataset } = this.props;
-    const colorStyle = (id) => ({color: cssColor(COLORS[id].slice(0, 3).concat(1))});
-    // console.log(dataset.toJS());
     return (
-      <div className="districts-panel">
-        <h3>Populace</h3>
-        {districts.toList().map((properties, id) => (
-          <p key={id} style={colorStyle(properties.Kod)}>{properties["Populace"]}</p>
-        ))}
-        <h3>Pracovní síla</h3>
-        {districts.toList().map((properties, id) => (
-          <p key={id} style={colorStyle(properties.Kod)}>{properties["Pracovní_síla"]}</p>
-        ))}
-        <h3>Počet nezam.</h3>
-        {districts.toList().map((properties, id) => (
-          <p key={id} style={colorStyle(properties.Kod)}>{properties["Počet_nezam"]}</p>
-        ))}
-      </div>
+      <DistrictsPanel />
     );
   }
 }
@@ -193,8 +130,7 @@ DistrictsComparator.contextTypes = {
 
 export default connect(state => ({
   districts: state.districts.districts,
-  layer: state.layers.layers.get('kraje'),
-  dataset: state.layers.datasets.get('kraje')
+  layer: state.layers.layers.get('kraje')
 }), dispatch => bindActionCreators({
   addDistrictToCompare,
   removeDistrictToCompare,
