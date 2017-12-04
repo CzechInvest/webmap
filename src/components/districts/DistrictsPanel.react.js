@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
@@ -68,6 +69,11 @@ class DistrictsPanel extends React.Component {
       </div>
     );
   }
+}
+
+DistrictsPanel.propTypes = {
+  districts: PropTypes.object,
+  dataset: PropTypes.object
 }
 
 export default connect(state => ({

@@ -124,6 +124,14 @@ class DistrictsComparator extends React.Component {
   }
 }
 
+DistrictsComparator.propTypes = {
+  districts: PropTypes.object,
+  layer: PropTypes.object,
+  addDistrictToCompare: PropTypes.func.isRequired,
+  removeDistrictToCompare: PropTypes.func.isRequired,
+  setLayerVisibility: PropTypes.func.isRequired
+}
+
 DistrictsComparator.contextTypes = {
   map: PropTypes.object
 };
