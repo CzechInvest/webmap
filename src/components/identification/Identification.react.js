@@ -9,6 +9,9 @@ import Select from 'ol/interaction/select';
 import formatValue from './format';
 import Popup from './Popup.react';
 
+import messages from '../lang/messages/attributes';
+
+
 
 class Identification extends React.Component {
 
@@ -58,12 +61,12 @@ class Identification extends React.Component {
   }
 
   getObjectInfo(feature, olayer) {
-    const { layers, datasets } = this.props;
+    const { layers, datasets, lang } = this.props;
     const dataset = datasets.get(olayer.get('dataset'));
     let fields;
     if (dataset.attributes.length) {
       fields = dataset.attributes.map(attr => ({
-        label: attr.label || attr.property,
+        label: messages[attr.property][lang],
         value: formatValue(feature.get(attr.property), attr),
         html: attr.type === 'html'
       }));
@@ -72,12 +75,13 @@ class Identification extends React.Component {
       fields = feature.getKeys()
         .filter(property => (property !== 'geometry' && property !== 'features'))
         .map((property) => ({
-          label: property,
+          label: messages[property][lang],
           value: formatValue(feature.get(property))
         }));
     }
+
     return {
-      title: dataset.title || layers.get(olayer.get('id')).title,
+      title: (dataset.title || layers.get(olayer.get('id')).title)[lang],
       fields: fields
     };
   }
@@ -134,12 +138,19 @@ class Identification extends React.Component {
   }
 }
 
+Identification.propTypes = {
+  layers: PropTypes.object.isRequired,
+  datasets: PropTypes.object.isRequired,
+  lang: PropTypes.string.isRequired
+}
+
 Identification.contextTypes = {
-  map: PropTypes.object
+  map: PropTypes.object.isRequired,
 };
 
 export default connect(state => ({
   layers: state.layers.layers,
-  datasets: state.layers.datasets
+  datasets: state.layers.datasets,
+  lang: state.lang.selectedLanguage,
 }), dispatch => bindActionCreators({
 }, dispatch))(Identification);
