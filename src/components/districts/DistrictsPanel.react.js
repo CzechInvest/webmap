@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
+import ScrollArea from 'react-scrollbar';
 
 import formatValue from '../identification/format';
 import { Colors } from './styles';
@@ -58,15 +59,18 @@ class DistrictsPanel extends React.Component {
         }]
       };
     });
+
     return (
-      <div className="districts-panel">
-        {attribs.map((field, index) => (
-          <div key={index}>
-            <h3>{field.label}</h3>
-            <Bar height={80} data={dataArray[index]} options={graphOpts} />
-          </div>
-        ))}
-      </div>
+      <ScrollArea>
+        <div className="districts-panel">
+          {attribs.map((field, index) => (
+            <div key={index}>
+              <h3>{field.label}</h3>
+              <Bar height={80} data={dataArray[index]} options={graphOpts} />
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
     );
   }
 }

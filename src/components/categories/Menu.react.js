@@ -2,6 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Category from './Category.react';
+import ScrollArea from 'react-scrollbar';
 import './Category.scss';
 
 import Backdrop from '../backdrop/Backdrop.react';
@@ -13,14 +14,18 @@ class CategoriesMenu extends React.Component {
     const categories = this.props.categories;
     const districtCategory = categories.get('socioeconomic');
     return (
-      <div className="categories-menu">
+      <ScrollArea
+        horizontal={true}
+        vertical={false}
+        className="categories-menu"
+      >
         {categories.toList().filter(c => c !== districtCategory).map(c => <Category key={c.id} {...c.toJS()} />)}
         <Category {...districtCategory.toJS()}>
           <Backdrop>
             <DistrictsComparator />
           </Backdrop>
         </Category>
-      </div>
+      </ScrollArea>
     )
   }
 }
