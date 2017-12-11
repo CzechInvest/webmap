@@ -4,6 +4,38 @@ import Cluster from 'ol/source/cluster';
 import { generateColoredDonutStyle } from './styles';
 
 
+export function DistinctPointsSource(source, r=10) {
+
+  function checkFeatures() {
+    // group points with the same position
+    const map = {};
+    source.forEachFeature(f => {
+      const key = f.getGeometry().flatCoordinates.toString();
+      if (!map[key]) {
+        map[key] = [f];
+      } else {
+        map[key].push(f);
+      }
+    });
+
+    // apply offset to the points on the same position
+    Object.values(map).filter(g => g.length > 1).forEach(group => {
+      const center = group[0].getGeometry().getCoordinates();
+      const angle = 360 / group.length;
+      group.forEach((f, i) => {
+        const x = center[0] + r * Math.sin((25 + angle * i) * (Math.PI / 180));
+        const y = center[1] + r * Math.cos((25 + angle * i) * (Math.PI / 180));
+        f.getGeometry().setCoordinates([x, y]);
+      });
+    });
+
+    // const duplicit = Object.values(map).filter(g => g.length > 1).reduce((list, g) => list.concat(g), []);
+    // console.log('All:', source.getFeatures().length, 'Duplicit:', duplicit.length);
+  }
+  source.once('change', checkFeatures);
+  return source;
+}
+
 function FilteredClusterSource(rootSource) {
   const clusterSource = new Cluster({
     source: new VectorSource(),
@@ -52,7 +84,7 @@ function FilteredClusterSource(rootSource) {
  * which can be later enabled or disabled. All filtered objects are
  * then grouped with cluster.
  */
-export default function FilteredPointLayer(config) {
+export function FilteredPointLayer(config) {
   let filters = [];
   let activeFilters = [];
   const activeFiltersList = new Set();
@@ -72,7 +104,7 @@ export default function FilteredPointLayer(config) {
         if (group.length > 1) {
           return generateColoredDonutStyle(colors, true, group.length.toString());
         } else {
-          if (res < 200 && config.label) {
+          if (res < 80 && config.label) {
             const label = group[0].get(config.label);
             return generateColoredDonutStyle(colors, false, label);
           }

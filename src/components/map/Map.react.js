@@ -4,26 +4,34 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import Map from 'ol/map';
+import 'ol/ol.css';
 import './Map.scss';
 import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import Cluster from 'ol/source/cluster';
 import GeoJSON from 'ol/format/geojson';
+import Attribution from 'ol/control/attribution';
+import control from 'ol/control';
 
 import { createLayerStyle } from './styles';
-import FilteredPointLayer from './layers';
+import { DistinctPointsSource, FilteredPointLayer } from './layers';
 import Geobuf from './formats';
 
 
 class MapComponent extends React.Component {
 
-  constructor() {
-    super();
-    this.map = new Map();
+  constructor(props) {
+    super(props);
+    const attribution = new Attribution({
+      collapsible: false
+    });
+    this.map = new Map({
+      controls: control.defaults({attribution: false}).extend([attribution])
+    });
+    this.createLayers();
   }
 
   createLayers() {
-
     this.map.layerById = {};
     const layerByDataset = {};
     const { layers, datasets } = this.props;
@@ -32,22 +40,28 @@ class MapComponent extends React.Component {
 
       if (layer.datasetId && !layerByDataset[layer.datasetId]) {
         const dataset = datasets.get(layer.datasetId);
-        let vectorLayer;
+
         let source = new VectorSource({
           url: dataset.src,
-          format: dataset.src.endsWith('.pbf')? Geobuf() : new GeoJSON()
+          format: dataset.src.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON()
         });
+        if (dataset.geometryType === 'point') {
+          source = DistinctPointsSource(source);
+        }
 
+        let vectorLayer;
         if (layer.filter) {
           vectorLayer = FilteredPointLayer({
             source: source,
-            label: layer.style.label
+            label: layer.style.label,
+            zIndex: 1
           });
         } else {
           vectorLayer = new VectorLayer({
-            source: dataset.geometryType === 'point' ? new Cluster({source}) : source,
+            source: dataset.geometryType === 'point' ? new Cluster({source, distance: 30}) : source,
             visible: layer.visible,
-            style: createLayerStyle(layer)
+            style: createLayerStyle(layer),
+            zIndex: 1
           });
         }
         vectorLayer.set('id', layer.id);
@@ -81,7 +95,6 @@ class MapComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.createLayers();
     this.map.setTarget(this.mapEl);
   }
 
