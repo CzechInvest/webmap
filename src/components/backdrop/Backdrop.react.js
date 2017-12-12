@@ -9,6 +9,11 @@ export default class Backdrop extends React.Component {
     this.el = document.createElement('div');
   }
 
+  onClick(evt) {
+    this.props.onClose(evt);
+    evt.stopPropagation();
+  }
+
   componentDidMount() {
     document.body.appendChild(this.el);
   }
@@ -20,7 +25,7 @@ export default class Backdrop extends React.Component {
   render() {
     return ReactDOM.createPortal(
       <div>
-        {this.props.onClose && <div className="backdrop" onClick={this.props.onClose}></div>}
+        {this.props.onClose && <div className="backdrop" onClick={evt => this.onClick(evt)}></div>}
         {this.props.children}
       </div>,
       this.el,

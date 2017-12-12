@@ -4,6 +4,7 @@ import View from '../view/View.react';
 import Baselayer from '../baselayer/Baselayer.react';
 import CategoriesMenu from '../categories/Menu.react';
 import Identification from '../identification/Identification.react';
+import Contact from '../contact/Contact.react';
 
 
 export default () => (
@@ -11,6 +12,7 @@ export default () => (
     <View>
       <Baselayer />
     </View>
+    <Contact />
     <CategoriesMenu />
     <Identification />
   </Map>
