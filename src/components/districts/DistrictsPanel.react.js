@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
 
+import messages from '../lang/messages/attributes';
 import formatValue from '../identification/format';
 import { Colors } from './styles';
 import { cssColor } from '../map/styles';
@@ -37,7 +38,7 @@ const graphOpts = {
 class DistrictsPanel extends React.Component {
 
   render() {
-    const { districts, dataset } = this.props;
+    const { districts, dataset, lang } = this.props;
 
     const attribs = dataset.attributes.filter(attr => attr.type === 'number');
     const ids = Array.from(districts.keys());
@@ -62,7 +63,7 @@ class DistrictsPanel extends React.Component {
       <div className="districts-panel">
         {attribs.map((field, index) => (
           <div key={index}>
-            <h3>{field.label}</h3>
+            <h3>{messages[field.property][lang]}</h3>
             <Bar height={80} data={dataArray[index]} options={graphOpts} />
           </div>
         ))}
@@ -78,6 +79,7 @@ DistrictsPanel.propTypes = {
 
 export default connect(state => ({
   districts: state.districts.districts,
-  dataset: state.layers.datasets.get('kraje')
+  dataset: state.layers.datasets.get('kraje'),
+  lang: state.lang.selectedLanguage
 }), dispatch => bindActionCreators({
 }, dispatch))(DistrictsPanel);
