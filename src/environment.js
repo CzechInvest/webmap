@@ -33,7 +33,7 @@ export default {
     {
       id: 'airports',
       src: 'web-data/doprava/airports.geojson',
-      geometryType: 'polygon'
+      // geometryType: 'polygon'
     },
     {
       id: 'ferry',
@@ -52,7 +52,7 @@ export default {
     },
     {
       id: 'silnice_1tr',
-      src: 'web-data/doprava/secondary.pbf.geojson',
+      src: 'web-data/doprava/primary.pbf.geojson',
       geometryType: 'line'
     },
     {
@@ -66,20 +66,14 @@ export default {
       src: 'web-data/podnikatelska_sit/dodavatele.geojson',
       geometryType: 'point',
       attributes: [
-        {
-          property: 'name'
-        },
-        {
-          property: 'address'
-        },
+        { property: 'name' },
+        { property: 'address' },
+        { property: 'sectors' },
         {
           property: 'url',
           type: 'html',
           template: '<a target="_blank" href="${value}">${value}</a>'
         },
-        {
-          property: 'sectors'
-        }
       ]
     },
     {
@@ -92,22 +86,14 @@ export default {
       src: 'web-data/vzdelavani/whoiswho.geojson',
       geometryType: 'point',
       attributes: [
-        {
-          property: 'name'
-        },
-        {
-          property: 'address'
-        },
+        { property: 'name' },
+        { property: 'address' },
+        { property: 'sectors' },
+        { property: 'specialization' },
         {
           property: 'url',
           type: 'html',
           template: '<a target="_blank" href="${value}">${value}</a>'
-        },
-        {
-          property: 'sectors'
-        },
-        {
-          property: 'specialization'
         }
       ]
     },
@@ -116,12 +102,8 @@ export default {
       src: 'web-data/startup/coworking.geojson',
       geometryType: 'point',
       attributes: [
-        {
-          property: 'name'
-        },
-        {
-          property: 'address'
-        },
+        { property: 'name' },
+        { property: 'address' },
         {
           property: 'url',
           type: 'html',
@@ -133,50 +115,51 @@ export default {
     {
       id: 'sub_bic',
       src: 'web-data/startup/sub_bic.geojson',
-      geometryType: 'point'
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'address' },
+        {
+          property: 'url',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a target="_blank" href="${value}">${value}</a>'
+        }
+      ]
     },
     {
       id: 'kraje',
       src: 'web-data/socioekonomicka/kraje.pbf.geojson',
       geometryType: 'polygon',
       attributes: [
-        {
-          property: 'Nazev',
-          label: 'Název'
-        },
+        { property: 'Nazev' },
         {
           property: 'Populace',
-          label: 'Populace',
           type: 'number',
           format: ['cs-CZ', {style: 'decimal'}]
         },
         {
           property: 'Pracovní_síla',
-          label: 'Pracovní síla',
           type: 'number',
           format: ['cs-CZ', {style: 'decimal'}]
         },
         {
           property: 'Počet_nezam',
-          label: 'Počet nezam.',
           type: 'number',
           format: ['cs-CZ', {style: 'decimal'}]
         },
         {
           property: 'Míra_nezam',
-          label: 'Míra nezam.',
           type: 'number',
           format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 2}]
         },
         {
           property: 'Počet_nezam_na_prac_místo',
-          label: 'Počet nezam. na prac místo',
           type: 'number',
           format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 2}]
         },
         {
           property: 'Mzdy',
-          label: 'Populace',
           type: 'number',
           // eslint-disable-next-line
           template: '${value} Kč',
@@ -197,17 +180,59 @@ export default {
     {
       id: 'business_angels',
       src: 'web-data/startup/business_angels.geojson',
-      geometryType: 'point'
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'address' },
+        { property: 'description' },
+        { property: 'topics' }
+      ]
     },
     {
       id: 'startupy',
       src: 'web-data/startup/startupy.geojson',
-      geometryType: 'point'
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'address' },
+        {
+          property: 'url',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a target="_blank" href="${value}">${value}</a>'
+        }
+      ]
     },
     {
       id: 'orp',
       src: 'web-data/verejna_podpora/orp.pbf.geojson',
       geometryType: 'polygon'
+    },
+    {
+      id: 'sskoly',
+      src: 'web-data/vzdelavani/sskoly.geojson',
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'address' }
+      ]
+    },
+    {
+      id: 'vskoly',
+      src: 'web-data/vzdelavani/vskoly.geojson',
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'vtype' },
+        { property: 'form' },
+        { property: 'address' },
+        {
+          property: 'url',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a target="_blank" href="${value}">${value}</a>'
+        }
+      ]
     }
   ],
   layers: [
@@ -281,6 +306,8 @@ export default {
       },
       visible: false,
       style: {
+        type: 'icon',
+        icon: 'business_point',
         fill: [30,30,30,0.75],
         label: 'name'
       },
@@ -295,6 +322,8 @@ export default {
       },
       visible: false,
       style: {
+        type: 'icon',
+        icon: 'business_point',
         fill: [41,182,246,0.8],
         label: 'name'
       },
@@ -309,6 +338,8 @@ export default {
       },
       visible: false,
       style: {
+        type: 'icon',
+        icon: 'business_point',
         fill: [150,50,30,0.8],
         label: 'name'
       },
@@ -323,6 +354,8 @@ export default {
       },
       visible: false,
       style: {
+        type: 'icon',
+        icon: 'business_point',
         fill: [80,50,200,0.8],
         label: 'name'
       },
@@ -337,6 +370,8 @@ export default {
       },
       visible: false,
       style: {
+        type: 'icon',
+        icon: 'business_point',
         fill: [255,235,59,0.8],
         label: 'name'
       },
@@ -351,6 +386,8 @@ export default {
       },
       visible: false,
       style: {
+        type: 'icon',
+        icon: 'business_point',
         fill: [180,70,100,0.8],
         label: 'name'
       },
@@ -365,6 +402,8 @@ export default {
       },
       visible: false,
       style: {
+        type: 'icon',
+        icon: 'business_point',
         fill: [93,64,55,0.8],
         label: 'name'
       },
@@ -379,6 +418,8 @@ export default {
       },
       visible: false,
       style: {
+        type: 'icon',
+        icon: 'business_point',
         fill: [244,81,30,0.8],
         label: 'name'
       },
@@ -393,6 +434,8 @@ export default {
       },
       visible: false,
       style: {
+        type: 'icon',
+        icon: 'business_point',
         fill: [245,0,87,0.8],
         label: 'name'
       },
@@ -407,20 +450,9 @@ export default {
       },
       visible: false,
       style: {
+        type: 'icon',
+        icon: 'business_point',
         fill: [124,179,66,0.8]
-      },
-      catId: 'business'
-    },
-    {
-      id: 'top10',
-      datasetId: 'dodavatele',
-      filter: {
-        attribute: 'sectors',
-        value: '10 největších firem podle sektorů'
-      },
-      visible: false,
-      style: {
-        fill: [100,100,30,0.8]
       },
       catId: 'business'
     },
@@ -538,6 +570,49 @@ export default {
       },
       style: {
         fill: '#7B1FA2'
+      },
+      catId: 'science'
+    },
+    {
+      id: 'sskoly',
+      datasetId: 'sskoly',
+      visible: false,
+      style: {
+        type: 'icon',
+        icon: 'science',
+        fill: [0,150,136 ,0.85]
+      },
+      catId: 'science'
+    },
+    {
+      id: 'vskoly_univerzitni',
+      datasetId: 'vskoly',
+      visible: false,
+      filter: {
+        type: 'single',
+        attribute: 'vtype',
+        value: 'univerzitní'
+      },
+      style: {
+        type: 'icon',
+        icon: 'science_point',
+        fill: [124,179,66 ,0.85]
+      },
+      catId: 'science'
+    },
+    {
+      id: 'vskoly_neuniverzitni',
+      datasetId: 'vskoly',
+      visible: false,
+      filter: {
+        type: 'single',
+        attribute: 'vtype',
+        value: 'neuniverzitní'
+      },
+      style: {
+        type: 'icon',
+        icon: 'science_point',
+        fill: [255,50,66 ,0.85]
       },
       catId: 'science'
     },
