@@ -17,7 +17,8 @@ class Category extends React.Component {
     super(props);
     this.state = {
       x: 0,
-      y: 0
+      y: 0,
+      maxHeight: null
     };
   }
 
@@ -35,17 +36,17 @@ class Category extends React.Component {
     if (this.targetEl && this.popupEl) {
       const iconBounds = this.targetEl.getBoundingClientRect();
       let x = iconBounds.left;
-      let y = iconBounds.bottom + 10;
+      let y = iconBounds.bottom + 20;
 
       // window.innerWidth doesn't work without 'user-scalable=no' in meta header
-      const maxWidth = document.body.getBoundingClientRect().width;
-      const xOverflow = Math.max(0, x + this.popupEl.offsetWidth - maxWidth);
+      const bodyBounds = document.body.getBoundingClientRect();
+      const xOverflow = Math.max(0, x + this.popupEl.offsetWidth - bodyBounds.width);
       if (xOverflow > 1) {
         x -= xOverflow;
       }
 
       if (x !== this.state.x || y !== this.state.y) {
-        this.setState({x, y});
+        this.setState({x, y, maxHeight: bodyBounds.height-y-8});
       }
     }
   }
@@ -60,7 +61,8 @@ class Category extends React.Component {
 
     const style = {
       left: this.state.x+'px',
-      top: this.state.y+'px'
+      top: this.state.y+'px',
+      maxHeight: this.state.maxHeight? (this.state.maxHeight+'px') : ''
     }
     return (
       <div>
