@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Overlay from 'ol/overlay';
 import Select from 'ol/interaction/select';
+import Extent from 'ol/extent';
 
 import formatValue from './format';
 import Popup from './Popup.react';
@@ -48,15 +49,22 @@ class Identification extends React.Component {
   zoomToCluster(feature) {
     const map = this.context.map;
     const extent = feature.getGeometry().getExtent();
-    const center = [
-      (extent[0] + extent[2])/2,
-      (extent[1] + extent[3])/2
-    ];
-    map.getView().animate({
-      center: center,
-      duration: 450,
-      zoom: map.getView().getZoom()+1
-    });
+    const features = feature.get('features');
+    if (features.length < 5) {
+      features.forEach(f => Extent.extend(extent, f.getGeometry().getExtent()));
+      const buffer = 2 * Math.max(Math.abs(extent[2]-extent[0]), Math.abs(extent[3]-extent[1]));
+      map.getView().fit(Extent.buffer(extent, buffer), {duration: 450});
+    } else {
+      const center = [
+        (extent[0] + extent[2])/2,
+        (extent[1] + extent[3])/2
+      ];
+      map.getView().animate({
+        center: center,
+        duration: 450,
+        zoom: map.getView().getZoom()+1
+      });
+    }
     this.clearSelection();
   }
 
@@ -75,7 +83,7 @@ class Identification extends React.Component {
       fields = feature.getKeys()
         .filter(property => (property !== 'geometry' && property !== 'features'))
         .map((property) => ({
-          label: messages[property][lang],
+          label: property,
           value: formatValue(feature.get(property))
         }));
     }
