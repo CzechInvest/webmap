@@ -6,6 +6,8 @@ import './Category.scss';
 
 import Backdrop from '../backdrop/Backdrop.react';
 import DistrictsComparator from '../districts/DistrictsComparator.react';
+import logo from '../../assets/img/logo_CI.svg';
+
 
 class CategoriesMenu extends React.Component {
 
@@ -14,7 +16,7 @@ class CategoriesMenu extends React.Component {
     const districtCategory = categories.get('socioeconomic');
     return (
       <div className="main-menu">
-        <img className="logo" src="img/logo_CI.svg" alt="CzechInvest" />
+        <img className="logo" src={logo} alt="CzechInvest" />
         <div className="categories-menu">
           {categories.toList().filter(c => c !== districtCategory).map(c => <Category key={c.id} {...c.toJS()} />)}
           <Category {...districtCategory.toJS()}>

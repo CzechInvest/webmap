@@ -129,17 +129,6 @@ module.exports = {
         // match the requirements. When no loader matches it will fall
         // back to the "file" loader at the end of the loader list.
         oneOf: [
-          // "url" loader works like "file" loader except that it embeds assets
-          // smaller than specified limit in bytes as data URLs to avoid requests.
-          // A missing `test` is equivalent to a match.
-          {
-            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-            loader: require.resolve('url-loader'),
-            options: {
-              limit: 10000,
-              name: 'static/media/[name].[hash:8].[ext]',
-            },
-          },
           {
             test: /icons\/.*\.svg$/,
             use: [
@@ -156,9 +145,25 @@ module.exports = {
                 }
               },
               {
-                loader: 'svgo-loader'
+                loader: 'svgo-loader',
+                options: {
+                  plugins: [
+                    // {removeAttrs: {attrs: '(stroke-width)'}},
+                  ]
+                }
               }
             ]
+          },
+          // "url" loader works like "file" loader except that it embeds assets
+          // smaller than specified limit in bytes as data URLs to avoid requests.
+          // A missing `test` is equivalent to a match.
+          {
+            test: [/\.svg$/, /\.png$/, /\.jpe?g$/, /\.bmp$/, /\.gif$/],
+            loader: require.resolve('url-loader'),
+            options: {
+              limit: 10000,
+              name: 'static/media/[name].[hash:8].[ext]',
+            },
           },
           // Process JS with Babel.
           {
@@ -228,7 +233,7 @@ module.exports = {
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
             },
-          },
+          }
         ],
       },
       // ** STOP ** Are you adding a new loader?
