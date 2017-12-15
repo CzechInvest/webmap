@@ -6,11 +6,11 @@
   -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
   filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
   padding: 0.5rem;
-  border-radius: 10px;
-  border: 2px solid $primary-color;
+  border-radius: 1em;
+  border: 1px solid rgba($primary-color, 0.55);
   bottom: 12px;
   left: -50px;
-  min-width: 280px;
+  min-width: 285px;
   z-index: 100;
 
   &:before, &:after {
@@ -23,8 +23,8 @@
     pointer-events: none;
   }
   &:before {
-    border-top-color: $primary-color;
-    border-width: 13px;
+    border-top-color: rgba($primary-color, 0.55);
+    border-width: 12px;
     left: 48px;
     margin-left: -12px;
   }
@@ -38,8 +38,12 @@
   h3 {
     margin: 0 0 0.5em 0;
     color: $secondary-color;
+    font-weight: 500;
   }
   .list {
+    max-height: 25em;
+    overflow: auto;
+    user-select: text;
     .list-item {
       padding: 4px 0.25rem;
       display: flex;
@@ -53,7 +57,7 @@
       }
       label {
         color: #222;
-        font-weight: bold;
+        font-weight: 500;
         font-size: 0.938rem;
       }
       p {

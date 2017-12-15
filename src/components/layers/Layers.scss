@@ -2,10 +2,10 @@
 
 .layers-list {
   min-width: 200px;
-  padding-top: 0.5rem;
+  padding-top: 0.5em;
   h3 {
     display: none;
-    margin: 0.25rem 0.5rem;
+    margin: 0.25em 0.5em;
     color: #aaa;
   }
   .category-visibility {
@@ -19,7 +19,7 @@
     }
   }
   .list-item {
-    padding: 0 0.75rem;
+    padding: 0 0.75em;
     &:hover {
       background-color: #fbfbfb;
     }
@@ -28,8 +28,8 @@
     }
   }
   .list-item-checkbox {
-    min-height: 2.85rem;
-    line-height: 1.35rem;
+    min-height: 2.85em;
+    line-height: 1.35em;
     display: flex;
 /*    align-items: flex-end;
     padding-bottom: 2px;*/
@@ -39,15 +39,15 @@
     cursor: pointer;
     box-sizing: border-box;
     .rc-checkbox {
-      margin-right: 0.5rem;
+      margin-right: 0.5em;
       .rc-checkbox-inner {
-        width: 1.125rem;
-        height: 1.125rem;
+        width: 1.125em;
+        height: 1.125em;
         transition: none;
         &:after {
-          width: 0.4rem;
-          height: 0.75rem;
-          left: 0.3rem;
+          width: 0.4em;
+          height: 0.75em;
+          left: 0.3em;
           animation: none;
         }
       }
@@ -65,14 +65,14 @@
     }
     .icon {
       fill: $primary-color;
-      margin-right: 0.5rem;
-      min-width: 1.5rem;
-      min-height: 1.5rem;
-      width: 1.5rem;
-      height: 1.5rem;
+      margin-right: 0.5em;
+      min-width: 1.5em;
+      min-height: 1.5em;
+      width: 1.7em;
+      height: 1.7em;
     }
     .title {
-      max-width: 18rem;
+      max-width: 18em;
     }
   }
   @media (max-height: 640px) {

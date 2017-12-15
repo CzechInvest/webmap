@@ -13,13 +13,17 @@ class CategoriesMenu extends React.Component {
     const categories = this.props.categories;
     const districtCategory = categories.get('socioeconomic');
     return (
-      <div className="categories-menu">
-        {categories.toList().filter(c => c !== districtCategory).map(c => <Category key={c.id} {...c.toJS()} />)}
-        <Category {...districtCategory.toJS()}>
-          <Backdrop>
-            <DistrictsComparator />
-          </Backdrop>
-        </Category>
+      <div className="main-menu">
+        <img className="logo" src="img/logo_CI.svg" alt="CzechInvest" />
+        <div className="categories-menu">
+          {categories.toList().filter(c => c !== districtCategory).map(c => <Category key={c.id} {...c.toJS()} />)}
+          <Category {...districtCategory.toJS()}>
+            <Backdrop>
+              <DistrictsComparator />
+            </Backdrop>
+          </Category>
+        </div>
+        <div className="flex-space" />
       </div>
     )
   }
