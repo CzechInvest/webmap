@@ -1,0 +1,34 @@
+@font-face {
+  font-family: 'Soleil';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Soleil Light'), url('./assets/font/Soleil-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Soleil';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Soleil Regular'), url('./assets/font/Soleil-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Soleil';
+  font-style: bold;
+  font-weight: 500;
+  src: local('Soleil Semibold'), url('./assets/font/Soleil-Semibold.otf');
+}
+
+@font-face {
+  font-family: 'Soleil';
+  font-style: bold;
+  font-weight: 600;
+  src: local('Soleil Bold'), url('./assets/font/Soleil-Bold.otf');
+}
+
+@font-face {
+  font-family: 'Soleil';
+  font-style: bold;
+  font-weight: 700;
+  src: local('Soleil Extrabold'), url('./assets/font/Soleil-Extrabold.otf');
+}
