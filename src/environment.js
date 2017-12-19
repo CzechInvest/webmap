@@ -343,7 +343,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'site_point',
+        icon: 'site_bod',
         fill: '#002E5F',
         // fill: [30,30,30,0.75],
         label: 'name'
@@ -360,7 +360,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'site_point',
+        icon: 'site_bod',
         fill: '#DB002E',
         label: 'name'
       },
@@ -376,7 +376,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'site_point',
+        icon: 'site_bod',
         fill: '#475A8F',
         label: 'name'
       },
@@ -392,7 +392,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'site_point',
+        icon: 'site_bod',
         fill: '#7C88C3',
         label: 'name'
       },
@@ -408,7 +408,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'site_point',
+        icon: 'site_bod',
         fill: '#DD4A53',
         label: 'name'
       },
@@ -424,7 +424,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'site_point',
+        icon: 'site_bod',
         fill: '#EB7274',
         label: 'name'
       },
@@ -440,7 +440,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'site_point',
+        icon: 'site_bod',
         fill: '#D8A881',
         label: 'name'
       },
@@ -456,7 +456,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'site_point',
+        icon: 'site_bod',
         fill: '#F3914E',
         label: 'name'
       },
@@ -472,7 +472,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'site_point',
+        icon: 'site_bod',
         fill: '#DBC8BE',
         label: 'name'
       },
@@ -488,7 +488,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'site_point',
+        icon: 'site_bod',
         fill: '#CFAAB4'
       },
       catId: 'business'
@@ -503,7 +503,7 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#002E5F'
       },
       catId: 'science'
@@ -518,7 +518,7 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#DB002E'
       },
       catId: 'science'
@@ -533,7 +533,7 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#475A8F'
       },
       catId: 'science'
@@ -548,7 +548,7 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#7C88C3'
       },
       catId: 'science'
@@ -563,7 +563,7 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#DD4A53'
       },
       catId: 'science'
@@ -578,7 +578,7 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#EB7274'
       },
       catId: 'science'
@@ -593,7 +593,7 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#D8A881'
       },
       catId: 'science'
@@ -608,7 +608,7 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#F3914E'
       },
       catId: 'science'
@@ -623,7 +623,7 @@ export default {
       },
       style: {
         // type: 'icon',
-        // icon: 'vvi_point',
+        // icon: 'vvi_bod',
         fill: '#DCA28F'
       },
       catId: 'science'
@@ -634,7 +634,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#CFAAB4'
       },
       catId: 'science'
@@ -650,7 +650,7 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#F088A4'
       },
       catId: 'science'
@@ -666,7 +666,7 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'vvi_point',
+        icon: 'vvi_bod',
         fill: '#fce94f'
       },
       catId: 'science'
@@ -703,7 +703,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'start_point',
+        icon: 'start_bod',
         fill: '#D8A881',
         label: 'name'
       },
@@ -715,7 +715,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'start_point',
+        icon: 'start_bod',
         fill: '#F3914E',
         label: 'name'
       },
@@ -727,7 +727,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'start_point',
+        icon: 'start_bod',
         fill: '#CFAAB4'
       },
       catId: 'startup'
@@ -738,7 +738,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'start_point',
+        icon: 'start_bod',
         fill: '#475A8F'
       },
       catId: 'startup'
@@ -749,7 +749,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'podpora_point',
+        icon: 'podpora_bod',
         fill: '#475A8F'
       },
       catId: 'handshake'
@@ -763,7 +763,7 @@ export default {
         value: 0
       },
       style: {
-        fill: '#DD4A53',
+        fill: '#FCE94F',
         stroke: 'red'
       },
       catId: 'handshake'
@@ -777,7 +777,7 @@ export default {
         value: 1
       },
       style: {
-        fill: 'F3914E',
+        fill: '#D8A881',
         stroke: 'red'
       },
       catId: 'handshake'
@@ -788,7 +788,7 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'nemovitosti_point',
+        icon: 'nemovitosti_bod',
         fill: [62,39,35 ,0.8]
       },
       catId: 'estate'
@@ -800,7 +800,8 @@ export default {
       visible: false,
       style: {
         fill: [255,255,255,0.25],
-        stroke: 'red'
+        stroke: [0, 47, 96, 0.4],
+        strokeWidth: 1.75
       },
       catId: 'socioeconomic'
     }
