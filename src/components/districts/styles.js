@@ -1,26 +1,32 @@
 import Fill from 'ol/style/fill';
 import Style from 'ol/style/style';
+import OlColor from 'ol/color';
 
-export const Colors = {
-  19: [255,235,59 ,0.5],
-  27: [76,175,80 ,0.5],
-  35: [255,87,34 ,0.5],
-  43: [63,81,181 ,0.5],
-  51: [233,30,99 ,0.5],
-  60: [156,39,176 ,0.5],
-  78: [69,90,100 ,0.6],
-  86: [118,255,3 ,0.5],
-  108: [213,0,0 ,0.5],
-  94: [121,85,72 ,0.6],
-  116: [0,137,123 ,0.5],
-  124: [48,63,159 ,0.5],
-  132: [10,10,10, 0.6],
-  141: [196,160,0, 0.5]
+const Colors = {
+  19: '#002E5F',
+  27: '#DB002E',
+  35: '#475A8F',
+  43: '#7C88C3',
+  51: '#DD4A53',
+  60: '#EB7274',
+  78: '#D8A881',
+  86: '#F3914E',
+  108: '#DCA28F',
+  94: '#CFAAB4',
+  116: '#F088A4',
+  124: '#FCE94F',
+  132: '#73D216',
+  141: '#75507B'
+}
+
+export function getColor(id, opacity=1) {
+  const color = OlColor.asArray(Colors[id]);
+  return color.slice(0, 3).concat(opacity);
 }
 
 export const MapStyles = {};
 Object.keys(Colors).forEach(key => {
   MapStyles[key] = new Style({
-    fill: new Fill({color: Colors[key]})
+    fill: new Fill({color: getColor(key, 0.5)})
   });
 });

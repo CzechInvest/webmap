@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
+import 'chartjs-plugin-datalabels';
 
 import messages from '../lang/messages/attributes';
 import formatValue from '../identification/format';
-import { Colors } from './styles';
+import { getColor } from './styles';
 import { cssColor } from '../map/styles';
 import './DistrictsPanel.scss';
 
@@ -16,14 +17,29 @@ const graphOpts = {
     display: false
   },
   tooltips: {
-    // enabled: false
-    callbacks: {
-      label: (item, data) => {
-        return data.tooltipLabels[item.index];
-      }
+    enabled: false
+  },
+  plugins: {
+    datalabels: {
+      color: '#222',
+      font: {
+        family: 'Soleil',
+        weight: 500,
+        size: 12
+      },
+      formatter (value, chart) {
+        console.log(chart)
+        return chart.dataset.label[chart.dataIndex];
+      },
+      align: 'end',
+      anchor: 'end',
+      offset: -4
     }
   },
   scales: {
+    xAxes: [{
+      barPercentage: 0.45
+    }],
     yAxes: [{
       ticks: {
         beginAtZero: true,
@@ -32,7 +48,25 @@ const graphOpts = {
         }
       }
     }]
+  },
+  responsive: false,
+  layout: {
+    padding: {
+      top: 12
+    }
   }
+};
+
+const GraphLegend = ({labels, colors}) => {
+  return (
+    <div className="legend">
+      {labels.map((label, index) => (
+        <label key={index} style={{color: colors[index]}}>
+          {label}
+        </label>
+      ))}
+    </div>
+  );
 };
 
 class DistrictsPanel extends React.Component {
@@ -42,16 +76,19 @@ class DistrictsPanel extends React.Component {
 
     const attribs = dataset.attributes.filter(attr => attr.type === 'number');
     const ids = Array.from(districts.keys());
-    const colors =  ids.map(id => cssColor(Colors[id]));
-    const borders = ids.map(id => cssColor(Colors[id].slice(0, 3).concat(1)));
+    const colors =  ids.map(id => cssColor(getColor(id, 0.75)));
+    const borders = ids.map(id => cssColor(getColor(id, 1)));
     const districtsArray = districts.toList().toJS();
     const dataArray = attribs.map(attr => {
       const values = districtsArray.map(properties => properties[attr.property]);
       const labels = districtsArray.map(properties => properties['Nazev']);
+      const formattedValues = values.map(val => formatValue(val, attr));
       return {
-        labels: values.map(val => formatValue(val, attr)),
+        labels: values.map(val => ''),
+        legendLabels: labels,
         tooltipLabels: labels,
         datasets: [{
+          label: formattedValues,
           backgroundColor: colors,
           borderColor: borders,
           borderWidth: 1,
@@ -65,6 +102,7 @@ class DistrictsPanel extends React.Component {
           <div key={index}>
             <h3>{messages[field.property][lang]}</h3>
             <Bar height={80} data={dataArray[index]} options={graphOpts} />
+            <GraphLegend labels={dataArray[index].legendLabels} colors={borders} />
           </div>
         ))}
       </div>
