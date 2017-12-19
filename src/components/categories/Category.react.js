@@ -77,6 +77,7 @@ class Category extends React.Component {
             ref={(el) => { this.setTargetEl(el) }}
           >
             <Icon glyph={icon} />
+            <div className="shadow" />
           </div>
         </button>
         { open && (this.props.children ||

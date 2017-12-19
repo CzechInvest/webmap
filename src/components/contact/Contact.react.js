@@ -6,7 +6,9 @@ import Icon from '../../Icon';
 import messages from '../lang/messages/app';
 import Backdrop from '../backdrop/Backdrop.react';
 import './Contact.scss';
+import aboutLogo from '../../assets/img/plusko.svg';
 
+import { CSSTransitionGroup } from 'react-transition-group';
 
 class Contact extends React.Component {
 
@@ -18,14 +20,28 @@ class Contact extends React.Component {
   render() {
     const { lang } = this.props;
     return (
+      <div className="contact-panel">
+      <button className="about">
+        <img src={aboutLogo} />
+      </button>
       <button
-        className="contact-box"
+        className="contact"
         onClick={() => this.setState({open: true})}
       >
-        <img className="logo-ci2" src="img/logo-cz.png" alt="CzechInvest" />
         <Icon glyph="contact" />
+      </button>
+      <CSSTransitionGroup
+        transitionName="backdrop"
+        transitionLeave={true}
+        transitionEnter={true}
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={300}
+      >
         {this.state.open && <Backdrop onClose={() => this.setState({open: false})}>
           <div className="contacts-panel">
+            <button
+              className="ol-popup-closer"
+              onClick={() => this.setState({open: false})}/>
             <h3>{messages['contact'][lang]}</h3>
             <table>
               <tbody>
@@ -54,7 +70,8 @@ class Contact extends React.Component {
             </table>
           </div>
         </Backdrop>}
-      </button>
+      </CSSTransitionGroup>
+      </div>
     );
   }
 }

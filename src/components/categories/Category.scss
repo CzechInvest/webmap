@@ -79,6 +79,14 @@
         stroke: $primary-color;
         stroke-width: 2.5;
       }
+      .shadow {
+        position: absolute;
+        height: 0.3em;
+        left: 20%;
+        right: 20%;
+        bottom: 0.5em;
+        background: radial-gradient(55% 50% ellipse at 50% 50%, rgba(gray, 0.5) 0%, transparent 100%);;
+      }
     }
     &:hover, &.open {
       .icon-box {
