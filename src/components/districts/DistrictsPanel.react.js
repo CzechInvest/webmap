@@ -28,7 +28,6 @@ const graphOpts = {
         size: 12
       },
       formatter (value, chart) {
-        console.log(chart)
         return chart.dataset.label[chart.dataIndex];
       },
       align: 'end',
@@ -101,7 +100,7 @@ class DistrictsPanel extends React.Component {
         {attribs.map((field, index) => (
           <div key={index}>
             <h3>{messages[field.property][lang]}</h3>
-            <Bar height={80} data={dataArray[index]} options={graphOpts} />
+            <Bar height={85} data={dataArray[index]} options={graphOpts} />
             <GraphLegend labels={dataArray[index].legendLabels} colors={borders} />
           </div>
         ))}

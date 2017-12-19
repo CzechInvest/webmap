@@ -5,6 +5,7 @@ import Baselayer from '../baselayer/Baselayer.react';
 import CategoriesMenu from '../categories/Menu.react';
 import Identification from '../identification/Identification.react';
 import Contact from '../contact/Contact.react';
+import '../../fonts.scss';
 
 
 export default () => (
