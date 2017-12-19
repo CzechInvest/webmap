@@ -2,31 +2,31 @@ export default {
   categories: [
     {
       id: 'transport',
-      icon: 'transport'
+      icon: 'doprava'
     },
     {
       id: 'business',
-      icon: 'business'
+      icon: 'site'
     },
     {
       id: 'science',
-      icon: 'science'
+      icon: 'vvi'
     },
     {
       id: 'startup',
-      icon: 'startup'
+      icon: 'start'
     },
     {
       id: 'handshake',
-      icon: 'handshake'
+      icon: 'podpora'
     },
     {
       id: 'estate',
-      icon: 'estate'
+      icon: 'nemovitosti'
     },
     {
       id: 'socioeconomic',
-      icon: 'socioeconomic',
+      icon: 'socio',
     }
   ],
   datasets: [
@@ -72,6 +72,7 @@ export default {
         {
           property: 'url',
           type: 'html',
+          // eslint-disable-next-line
           template: '<a target="_blank" href="${value}">${value}</a>'
         },
       ]
@@ -79,7 +80,19 @@ export default {
     {
       id: 'pi_vtp',
       src: 'web-data/vzdelavani/pi_vtp.geojson',
-      geometryType: 'point'
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'address' },
+        { property: 'type' },
+        { property: 'services' },
+        {
+          property: 'url',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a target="_blank" href="${value}">${value}</a>'
+        },
+      ]
     },
     {
       id: 'whoiswho',
@@ -93,6 +106,7 @@ export default {
         {
           property: 'url',
           type: 'html',
+          // eslint-disable-next-line
           template: '<a target="_blank" href="${value}">${value}</a>'
         }
       ]
@@ -175,7 +189,29 @@ export default {
     {
       id: 'rk',
       src: 'web-data/rk/reg_offices.geojson',
-      geometryType: 'point'
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'contact' },
+        { property: 'phone' },
+        {
+          property: 'email',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a href="mailto:${value}">${value}</a>'
+        },
+        { property: 'address' }
+      ]
+    },
+    {
+      id: 'brownfields',
+      src: 'web-data/nemovitosti/brownfields.geojson',
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'btype' },
+        { property: 'prev_usage' }
+      ]
     },
     {
       id: 'business_angels',
@@ -307,8 +343,9 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'business_point',
-        fill: [30,30,30,0.75],
+        icon: 'site_point',
+        fill: '#002E5F',
+        // fill: [30,30,30,0.75],
         label: 'name'
       },
       catId: 'business'
@@ -323,8 +360,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'business_point',
-        fill: [41,182,246,0.8],
+        icon: 'site_point',
+        fill: '#DB002E',
         label: 'name'
       },
       catId: 'business'
@@ -339,8 +376,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'business_point',
-        fill: [150,50,30,0.8],
+        icon: 'site_point',
+        fill: '#475A8F',
         label: 'name'
       },
       catId: 'business'
@@ -355,8 +392,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'business_point',
-        fill: [80,50,200,0.8],
+        icon: 'site_point',
+        fill: '#7C88C3',
         label: 'name'
       },
       catId: 'business'
@@ -371,8 +408,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'business_point',
-        fill: [255,235,59,0.8],
+        icon: 'site_point',
+        fill: '#DD4A53',
         label: 'name'
       },
       catId: 'business'
@@ -387,8 +424,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'business_point',
-        fill: [180,70,100,0.8],
+        icon: 'site_point',
+        fill: '#EB7274',
         label: 'name'
       },
       catId: 'business'
@@ -403,8 +440,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'business_point',
-        fill: [93,64,55,0.8],
+        icon: 'site_point',
+        fill: '#D8A881',
         label: 'name'
       },
       catId: 'business'
@@ -419,8 +456,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'business_point',
-        fill: [244,81,30,0.8],
+        icon: 'site_point',
+        fill: '#F3914E',
         label: 'name'
       },
       catId: 'business'
@@ -435,8 +472,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'business_point',
-        fill: [245,0,87,0.8],
+        icon: 'site_point',
+        fill: '#DBC8BE',
         label: 'name'
       },
       catId: 'business'
@@ -451,8 +488,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'business_point',
-        fill: [124,179,66,0.8]
+        icon: 'site_point',
+        fill: '#CFAAB4'
       },
       catId: 'business'
     },
@@ -465,7 +502,9 @@ export default {
         value: 'HT'
       },
       style: {
-        fill: [239,108,0, 0.8]
+        type: 'icon',
+        icon: 'vvi_point',
+        fill: '#002E5F'
       },
       catId: 'science'
     },
@@ -478,7 +517,9 @@ export default {
         value: 'AE'
       },
       style: {
-        fill: [100,100,30, 0.8]
+        type: 'icon',
+        icon: 'vvi_point',
+        fill: '#DB002E'
       },
       catId: 'science'
     },
@@ -491,7 +532,9 @@ export default {
         value: 'AU'
       },
       style: {
-        fill: [57,73,171, 0.8]
+        type: 'icon',
+        icon: 'vvi_point',
+        fill: '#475A8F'
       },
       catId: 'science'
     },
@@ -504,7 +547,9 @@ export default {
         value: 'BI'
       },
       style: {
-        fill: [118,255,3, 0.8]
+        type: 'icon',
+        icon: 'vvi_point',
+        fill: '#7C88C3'
       },
       catId: 'science'
     },
@@ -517,7 +562,9 @@ export default {
         value: 'IT'
       },
       style: {
-        fill: [233,30,99, 0.8]
+        type: 'icon',
+        icon: 'vvi_point',
+        fill: '#DD4A53'
       },
       catId: 'science'
     },
@@ -530,7 +577,9 @@ export default {
         value: 'NN'
       },
       style: {
-        fill: [0,229,255, 0.8]
+        type: 'icon',
+        icon: 'vvi_point',
+        fill: '#EB7274'
       },
       catId: 'science'
     },
@@ -543,7 +592,9 @@ export default {
         value: 'EE'
       },
       style: {
-        fill: [142,36,170, 0.8]
+        type: 'icon',
+        icon: 'vvi_point',
+        fill: '#D8A881'
       },
       catId: 'science'
     },
@@ -556,7 +607,9 @@ export default {
         value: 'CT'
       },
       style: {
-        fill: [255,234,0, 0.8]
+        type: 'icon',
+        icon: 'vvi_point',
+        fill: '#F3914E'
       },
       catId: 'science'
     },
@@ -569,7 +622,9 @@ export default {
         value: 'vtp'
       },
       style: {
-        fill: '#7B1FA2'
+        // type: 'icon',
+        // icon: 'vvi_point',
+        fill: '#DCA28F'
       },
       catId: 'science'
     },
@@ -579,8 +634,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'science',
-        fill: [0,150,136 ,0.85]
+        icon: 'vvi_point',
+        fill: '#CFAAB4'
       },
       catId: 'science'
     },
@@ -595,8 +650,8 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'science_point',
-        fill: [124,179,66 ,0.85]
+        icon: 'vvi_point',
+        fill: '#F088A4'
       },
       catId: 'science'
     },
@@ -611,8 +666,8 @@ export default {
       },
       style: {
         type: 'icon',
-        icon: 'science_point',
-        fill: [255,50,66 ,0.85]
+        icon: 'vvi_point',
+        fill: '#fce94f'
       },
       catId: 'science'
     },
@@ -625,7 +680,7 @@ export default {
         value: 'incubator'
       },
       style: {
-        fill: '#7B1FA2'
+        fill: '#9D9D9C'
       },
       catId: 'startup'
     },
@@ -638,7 +693,7 @@ export default {
         value: 'accelerator'
       },
       style: {
-        fill: '#307050'
+        fill: '#EB7274'
       },
       catId: 'startup'
     },
@@ -648,8 +703,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'startup',
-        fill: '#AFB42B',
+        icon: 'start_point',
+        fill: '#D8A881',
         label: 'name'
       },
       catId: 'startup'
@@ -660,8 +715,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'startup',
-        fill: '#E91E63',
+        icon: 'start_point',
+        fill: '#F3914E',
         label: 'name'
       },
       catId: 'startup'
@@ -672,8 +727,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'startup',
-        fill: '#F57C00'
+        icon: 'start_point',
+        fill: '#CFAAB4'
       },
       catId: 'startup'
     },
@@ -683,8 +738,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'startup_point',
-        fill: '#795548'
+        icon: 'start_point',
+        fill: '#475A8F'
       },
       catId: 'startup'
     },
@@ -694,8 +749,8 @@ export default {
       visible: false,
       style: {
         type: 'icon',
-        icon: 'handshake',
-        fill: '#d50000'
+        icon: 'podpora_point',
+        fill: '#475A8F'
       },
       catId: 'handshake'
     },
@@ -703,8 +758,13 @@ export default {
       id: 'investice',
       datasetId: 'orp',
       visible: false,
+      filter: {
+        attribute: 'investice',
+        value: 0
+      },
       style: {
-        fill: '#0097A7'
+        fill: '#DD4A53',
+        stroke: 'red'
       },
       catId: 'handshake'
     },
@@ -712,10 +772,26 @@ export default {
       id: 'granty',
       datasetId: 'orp',
       visible: false,
+      filter: {
+        attribute: 'granty',
+        value: 1
+      },
       style: {
-        fill: '#689F38'
+        fill: 'F3914E',
+        stroke: 'red'
       },
       catId: 'handshake'
+    },
+    {
+      id: 'brownfields',
+      datasetId: 'brownfields',
+      visible: false,
+      style: {
+        type: 'icon',
+        icon: 'nemovitosti_point',
+        fill: [62,39,35 ,0.8]
+      },
+      catId: 'estate'
     },
     {
       id: 'kraje',
