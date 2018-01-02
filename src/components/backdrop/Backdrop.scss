@@ -7,22 +7,3 @@
   top: 0;
   background-color: rgba(0,28,56,0.3);
 }
-
-
-.backdrop-enter {
-  opacity: 0.01;
-}
-
-.backdrop-enter.backdrop-enter-active {
-  opacity: 1;
-  transition: opacity .2s ease-in;
-}
-
-.backdrop-exit {
-  opacity: 1;
-}
-
-.backdrop-exit.backdrop-exit-active {
-  opacity: 0.01;
-  transition: opacity .2s ease-in;
-}

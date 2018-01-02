@@ -6,6 +6,7 @@ import CategoriesMenu from '../categories/Menu.react';
 import Identification from '../identification/Identification.react';
 import Contact from '../contact/Contact.react';
 import '../../fonts.scss';
+import '../../animations.scss';
 
 
 export default () => (

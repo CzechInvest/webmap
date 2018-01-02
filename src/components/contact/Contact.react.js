@@ -1,6 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import Icon from '../../Icon';
 import messages from '../lang/messages/app';
@@ -8,7 +9,6 @@ import Backdrop from '../backdrop/Backdrop.react';
 import './Contact.scss';
 import aboutLogo from '../../assets/img/plusko.svg';
 
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 class Contact extends React.Component {
 
@@ -32,7 +32,7 @@ class Contact extends React.Component {
         </button>
         <TransitionGroup>
           {this.state.open &&
-          <CSSTransition classNames="backdrop" timeout={{ enter: 300, exit: 300 }}>
+          <CSSTransition classNames="fade" timeout={{ enter: 300, exit: 300 }}>
             <Backdrop onClose={() => this.setState({open: false})}>
               <div className="contacts-panel">
                 <button
