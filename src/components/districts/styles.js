@@ -27,6 +27,6 @@ export function getColor(id, opacity=1) {
 export const MapStyles = {};
 Object.keys(Colors).forEach(key => {
   MapStyles[key] = new Style({
-    fill: new Fill({color: getColor(key, 0.5)})
+    fill: new Fill({color: getColor(key, 0.6)})
   });
 });

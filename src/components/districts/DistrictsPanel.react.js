@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-datalabels';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import messages from '../lang/messages/attributes';
 import formatValue from '../identification/format';
@@ -48,7 +49,7 @@ const graphOpts = {
       }
     }]
   },
-  responsive: false,
+  responsive: true,
   layout: {
     padding: {
       top: 12
@@ -97,13 +98,17 @@ class DistrictsPanel extends React.Component {
     });
     return (
       <div className="districts-panel">
-        {attribs.map((field, index) => (
-          <div key={index}>
-            <h3>{messages[field.property][lang]}</h3>
-            <Bar height={85} data={dataArray[index]} options={graphOpts} />
-            <GraphLegend labels={dataArray[index].legendLabels} colors={borders} />
+        <Scrollbars className="scroll-area">
+          <div className="content">
+          {attribs.map((field, index) => (
+            <div key={index}>
+              <h3>{messages[field.property][lang]}</h3>
+              <Bar height={80} data={dataArray[index]} options={graphOpts} />
+              <GraphLegend labels={dataArray[index].legendLabels} colors={borders} />
+            </div>
+          ))}
           </div>
-        ))}
+        </Scrollbars>
       </div>
     );
   }

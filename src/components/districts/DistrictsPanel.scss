@@ -4,35 +4,44 @@
   background-color: #fff;
   opacity: 0.95;
   z-index: 100;
-  padding: 0.5em;
   overflow: auto;
   border: solid #777;
   box-sizing: border-box;
   position: absolute;
-  display: flex;
+
   right: 0;
   bottom: 0;
   /* Landscape orientation */
   top: 0;
   width: 20%;
   min-width: 20em;
-  flex-direction: column;
   border-width: 0 0 0 1px;
   box-shadow:
     -2px 6px 6px 1px rgba(0, 0, 0, 0.14),
     -2px 3px 8px 3px rgba(0, 0, 0, 0.12);
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0.5em;
+  }
 
   @media (orientation: portrait) {
     left: 0;
     min-width: auto;
     width: 100%;
     top: auto;
-    /*height: 140px;*/
-    flex-direction: row;
     border-width: 1px 0 0 0;
     box-shadow:
       0px -2px 6px 1px rgba(0, 0, 0, 0.14),
       0px -3px 8px 3px rgba(0, 0, 0, 0.12);
+
+    .scroll-area > div:first-child {
+      position: relative!important;
+    }
+    .content {
+      flex-direction: row;
+    }
   }
 
   h3 {
