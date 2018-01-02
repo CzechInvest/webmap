@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import Layer from './Layer.react';
 import { setVisibleLayers } from './actions';
+import messages from '../lang/messages/app';
 import './Layers.scss';
 
 class Layers extends React.Component {
@@ -28,8 +29,8 @@ class Layers extends React.Component {
         className="layers-list">
         <h3>{title[lang]}</h3>
         <div className="category-visibility">
-          {!allHidden && <button onClick={hideCategoryLayers}>Hide all</button>}
-          {allHidden && <button onClick={showCategoryLayers}>Show all</button>}
+          {!allHidden && <button onClick={hideCategoryLayers}>{messages['hideAll'][lang]}</button>}
+          {allHidden && <button onClick={showCategoryLayers}>{messages['showAll'][lang]}</button>}
         </div>
         {categoryLayers.toList().map(l => <Layer key={l.id} {...l.toJS()} />)}
       </div>
