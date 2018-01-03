@@ -12,38 +12,92 @@ import { cssColor } from '../map/styles';
 
 class Layer extends React.Component {
 
-  render() {
-    const { category, id, title, style, visible, setLayerVisibility, lang } = this.props;
-    const legendStyle = {};
-    if (style) {
-      legendStyle.fill = cssColor(style.fill);
-      legendStyle.stroke = cssColor(style.stroke);
+  legendSymbol(geometryType, style) {
+    if (style.type === 'icon') {
+      return <Icon glyph={style.icon} style={{fill: cssColor(style.fill)}} />;
     }
+    if (style.type === 'circle') {
+      return (
+        <svg className="icon" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="20" style={{fill: cssColor(style.fill)}} />
+        </svg>
+      );
+    }
+
+    if (geometryType === 'line') {
+      const lineStyle = {
+        stroke: cssColor(style.stroke),
+        strokeWidth: 4*(style.strokeWidth || 1)
+      }
+      return (
+        <svg className="icon" viewBox="0 0 48 48">
+          <line x1="2" y1="24" x2="46" y2="24" style={lineStyle} />
+        </svg>
+      );
+    }
+    if (geometryType === 'polygon') {
+      const polygonStyle = {
+        fill: cssColor(style.fill),
+        stroke: cssColor(style.stroke),
+        strokeWidth: 2*(style.strokeWidth || 1)
+      }
+      return (
+        <svg className="icon" viewBox="0 0 48 48">
+          <rect x="2" y="8" width="44" height="30" style={polygonStyle} />
+        </svg>
+      );
+    }
+
+    return <Icon glyph="donut" style={{fill: cssColor(style.fill)}} />;
+  }
+
+  legend() {
+    const { datasetId, datasets, style } = this.props;
+    const geometryType = datasets.get(datasetId).geometryType;
+
+    if (Array.isArray(style)) {
+      const symbols = style.map(s => this.legendSymbol(geometryType, s));
+      return symbols.map((symbol, i) => (
+        <div className="category-item" key={i}>
+          { symbol } <span>{ style[i].label }</span>
+        </div>
+      ));
+    }
+    return this.legendSymbol(geometryType, style);
+  }
+
+  render() {
+    const { id, title, visible, setLayerVisibility, lang } = this.props;
+    const legend = this.legend();
+    const simpleLegend = !Array.isArray(legend);
     return (
       <div className="list-item">
-        <label className="list-item-checkbox">
-          <Icon glyph={category.icon} style={legendStyle} />
-          <Checkbox
-            checked={visible}
-            onChange={() => setLayerVisibility(id, !visible)} />
-          <span className="title">{title[lang]}</span>
-        </label>
+        <div>
+          <label className="list-item-checkbox">
+            { (simpleLegend && legend) || <Icon glyph="arrow_down" className="icon more" /> }
+            <Checkbox
+              checked={visible}
+              onChange={() => setLayerVisibility(id, !visible)} />
+            <span className="title">{title[lang]}</span>
+          </label>
+          { !simpleLegend && legend }
+        </div>
       </div>
     );
   }
 }
 
 Layer.propTypes = {
-  category: PropTypes.object,
   id: PropTypes.string,
   lang: PropTypes.string,
-  style: PropTypes.object,
+  style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   visible: PropTypes.bool,
+  datasetId: PropTypes.string,
   setLayerVisibility: PropTypes.func.isRequired,
 }
 
 export default connect(state => ({
-  category: state.categories.categories.get(state.categories.activeId),
+  datasets: state.layers.datasets,
   lang: state.lang.selectedLanguage,
 }), dispatch => bindActionCreators({
   setLayerVisibility

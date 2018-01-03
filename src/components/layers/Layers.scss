@@ -26,6 +26,25 @@
     &:not(:last-child) > * {
       border-bottom: 1px solid #ddd;
     }
+    .icon {
+      margin-right: 0.5em;
+      min-width: 1.5em;
+      min-height: 1.5em;
+      width: 1.7em;
+      height: 1.7em;
+      &.more {
+        fill: #ccc;
+      }
+    }
+    .category-item {
+      height: 1.5em;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.3em;
+      span {
+        color: gray;
+      }
+    }
   }
   .list-item-checkbox {
     min-height: 2.85em;
@@ -62,14 +81,6 @@
       .rc-checkbox-input:focus + .rc-checkbox-inner {
         border-color: $secondary-color;
       }
-    }
-    .icon {
-      fill: $primary-color;
-      margin-right: 0.5em;
-      min-width: 1.5em;
-      min-height: 1.5em;
-      width: 1.7em;
-      height: 1.7em;
     }
     .title {
       max-width: 18em;

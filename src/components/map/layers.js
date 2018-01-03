@@ -1,7 +1,8 @@
 import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import Cluster from 'ol/source/cluster';
-import { generateColoredDonutStyle } from './styles';
+import { generateColoredDonutStyle, createColorStyle } from './styles';
+import AnimatedCluster from './animatedclusterlayer';
 
 
 export function DistinctPointsSource(source, r=10) {
@@ -19,6 +20,7 @@ export function DistinctPointsSource(source, r=10) {
     });
 
     // apply offset to the points on the same position
+    // Object.keys(map).map(k => map[k])
     Object.values(map).filter(g => g.length > 1).forEach(group => {
       const center = group[0].getGeometry().getCoordinates();
       const angle = 360 / group.length;
@@ -89,45 +91,149 @@ export function FilteredPointLayer(config) {
   let activeFilters = [];
   const activeFiltersList = new Set();
 
-  const olLayer = new VectorLayer(
+  const styleFn = config.styleFn || generateColoredDonutStyle;
+  // const olLayer = new VectorLayer(
+  const olLayer = new AnimatedCluster(
     Object.assign(config, {
       source: FilteredClusterSource(config.source),
       visible: false,
       style: (feature, res) => {
         const group = feature.get('features');
-        const colors = [];
-        activeFilters.forEach(filter => {
-          if (group.find(f => filter.filter(f))) {
-            colors.push(filter.color);
+        // const colors = [];
+        // activeFilters.forEach(filter => {
+          // if (group.find(f => filter.filter(f))) {
+          //   colors.push(filter.color);
+          // }
+        // });
+        const colors = activeFilters.reduce((values, filter) => {
+          for (let i = 0; i < group.length; i++) {
+            const color = filter.filter(group[i]);
+            if (color) {
+              values.push(color);
+              break;
+            }
           }
-        });
+          return values;
+        }, []);
+
         if (group.length > 1) {
-          return generateColoredDonutStyle(colors, true, group.length.toString());
+          return styleFn(colors, true, group.length.toString());
         } else {
           if (res < 80 && config.label) {
             const label = group[0].get(config.label);
-            return generateColoredDonutStyle(colors, false, label);
+            return styleFn(colors, false, label);
           }
-          return generateColoredDonutStyle(colors);
+          return styleFn(colors);
         }
       }
     })
   );
 
   Object.assign(olLayer, {
-    isActive(fname) {
-      return activeFiltersList.has(fname);
+    isActive(id) {
+      return activeFiltersList.has(id);
     },
-    setActive(fname, active) {
-      if (active === this.isActive(fname)) {
+    setActive(id, active) {
+      if (active === this.isActive(id)) {
         return;
       }
       if (active) {
-        activeFiltersList.add(fname);
+        activeFiltersList.add(id);
       } else {
-        activeFiltersList.delete(fname);
+        activeFiltersList.delete(id);
       }
-      activeFilters = filters.filter(f => activeFiltersList.has(f.name));
+      activeFilters = filters.filter(f => activeFiltersList.has(f.id));
+      olLayer.getSource().setActiveFilters(activeFilters);
+      olLayer.setVisible(activeFilters.length > 0);
+    },
+    addFilter(filter) {
+      filters.push(filter);
+    }
+  });
+  return olLayer;
+}
+
+
+function FilteredSource(rootSource) {
+  const filteredSource = new VectorSource({
+    // loader: function(extent, resolution, projection) {
+    //   rootSource.loadFeatures(extent, resolution, projection);
+    // }
+  });
+
+  let filters = [];
+  let filteringScheduled;
+  filteredSource.setActiveFilters = activeFilters => {
+    filters = activeFilters;
+    if (!filteringScheduled) {
+      filteringScheduled = setTimeout(filterActiveFeatures);
+    }
+  };
+
+  function filterActiveFeatures() {
+    filteredSource.clear();
+    filteredSource.addFeatures(
+      rootSource.getFeatures().filter(f => filters.find(filter => filter.filter(f)))
+    );
+    console.log(`## Active Features: ${filteredSource.getFeatures().length} / ${rootSource.getFeatures().length}`);
+    filteringScheduled = null;
+  }
+
+  // rootSource.once('change', () => {
+  //   console.log('DATA LOADED');
+  //   filterActiveFeatures();
+  // });
+
+  filteredSource._loadFeatures = filteredSource.loadFeatures;
+  filteredSource.loadFeatures = (extent, resolution, projection) => {
+    console.log('loadFeatures')
+    if (rootSource.getFeatures().length) {
+      filteredSource._loadFeatures(extent, resolution, projection);
+    } else {
+      rootSource.loadFeatures(extent, resolution, projection);
+      rootSource.once('change', filterActiveFeatures);
+    }
+  }
+
+  return filteredSource;
+}
+
+export function FilteredPolygonLayer(config) {
+  let filters = [];
+  let activeFilters = [];
+  const activeFiltersList = new Set();
+
+  const styleConfig = Object.assign({}, config.style);
+  const olLayer = new VectorLayer(
+    Object.assign(config, {
+      source: FilteredSource(config.source),
+      style: f => {
+        const colors = activeFilters.reduce((values, filter) => {
+          const color = filter.filter(f);
+          if (color) {
+            values.push(color);
+          }
+          return values;
+        }, []);
+        return config.styleFn(colors);
+      }
+    })
+  );
+
+  Object.assign(olLayer, {
+    isActive(id) {
+      return activeFiltersList.has(id);
+    },
+    setActive(id, active) {
+      if (active === this.isActive(id)) {
+        return;
+      }
+      if (active) {
+        activeFiltersList.add(id);
+      } else {
+        activeFiltersList.delete(id);
+      }
+      activeFilters = filters.filter(f => activeFiltersList.has(f.id));
       olLayer.getSource().setActiveFilters(activeFilters);
       olLayer.setVisible(activeFilters.length > 0);
     },

@@ -242,7 +242,26 @@ export default {
     {
       id: 'orp',
       src: 'web-data/verejna_podpora/orp.pbf.geojson',
-      geometryType: 'polygon'
+      geometryType: 'polygon',
+      attributes: [
+        { property: 'name' },
+        {
+          property: 'investice',
+          type: 'map',
+          map: {
+            0: '100 milionů Kč',
+            1: '50 milionů Kč'
+          }
+        },
+        {
+          property: 'granty',
+          type: 'map',
+          map: {
+            0: '100 000 Kč na prac. místo, 25 % na školení',
+            1: '200 000 Kč na prac. místo, 50 % na školení'
+          }
+        }
+      ]
     },
     {
       id: 'sskoly',
@@ -760,12 +779,26 @@ export default {
       visible: false,
       filter: {
         attribute: 'investice',
-        value: 0
-      },
+        type: 'oneOf',
+        values: [1, 0]
+      },/*
       style: {
-        fill: '#FCE94F',
+        type: 'categorized',
+        fill: ['#7C88C377', '#DD4A53'],
         stroke: 'red'
-      },
+      },*/
+      style: [
+        {
+          label: '50 milionů Kč',
+          fill: ['#475A8F', 0.7],
+          stroke: 'red'
+        },
+        {
+          label: '100 milionů Kč',
+          fill: ['#002E5F99', 0.7],
+          stroke: 'red'
+        }
+      ],
       catId: 'handshake'
     },
     {
@@ -774,12 +807,21 @@ export default {
       visible: false,
       filter: {
         attribute: 'granty',
-        value: 1
+        type: 'oneOf',
+        values: [0, 1]
       },
-      style: {
-        fill: '#D8A881',
-        stroke: 'red'
-      },
+      style: [
+        {
+          label: '100 000 Kč na prac. místo, 25 % na školení',
+          fill: ['#DD4A53', 0.7],
+          stroke: 'red'
+        },
+        {
+          label: '200 000 Kč na prac. místo, 50 % na školení',
+          fill: ['#DB002E', 0.7],
+          stroke: 'red'
+        }
+      ],
       catId: 'handshake'
     },
     {

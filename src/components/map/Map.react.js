@@ -13,9 +13,10 @@ import GeoJSON from 'ol/format/geojson';
 import Attribution from 'ol/control/attribution';
 import control from 'ol/control';
 
-import { createLayerStyle } from './styles';
-import { DistinctPointsSource, FilteredPointLayer } from './layers';
+import { createLayerStyle, generateColoredDonutStyle, coloredPointIcon, coloredPolygonStyle } from './styles';
+import { DistinctPointsSource, FilteredPointLayer, FilteredPolygonLayer } from './layers';
 import Geobuf from './formats';
+import AnimatedCluster from './animatedclusterlayer';
 
 
 class MapComponent extends React.Component {
@@ -28,37 +29,117 @@ class MapComponent extends React.Component {
     this.map = new Map({
       controls: control.defaults({attribution: false}).extend([attribution])
     });
+    this.dataSources = {};
     this.createLayers();
+  }
+
+  getDataSource(dataset) {
+    if (this.dataSources[dataset.id]) {
+      return this.dataSources[dataset.id];
+    }
+    let source = new VectorSource({
+      url: dataset.src,
+      format: dataset.src.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON()
+    });
+    if (dataset.geometryType === 'point') {
+      source = DistinctPointsSource(source);
+    }
+    this.dataSources[dataset.id] = source;
+    return source;
+  }
+
+  createFilter(layer) {
+    const { id, filter } = layer;
+    let fn;
+    switch(filter.type) {
+      case 'single': {
+        fn = feature => feature.get(filter.attribute) === filter.value ? layer.style.fill : false;
+        break;
+      }
+      case 'oneOf': {
+        const colors = layer.style.map(s => s.fill);
+        fn = feature => colors[filter.values.indexOf(feature.get(filter.attribute))];
+        break;
+      }
+      default:
+        fn  = feature => feature.get(filter.attribute).indexOf(filter.value) !== -1 ? layer.style.fill : false;
+    }
+
+    return {
+      id: id,
+      filter: fn
+    };
   }
 
   createLayers() {
     this.map.layerById = {};
     const layerByDataset = {};
     const { layers, datasets } = this.props;
+
     layers.forEach(l => {
       const layer = l.toJS();
 
-      if (layer.datasetId && !layerByDataset[layer.datasetId]) {
+      // if (layer.datasetId && !layerByDataset[layer.datasetId]) {
+      if (layer.datasetId) {
         const dataset = datasets.get(layer.datasetId);
-
-        let source = new VectorSource({
-          url: dataset.src,
-          format: dataset.src.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON()
-        });
-        if (dataset.geometryType === 'point') {
-          source = DistinctPointsSource(source);
-        }
+        let source = this.getDataSource(dataset);
+        const isPointLayer = dataset.geometryType === 'point';
 
         let vectorLayer;
         if (layer.filter) {
-          vectorLayer = FilteredPointLayer({
-            source: source,
-            label: layer.style.label,
-            zIndex: 1
+          if (!layerByDataset[layer.datasetId]) {
+            if (isPointLayer) {
+              vectorLayer = FilteredPointLayer({
+                source: source,
+                label: layer.style.label,
+                zIndex: 1,
+                styleFn: layer.style.icon? coloredPointIcon(layer.style.icon) : generateColoredDonutStyle
+              });
+            } else {
+              vectorLayer = FilteredPolygonLayer({
+                source: source,
+                zIndex: 1,
+                styleFn: coloredPolygonStyle(layer.style[0])
+              });
+            }
+            layerByDataset[layer.datasetId] = vectorLayer;
+          }
+
+          const olLayer = layerByDataset[layer.datasetId];
+          this.map.layerById[layer.id] = olLayer;
+
+          olLayer.addFilter(this.createFilter(layer));
+          olLayer.setActive(layer.id, layer.visible);
+
+          if (!vectorLayer) {
+            // OL layer already initialized and added to map
+            return;
+          }
+        }
+        if (layer.filter && !isPointLayer) {
+          /*
+          const rootSource = source;
+          const layerSource = new VectorSource({
+            loader: function(extent, resolution, projection) {
+              rootSource.loadFeatures(extent, resolution, projection);
+            }
           });
-        } else {
-          vectorLayer = new VectorLayer({
-            source: dataset.geometryType === 'point' ? new Cluster({source, distance: 30}) : source,
+          rootSource.once('change', () => {
+            // console.log(rootSource.getFeatures().map(f => f.get('granty')));
+            const features = rootSource.getFeatures().filter(f => f.get(layer.filter.attribute) === layer.filter.value);
+            layerSource.clear();
+            layerSource.addFeatures(features);
+          });
+          source = layerSource;
+          */
+        }
+        if (!vectorLayer) {
+          if (isPointLayer) {
+            source = new Cluster({source, distance: 30})
+          }
+          const Layer = isPointLayer ? AnimatedCluster : VectorLayer;
+          vectorLayer = new Layer({
+            source: source,
             visible: layer.visible,
             style: createLayerStyle(layer),
             zIndex: 1
@@ -68,20 +149,6 @@ class MapComponent extends React.Component {
         vectorLayer.set('dataset', layer.datasetId);
         this.map.addLayer(vectorLayer);
         this.map.layerById[layer.id] = vectorLayer;
-        layerByDataset[layer.datasetId] = vectorLayer;
-      }
-
-      if (layer.filter) {
-        const olLayer = layerByDataset[layer.datasetId];
-        this.map.layerById[layer.id] = olLayer;
-        olLayer.addFilter({
-          name: layer.id,
-          filter: feature => {
-            return feature.get(layer.filter.attribute).indexOf(layer.filter.value) !== -1;
-          },
-          color: layer.style.fill
-        });
-        olLayer.setActive(layer.id, layer.visible);
       }
     });
   }
@@ -104,7 +171,7 @@ class MapComponent extends React.Component {
       const olLayer = this.map.layerById[layer.id];
       const visible = visibleLayers.indexOf(layer.id) !== -1;
       if (olLayer) {
-        if (layer.filter) {
+        if (layer.filter && olLayer.setActive) {
           olLayer.setActive(layer.id, visible);
         } else {
           olLayer.setVisible(visible);
