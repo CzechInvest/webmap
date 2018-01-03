@@ -1,1 +1,176 @@
-{"type": "FeatureCollection", "features": [{"properties": {"name": "Leti\u0161t\u011b V\u00e1clava Havla Praha", "icao": "LKPR", "iata": "PRG", "website": "http://www.prg.aero/"}, "geometry": {"type": "Point", "coordinates": [14.264821059814299, 50.10203289782394]}, "type": "Feature"}, {"properties": {"name": "Leti\u0161t\u011b Vodochody", "icao": "LKVO", "iata": "VOD"}, "geometry": {"type": "Point", "coordinates": [14.39760920195586, 50.216607795729914]}, "type": "Feature"}, {"properties": {"name": "Mezin\u00e1rodn\u00ed leti\u0161t\u011b Kunovice LKKU", "icao": "LKKU", "iata": "UHE", "website": "http://www.lkku.cz/aeroklub.php?page=aeroklub/letiste"}, "geometry": {"type": "Point", "coordinates": [17.440843934835915, 49.03351293336939]}, "type": "Feature"}, {"properties": {"name": "Leti\u0161t\u011b Karlovy Vary", "icao": "LKKV", "iata": "KLV", "website": "www.airport-k-vary.cz"}, "geometry": {"type": "Point", "coordinates": [12.915189742048874, 50.20213724972158]}, "type": "Feature"}, {"properties": {"name": "Leti\u0161t\u011b Mari\u00e1nsk\u00e9 L\u00e1zn\u011b", "icao": "LKMR", "iata": "MKA"}, "geometry": {"type": "Point", "coordinates": [12.723374194962641, 49.92353090584352]}, "type": "Feature"}, {"properties": {"name": "Leti\u0161t\u011b Leo\u0161e Jan\u00e1\u010dka Ostrava", "icao": "LKMT", "iata": "OSR", "website": "www.airport-ostrava.cz"}, "geometry": {"type": "Point", "coordinates": [18.11323096727029, 49.69704135880837]}, "type": "Feature"}, {"properties": {"name": "Leti\u0161t\u011b Olomouc", "icao": "LKOL", "iata": "OLO"}, "geometry": {"type": "Point", "coordinates": [17.208411697931847, 49.58921158558979]}, "type": "Feature"}, {"properties": {"name": "Leti\u0161t\u011b Pardubice", "icao": "LKPD", "iata": "PED", "website": "www.airport-pardubice.cz"}, "geometry": {"type": "Point", "coordinates": [15.736993226778596, 50.014548194546244]}, "type": "Feature"}, {"properties": {"name": "Leti\u0161t\u011b Z\u00e1b\u0159eh", "icao": "LKZA", "iata": "ZBE"}, "geometry": {"type": "Point", "coordinates": [18.072623023874367, 49.92898526258045]}, "type": "Feature"}, {"properties": {"name": "Leti\u0161t\u011b P\u0159erov", "icao": "LKPO", "iata": "PRV"}, "geometry": {"type": "Point", "coordinates": [17.404685954444485, 49.42638785771886]}, "type": "Feature"}, {"properties": {"name": "Leti\u0161t\u011b Brno Tu\u0159any", "icao": "LKTB", "iata": "BRQ", "website": "www.brno-airport.cz"}, "geometry": {"type": "Point", "coordinates": [16.691368, 49.1547016]}, "type": "Feature"}]}
+{
+   "features" : [
+      {
+         "type" : "Feature",
+         "properties" : {
+            "iata" : "PRG",
+            "name" : "Letiště Václava Havla Praha",
+            "url" : "http://www.prg.aero/",
+            "icao" : "LKPR"
+         },
+         "geometry" : {
+            "type" : "Point",
+            "coordinates" : [
+               14.2648210598143,
+               50.1020328978239
+            ]
+         }
+      },
+      {
+         "type" : "Feature",
+         "properties" : {
+            "name" : "Letiště Vodochody",
+            "iata" : "VOD",
+            "icao" : "LKVO"
+         },
+         "geometry" : {
+            "coordinates" : [
+               14.3976092019559,
+               50.2166077957299
+            ],
+            "type" : "Point"
+         }
+      },
+      {
+         "properties" : {
+            "icao" : "LKKU",
+            "iata" : "UHE",
+            "url" : "http://www.lkku.cz/aeroklub.php?page=aeroklub/letiste",
+            "name" : "Mezininárodní letitě Kunovice LKKU"
+         },
+         "type" : "Feature",
+         "geometry" : {
+            "coordinates" : [
+               17.4408439348359,
+               49.0335129333694
+            ],
+            "type" : "Point"
+         }
+      },
+      {
+         "geometry" : {
+            "coordinates" : [
+               12.9151897420489,
+               50.2021372497216
+            ],
+            "type" : "Point"
+         },
+         "properties" : {
+            "icao" : "LKKV",
+            "name" : "Letiště Karlovy Vary",
+            "url" : "http://www.airport-k-vary.cz",
+            "iata" : "KLV"
+         },
+         "type" : "Feature"
+      },
+      {
+         "geometry" : {
+            "type" : "Point",
+            "coordinates" : [
+               12.7233741949626,
+               49.9235309058435
+            ]
+         },
+         "properties" : {
+            "icao" : "LKMR",
+            "name" : "Letiště Mariánské Lázně",
+            "iata" : "MKA"
+         },
+         "type" : "Feature"
+      },
+      {
+         "type" : "Feature",
+         "properties" : {
+            "icao" : "LKMT",
+            "iata" : "OSR",
+            "url" : "http://www.airport-ostrava.cz",
+            "name" : "Letiště Leoše Janáčka Ostrava"
+         },
+         "geometry" : {
+            "coordinates" : [
+               18.1132309672703,
+               49.6970413588084
+            ],
+            "type" : "Point"
+         }
+      },
+      {
+         "geometry" : {
+            "coordinates" : [
+               17.2084116979318,
+               49.5892115855898
+            ],
+            "type" : "Point"
+         },
+         "type" : "Feature",
+         "properties" : {
+            "iata" : "OLO",
+            "name" : "Letiště Olomouc",
+            "icao" : "LKOL"
+         }
+      },
+      {
+         "geometry" : {
+            "coordinates" : [
+               15.7369932267786,
+               50.0145481945462
+            ],
+            "type" : "Point"
+         },
+         "type" : "Feature",
+         "properties" : {
+            "name" : "Letiště Pardubice",
+            "url" : "http://www.airport-pardubice.cz",
+            "iata" : "PED",
+            "icao" : "LKPD"
+         }
+      },
+      {
+         "geometry" : {
+            "coordinates" : [
+               18.0726230238744,
+               49.9289852625804
+            ],
+            "type" : "Point"
+         },
+         "type" : "Feature",
+         "properties" : {
+            "iata" : "ZBE",
+            "name" : "Letiště Zábřeh",
+            "icao" : "LKZA"
+         }
+      },
+      {
+         "properties" : {
+            "name" : "Letiště Přerov",
+            "iata" : "PRV",
+            "icao" : "LKPO"
+         },
+         "type" : "Feature",
+         "geometry" : {
+            "coordinates" : [
+               17.4046859544445,
+               49.4263878577189
+            ],
+            "type" : "Point"
+         }
+      },
+      {
+         "geometry" : {
+            "coordinates" : [
+               16.691368,
+               49.1547016
+            ],
+            "type" : "Point"
+         },
+         "type" : "Feature",
+         "properties" : {
+            "url" : "http://www.brno-airport.cz",
+            "name" : "Letiště Brno Tuřany",
+            "iata" : "BRQ",
+            "icao" : "LKTB"
+         }
+      }
+   ],
+   "type" : "FeatureCollection"
+}
