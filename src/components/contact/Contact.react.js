@@ -6,6 +6,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Icon from '../../Icon';
 import messages from '../lang/messages/app';
 import Backdrop from '../backdrop/Backdrop.react';
+import { setLanguage } from '../lang/actions';
 import './Contact.scss';
 import aboutLogo from '../../assets/img/plusko.svg';
 
@@ -18,11 +19,11 @@ class Contact extends React.Component {
   }
 
   render() {
-    const { lang } = this.props;
+    const { lang, setLanguage } = this.props;
     return (
       <div className="contact-panel">
         <button className="about">
-          <img src={aboutLogo} />
+          <img src={aboutLogo} alt="" />
         </button>
         <button
           className="contact"
@@ -30,6 +31,12 @@ class Contact extends React.Component {
         >
           <Icon glyph="contact" />
         </button>
+
+        <ul className="lang">
+          <li className={lang === 'cs' ? 'active' : ''} onClick={() => {setLanguage('cs')}}>CZ</li>
+          <li className={lang === 'en' ? 'active' : ''} onClick={() => {setLanguage('en')}}>EN</li>
+        </ul>
+
         <TransitionGroup>
           {this.state.open &&
           <CSSTransition classNames="fade" timeout={{ enter: 300, exit: 300 }}>
@@ -76,4 +83,5 @@ class Contact extends React.Component {
 export default connect(state => ({
   lang: state.lang.selectedLanguage
 }), dispatch => bindActionCreators({
+  setLanguage
 }, dispatch))(Contact);
