@@ -15,22 +15,17 @@
   }
 }
 
-
 .slide-left-enter {
-  > div {
-    transform: translate(110%, 0);
-  }
-  &.slide-left-enter-active > div {
+  transform: translate(110%, 0);
+  &.slide-left-enter-active {
     transform: translate(0, 0);
     transition: transform 0.2s ease-in;
   }
 }
 
 .slide-left-exit {
-   > div {
-    transform: translate(0, 0);
-  }
-  &.slide-left-exit-active > div {
+  transform: translate(0, 0);
+  &.slide-left-exit-active {
     transform: translate(110%, 0);
     transition: transform 0.2s ease-in;
   }

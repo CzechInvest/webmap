@@ -33,7 +33,7 @@ class Contact extends React.Component {
         <TransitionGroup>
           {this.state.open &&
           <CSSTransition classNames="fade" timeout={{ enter: 300, exit: 300 }}>
-            <Backdrop onClose={() => this.setState({open: false})}>
+            <Backdrop zIndex="150" onClose={() => this.setState({open: false})}>
               <div className="contacts-panel">
                 <button
                   className="ol-popup-closer"

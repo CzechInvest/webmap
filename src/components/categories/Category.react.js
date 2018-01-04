@@ -3,11 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import { TransitionGroup } from 'react-transition-group';
+
 import { openCategory, closeCategory } from './actions';
 import Backdrop from '../backdrop/Backdrop.react';
 import Layers from '../layers/Layers.react';
-
-
 import Icon from '../../Icon';
 
 
@@ -51,6 +51,32 @@ class Category extends React.Component {
     }
   }
 
+  renderMenu(open) {
+    const style = {
+      left: this.state.x+'px',
+      top: this.state.y+'px',
+      maxHeight: this.state.maxHeight? (this.state.maxHeight+'px') : ''
+    }
+    if (this.props.children) {
+      // return open && this.props.children;
+      return (
+        <TransitionGroup>
+          {open && this.props.children}
+        </TransitionGroup>
+      );
+    }
+    return open && (
+      <Backdrop zIndex="95" onClose={this.props.closeCategory}>
+        <div
+          className="popup-panel"
+          style={style}
+          ref={(el) => { this.setPopupEl(el) }}>
+          <Layers />
+        </div>
+      </Backdrop>
+    );
+  }
+
   render() {
     const { id, title, icon, activeId, layers, openCategory, closeCategory, lang } = this.props;
     const open = id === activeId;
@@ -59,11 +85,7 @@ class Category extends React.Component {
       active: layers.find(l => l.catId === id && l.visible)
     });
 
-    const style = {
-      left: this.state.x+'px',
-      top: this.state.y+'px',
-      maxHeight: this.state.maxHeight? (this.state.maxHeight+'px') : ''
-    }
+
     return (
       <div>
         <button
@@ -80,16 +102,7 @@ class Category extends React.Component {
             <div className="shadow" />
           </div>
         </button>
-        { open && (this.props.children ||
-          <Backdrop onClose={closeCategory}>
-            <div
-              className="popup-panel"
-              style={style}
-              ref={(el) => { this.setPopupEl(el) }}>
-              <Layers />
-            </div>
-          </Backdrop>
-        )}
+        { this.renderMenu(open) }
       </div>
     );
   }

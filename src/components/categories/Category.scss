@@ -8,7 +8,6 @@
   left: 0;
   right: 0;
   top: 0;
-  z-index: 90;
   justify-content: center;
   border-bottom: 1px solid #ccc;
   pointer-events: none;
@@ -133,6 +132,7 @@
 }
 
 .popup-panel {
+  z-index: 120;
   position: absolute;
   background-color: #fff;
   border-radius: 1em;
