@@ -13,7 +13,6 @@ import Popup from './Popup.react';
 import messages from '../lang/messages/attributes';
 
 
-
 class Identification extends React.Component {
 
   constructor(props) {
@@ -73,11 +72,13 @@ class Identification extends React.Component {
     const dataset = datasets.get(olayer.get('dataset'));
     let fields;
     if (dataset.attributes.length) {
-      fields = dataset.attributes.map(attr => ({
-        label: messages[attr.property][lang],
-        value: formatValue(feature.get(attr.property), attr),
-        html: attr.type === 'html'
-      }));
+      fields = dataset.attributes
+        .filter(attr => feature.get(attr.property) !== undefined)
+        .map(attr => ({
+          label: messages[attr.property][lang],
+          value: formatValue(feature.get(attr.property), attr),
+          html: attr.type === 'html'
+        }));
     } else {
       // temporary automatic collecting of fields without any configuration
       fields = feature.getKeys()
