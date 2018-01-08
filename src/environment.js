@@ -34,11 +34,25 @@ export default {
       id: 'airports',
       src: 'web-data/doprava/airports.geojson',
       // geometryType: 'polygon'
+      attributes: [
+        { property: 'name' },
+        { property: 'icao' },
+        { property: 'iata' },
+        {
+          property: 'url',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a target="_blank" href="${value}">${value}</a>'
+        },
+      ]
     },
     {
       id: 'ferry',
       src: 'web-data/doprava/ferry.geojson',
-      geometryType: 'point'
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' }
+      ]
     },
     {
       id: 'rail',

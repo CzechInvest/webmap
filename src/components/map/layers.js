@@ -1,7 +1,7 @@
 import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import Cluster from 'ol/source/cluster';
-import { generateColoredDonutStyle, createColorStyle } from './styles';
+import { generateColoredDonutStyle } from './styles';
 import AnimatedCluster from './animatedclusterlayer';
 
 
@@ -203,7 +203,6 @@ export function FilteredPolygonLayer(config) {
   let activeFilters = [];
   const activeFiltersList = new Set();
 
-  const styleConfig = Object.assign({}, config.style);
   const olLayer = new VectorLayer(
     Object.assign(config, {
       source: FilteredSource(config.source),
