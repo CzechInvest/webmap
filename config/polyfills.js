@@ -13,3 +13,4 @@ Object.assign = require('object-assign');
 // Object.values = require('object.values');
 require('core-js/fn/object/values');
 require('core-js/fn/array/from');
+require('core-js/fn/array/find');
