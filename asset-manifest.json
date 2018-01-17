@@ -1,6 +1,11 @@
 {
-  "cimap.css": "static/css/cimap.ee10cc17.css",
-  "cimap.css.map": "static/css/cimap.ee10cc17.css.map",
-  "cimap.js": "static/js/cimap.64a8cae9.js",
-  "cimap.js.map": "static/js/cimap.64a8cae9.js.map"
+  "cimap.css": "static/css/cimap.cc018a79.css",
+  "cimap.css.map": "static/css/cimap.cc018a79.css.map",
+  "cimap.js": "static/js/cimap.f6ce637f.js",
+  "cimap.js.map": "static/js/cimap.f6ce637f.js.map",
+  "static/media/Soleil-Bold.otf": "static/media/Soleil-Bold.5824cc23.otf",
+  "static/media/Soleil-Extrabold.otf": "static/media/Soleil-Extrabold.5d56e128.otf",
+  "static/media/Soleil-Light.otf": "static/media/Soleil-Light.74bad3db.otf",
+  "static/media/Soleil-Regular.otf": "static/media/Soleil-Regular.418b6c2f.otf",
+  "static/media/Soleil-Semibold.otf": "static/media/Soleil-Semibold.5a508cb3.otf"
 }

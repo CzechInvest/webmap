@@ -3,7 +3,11 @@ Data for web map application
 
 | kategorie | Etapa | Vrstva  | Vstup (XLSX) | Výstup (GeoJSON) | Filtrovat podle |
 |-----------|-------|---------|--------------|------------------|-------|
-|  Doprava  | 1     | Letecká doprava |                | |
+|  Doprava  | 1     | Letecká doprava | OpenStreetMap | [airports.geojson](doprava/airports.geojson) | |
+|  Doprava  | 1     | Lodní doprava | OpenStreetMap | [ferry.geojson](doprava/ferry.geojson) | |
+|  Doprava  | 1     | Dálnice | OpenStreetMap | [highway.geojson](doprava/highway.geojson) | |
+|  Doprava  | 1     | Silnice 1. třídy | OpenStreetMap | [primary.geojson](doprava/primary.geojson) | |
+|  Doprava  | 1     | Silnice 2. třídy | OpenSreetMap  | [secondary.geojson](doprava/secondary.geojson) | |
 |  Podnikatelská síť  | 1     | Automobilový průmysl | Dtb_src_export_20171005.xlsx | [dodavatele.geojson](podnikatelska_sit/dodavatele.geojson)| `sectors` |
 | Podnikatelská síť  |  1 | Letecký průmysl | Dtb_src_export_20171005.xlsx | [dodavatele.geojson](podnikatelska_sit/dodavatele.geojson)| `sectors` |
 | Podnikatelská síť  |  1 | Elektronika a elektrotechnika | Dtb_src_export_20171005.xlsx | [dodavatele.geojson](podnikatelska_sit/dodavatele.geojson)| `sectors` |
@@ -44,6 +48,7 @@ Data for web map application
 | Veřejná podpora |  1 | Pobídkové mapy - investice| IP pro Jáchyma.xlsx, RUIAN | [orp.geojson](verejna_podpora/orp.geojson) | `granty` |
 | Nemovitosti |  1 | Průmyslové zóny podpořené státem| | |  |
 | Nemovitosti | 1 | Zvýhodněné průmyslové zóny | IP proj Jáchyma.xlsx | [pz.geojson](verejna_podpora/pz.geojson) | |
+| Nemovitosti | 1 | Brownfields | Export_CI GIS.XLSX | [brownfields.geojson](verejna_podpora/brownfields.geojson) | |
 | Socioekonomické ukazatele | 1 | Počet obyvatel | GIS_Veru_Socio-demograf. ukazatele.xlsx | [pz.geojson](verejna_podpora/pz.geojson) | |
 | Socioekonomické ukazatele | 1 | Průměrná mzda | GIS_Veru_Socio-demograf. ukazatele.xlsx | [kraje.geojson](socioekonomicka/kraje.geojson) |
 | Socioekonomické ukazatele | 1 | Míra nezaměstnanosti | GIS_Veru_Socio-demograf. ukazatele.xlsx | [kraje.geojson](socioekonomicka/kraje.geojson) |
@@ -65,6 +70,21 @@ npm install -g geobuf
 ### Command Line
 ```bash
 json2geobuf data.geojson > data.pbf
+```
+
+## OverPass queries
+Use in http://overpass-turbo.eu/
+### International airports
+```
+[out:json][timeout:25];
+(
+  relation["iata"]({{bbox}});
+  node["iata"]({{bbox}});  
+  way["iata"]({{bbox}});  
+);
+out body;
+>;
+out skel qt;
 ```
 
 ### See Also
