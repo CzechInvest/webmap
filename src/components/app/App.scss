@@ -1,0 +1,35 @@
+h3, h4 {
+  font-weight: 500;
+}
+
+a, a:hover {
+  color: #0c3a6d;
+}
+
+#cimap, .portal-container {
+  font-family: 'Soleil';
+  font-size: 1em;
+  button {
+    font-size: inherit;
+  }
+}
+
+@media (max-height: 800px), (max-width: 1024px) {
+  #cimap, .portal-container {
+    font-size: 0.8335em;
+  }
+}
+
+.close-btn {
+  text-decoration: none;
+  position: absolute;
+  top: 0;
+  right: 0.5em;
+  padding: 0.5em;
+  cursor: pointer;
+  background: none;
+  border: none;
+  &:after {
+    content: "✖";
+  }
+}

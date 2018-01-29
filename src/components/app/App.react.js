@@ -8,6 +8,7 @@ import DistrictsComparator from '../districts/DistrictsComparator.react';
 import Contact from '../contact/Contact.react';
 import '../../fonts.scss';
 import '../../animations.scss';
+import './App.scss';
 
 
 export default () => (

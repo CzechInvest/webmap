@@ -7,25 +7,3 @@ $secondary-color: rgb(220, 0, 46);
 
 /*$menu-background: url('/img/pozadi.png') no-repeat;*/
 $menu-background: radial-gradient(80% 120% ellipse at 50% 65%, rgba(#e7e7e7, 0.8) 25%, rgba(#aaa, 0.8) 100%);
-
-h3, h4 {
-  font-weight: 500;
-}
-
-a, a:hover {
-  color: #0c3a6d;
-}
-
-#cimap, .portal-container {
-  font-family: 'Soleil';
-  font-size: 1em;
-  button {
-    font-size: inherit;
-  }
-}
-
-@media (max-height: 800px), (max-width: 1024px) {
-  #cimap, .portal-container {
-    font-size: 0.8335em;
-  }
-}
