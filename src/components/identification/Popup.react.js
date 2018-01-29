@@ -20,7 +20,7 @@ const Popup = ({ title, fields, onClose }) => {
       <h3>{title}</h3>
       <button
         onMouseUp={ () => onClose() }
-        className="ol-popup-closer">
+        className="close-btn">
       </button>
       <div className="list">
         { fields.map((field, i) => <Field key={i} index={i} {...field} />) }

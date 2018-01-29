@@ -40,7 +40,7 @@ class Contact extends React.Component {
             <Backdrop zIndex="150" onClose={() => this.setState({open: false})}>
               <div className="contacts-panel">
                 <button
-                  className="ol-popup-closer"
+                  className="close-btn"
                   onClick={() => this.setState({open: false})} />
                 <h3>{messages['contact'][lang]}</h3>
                 <table>

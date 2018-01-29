@@ -6,6 +6,7 @@ import { Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-datalabels';
 import { Scrollbars } from 'react-custom-scrollbars';
 
+import { setLayerVisibility } from '../layers/actions';
 import messages from '../lang/messages/attributes';
 import formatValue from '../identification/format';
 import { getColor } from './styles';
@@ -71,6 +72,11 @@ const GraphLegend = ({labels, colors}) => {
 
 class DistrictsPanel extends React.Component {
 
+  close() {
+    const { layer, setLayerVisibility } = this.props;
+    setLayerVisibility(layer.id, false);
+  }
+
   render() {
     const { districts, datasets, layer, lang } = this.props;
     const dataset = datasets.get(layer.datasetId);
@@ -110,6 +116,10 @@ class DistrictsPanel extends React.Component {
           ))}
           </div>
         </Scrollbars>
+        <button
+          onClick={() => this.close()}
+          className="close-btn">
+        </button>
       </div>
     );
   }
@@ -118,7 +128,8 @@ class DistrictsPanel extends React.Component {
 DistrictsPanel.propTypes = {
   districts: PropTypes.object,
   datasets: PropTypes.object,
-  layer: PropTypes.object
+  layer: PropTypes.object,
+  setLayerVisibility: PropTypes.func
 }
 
 export default connect(state => ({
@@ -126,4 +137,5 @@ export default connect(state => ({
   datasets: state.layers.datasets,
   lang: state.lang.selectedLanguage
 }), dispatch => bindActionCreators({
+  setLayerVisibility
 }, dispatch))(DistrictsPanel);
