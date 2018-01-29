@@ -1,4 +1,5 @@
 import React from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -9,8 +10,7 @@ import Observable from 'ol/observable';
 import debounce from 'lodash/debounce';
 
 import { MapStyles } from './styles.js';
-import { addDistrictToCompare, removeDistrictToCompare } from './actions';
-import { setLayerVisibility } from '../layers/actions';
+import { addDistrictToCompare, removeDistrictToCompare, clearDistrictsSelection } from './actions';
 import DistrictsPanel from './DistrictsPanel.react.js';
 
 
@@ -22,8 +22,9 @@ class DistrictsComparator extends React.Component {
     this.selectionOverlay = new VectorLayer({
       source: new VectorSource(),
       zIndex: 2,
-      style: f => MapStyles[f.get('Kod')]
+      style: f => MapStyles[this.props.districts.get(featureId(f))['color']]
     });
+
     this.context.map.addLayer(this.selectionOverlay);
     if (this.olLayer.getSource().getFeatures().length) {
       this.initializeSelection();
@@ -36,6 +37,7 @@ class DistrictsComparator extends React.Component {
   initializeSelection() {
     const { districts } = this.props;
     const activeFeatures = this.olLayer.getSource().getFeatures().filter(f => districts.has(featureId(f)));
+
     this.selectionOverlay.getSource().addFeatures(activeFeatures);
   }
 
@@ -45,10 +47,18 @@ class DistrictsComparator extends React.Component {
   }
 
   selectDistrict(feature) {
+    const { districts } = this.props;
+    const usedColors = districts.toList().map(d => d.color);
     const properties = feature.getProperties();
     delete properties.geometry;
+
+    const district = {
+      label: properties['Nazev'],
+      color: MapStyles.map((c, i) => i).find(index => !usedColors.contains(index)),
+      data: properties
+    };
+    this.props.addDistrictToCompare(featureId(feature), district);
     this.selectionOverlay.getSource().addFeature(feature);
-    this.props.addDistrictToCompare(featureId(feature), properties);
   }
 
   unselectDistrict(feature) {
@@ -83,12 +93,11 @@ class DistrictsComparator extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const { layer, setLayerVisibility } = this.props;
+  activate() {
+    const { layer } = this.props;
     const map = this.context.map;
     this.olLayer = map.layerById[layer.id];
 
-    setLayerVisibility(layer.id, true);
     this.initializeOverlay();
 
     const layerFilter = ol => (ol === this.olLayer);
@@ -109,17 +118,50 @@ class DistrictsComparator extends React.Component {
     }, 50));
   }
 
-  componentWillUnmount() {
-    const { layer, setLayerVisibility } = this.props;
+  deactivate() {
+    const { clearDistrictsSelection } = this.props;
     this.context.map.removeLayer(this.selectionOverlay);
     Observable.unByKey(this.moveListener);
     Observable.unByKey(this.clickListener);
-    setLayerVisibility(layer.id, false);
+
+    clearDistrictsSelection();
+    this.selectionOverlay.getSource().clear();
+  }
+
+  updateLayer() {
+    const { layer, clearDistrictsSelection } = this.props;
+    this.olLayer = this.context.map.layerById[layer.id];
+    clearDistrictsSelection();
+    this.selectionOverlay.getSource().clear();
+  }
+
+  componentDidMount() {
+    if (this.props.layer) {
+      this.activate();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const prevLayer = (prevProps.layer || {}).id;
+    const newLayer = (this.props.layer || {}).id;
+    if (!prevLayer && newLayer) {
+      this.activate();
+    } else if (prevLayer && !newLayer) {
+      this.deactivate()
+    } else if (prevLayer !== newLayer) {
+      this.updateLayer();
+    }
   }
 
   render() {
+    const { layer } = this.props;
+    const active = Boolean(layer);
     return (
-      <DistrictsPanel />
+      <TransitionGroup>
+        {active && <CSSTransition classNames="slide-left" timeout={{ enter: 300, exit: 300 }}>
+          <DistrictsPanel layer={layer} />
+        </CSSTransition>}
+      </TransitionGroup>
     );
   }
 }
@@ -129,7 +171,7 @@ DistrictsComparator.propTypes = {
   layer: PropTypes.object,
   addDistrictToCompare: PropTypes.func.isRequired,
   removeDistrictToCompare: PropTypes.func.isRequired,
-  setLayerVisibility: PropTypes.func.isRequired
+  clearDistrictsSelection: PropTypes.func.isRequired
 }
 
 DistrictsComparator.contextTypes = {
@@ -138,9 +180,9 @@ DistrictsComparator.contextTypes = {
 
 export default connect(state => ({
   districts: state.districts.districts,
-  layer: state.layers.layers.get('kraje')
+  layer: state.layers.layers.find(l => l.catId === 'socioeconomic' && l.visible)
 }), dispatch => bindActionCreators({
   addDistrictToCompare,
   removeDistrictToCompare,
-  setLayerVisibility
+  clearDistrictsSelection
 }, dispatch))(DistrictsComparator);

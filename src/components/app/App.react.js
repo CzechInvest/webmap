@@ -4,6 +4,7 @@ import View from '../view/View.react';
 import Baselayer from '../baselayer/Baselayer.react';
 import CategoriesMenu from '../categories/Menu.react';
 import Identification from '../identification/Identification.react';
+import DistrictsComparator from '../districts/DistrictsComparator.react';
 import Contact from '../contact/Contact.react';
 import '../../fonts.scss';
 import '../../animations.scss';
@@ -17,5 +18,6 @@ export default () => (
     <Contact />
     <CategoriesMenu />
     <Identification />
+    <DistrictsComparator />
   </Map>
 );

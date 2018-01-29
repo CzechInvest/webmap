@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { TransitionGroup } from 'react-transition-group';
 
 import { openCategory, closeCategory } from './actions';
 import Backdrop from '../backdrop/Backdrop.react';
@@ -57,14 +56,6 @@ class Category extends React.Component {
       top: this.state.y+'px',
       maxHeight: this.state.maxHeight? (this.state.maxHeight+'px') : ''
     }
-    if (this.props.children) {
-      // return open && this.props.children;
-      return (
-        <TransitionGroup>
-          {open && this.props.children}
-        </TransitionGroup>
-      );
-    }
     return open && (
       <Backdrop zIndex="95" onClose={this.props.closeCategory}>
         <div
@@ -84,7 +75,6 @@ class Category extends React.Component {
       open: open,
       active: layers.find(l => l.catId === id && l.visible)
     });
-
 
     return (
       <div>

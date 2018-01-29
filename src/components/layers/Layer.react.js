@@ -6,7 +6,6 @@ import Checkbox from 'rc-checkbox';
 import 'rc-checkbox/assets/index.css';
 
 import Icon from '../../Icon';
-import { setLayerVisibility } from './actions';
 import { cssColor } from '../map/styles';
 
 
@@ -67,7 +66,7 @@ class Layer extends React.Component {
   }
 
   render() {
-    const { id, title, visible, setLayerVisibility, lang } = this.props;
+    const { id, title, visible, onChange, lang } = this.props;
     const legend = this.legend();
     const simpleLegend = !Array.isArray(legend);
     return (
@@ -77,7 +76,7 @@ class Layer extends React.Component {
             { (simpleLegend && legend) || <Icon glyph="arrow_down" className="icon more" /> }
             <Checkbox
               checked={visible}
-              onChange={() => setLayerVisibility(id, !visible)} />
+              onChange={() => onChange(id, !visible)} />
             <span className="title">{title[lang]}</span>
           </label>
           { !simpleLegend && legend }
@@ -93,12 +92,11 @@ Layer.propTypes = {
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   visible: PropTypes.bool,
   datasetId: PropTypes.string,
-  setLayerVisibility: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
 }
 
 export default connect(state => ({
   datasets: state.layers.datasets,
   lang: state.lang.selectedLanguage,
 }), dispatch => bindActionCreators({
-  setLayerVisibility
 }, dispatch))(Layer);

@@ -25,6 +25,10 @@ export default function districtsReducer(state = initialState, action) {
       return state.removeIn(['districts', action.payload.id]);
     }
 
+    case actions.CLEAR_DISTRICTS_SELECTION: {
+      return state.clear('districts');
+    }
+
     default:
       return state;
 

@@ -10,8 +10,10 @@ import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import Cluster from 'ol/source/cluster';
 import GeoJSON from 'ol/format/geojson';
+import JsonFormat from 'ol/format/jsonfeature';
 import Attribution from 'ol/control/attribution';
 import control from 'ol/control';
+import olFeatureLoader from 'ol/featureloader.js';
 
 import { createLayerStyle, generateColoredDonutStyle, coloredPointIcon, coloredPolygonStyle } from './styles';
 import { DistinctPointsSource, FilteredPointLayer, FilteredPolygonLayer } from './layers';
@@ -37,10 +39,46 @@ class MapComponent extends React.Component {
     if (this.dataSources[dataset.id]) {
       return this.dataSources[dataset.id];
     }
-    let source = new VectorSource({
-      url: dataset.src,
-      format: dataset.src.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON()
-    });
+    let source;
+
+    if (dataset.src === Object(dataset.src)) {
+      source = new VectorSource({
+        format: dataset.src.geometry.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON(),
+        loader(extent, resolution, projection) {
+          const json = new JsonFormat();
+          json.readFeatures = (resp, params) => {
+            return JSON.parse(resp);
+          };
+          olFeatureLoader.loadFeaturesXhr(dataset.src.attributes, json, attributes => {
+            const attributesKey = dataset.src.attributesId;
+            const geometryKey = dataset.src.geometryId;
+
+            const attributesById = {};
+            attributes.forEach(obj => attributesById[obj[attributesKey]] = obj);
+
+            olFeatureLoader.loadFeaturesXhr(
+              dataset.src.geometry,
+              this.format_,
+              features => {
+                // console.log(features.length, attributes.length);
+                features.forEach((f, index) => {
+                  const id = f.get(geometryKey);
+                  // console.log(f.getProperties(), attributesById[id]);
+                  f.setProperties(attributesById[id]);
+                });
+                this.addFeatures(features);
+              }
+            )(extent, resolution, projection);
+          })();
+        }
+      });
+    } else {
+      source = new VectorSource({
+        url: dataset.src,
+        format: dataset.src.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON(),
+      });
+    }
+
     if (dataset.geometryType === 'point') {
       source = DistinctPointsSource(source);
     }

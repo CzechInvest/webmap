@@ -27,6 +27,7 @@ export default {
     {
       id: 'socioeconomic',
       icon: 'socio',
+      selectType: 'radio'
     }
   ],
   datasets: [
@@ -158,6 +159,12 @@ export default {
     {
       id: 'kraje',
       src: 'web-data/socioekonomicka/kraje.pbf.geojson',
+      // src: {
+      //   geometry: 'web-data/geometry/kraje.geojson',
+      //   attributes: 'web-data/socioekonomicka/soc_ekon-kraje.json',
+      //   geometryId: 'Kod',
+      //   attributesId: 'kod'
+      // },
       geometryType: 'polygon',
       attributes: [
         { property: 'Nazev' },
@@ -276,6 +283,44 @@ export default {
           }
         }
       ]
+    },
+    {
+      id: 'okresy',
+      src: {
+        geometry: 'web-data/geometry/okresy.pbf.geojson',
+        attributes: 'web-data/socioekonomicka/soc_ekon-okresy.json',
+        geometryId: 'Kod',
+        attributesId: 'kod'
+      },
+      geometryType: 'polygon',
+      attributes: [
+        { property: 'Nazev' },
+        {
+          property: 'Populace-okr',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'Prac_síla-okr',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'Počet_nezam-okr',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'Míra_nezam-okr',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 2}]
+        },
+        {
+          property: 'Počet_nezam_na_1_PM-okr',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 2}]
+        }
+      ],
     },
     {
       id: 'sskoly',
@@ -851,12 +896,22 @@ export default {
     },
     {
       id: 'kraje',
-      title: 'Kraje',
       datasetId: 'kraje',
       visible: false,
       style: {
         fill: [255,255,255,0.25],
         stroke: [0, 47, 96, 0.4],
+        strokeWidth: 1.75
+      },
+      catId: 'socioeconomic'
+    },
+    {
+      id: 'okresy',
+      datasetId: 'okresy',
+      visible: false,
+      style: {
+        fill: [255,255,255,0.25],
+        stroke: [219,0,46, 0.4],
         strokeWidth: 1.75
       },
       catId: 'socioeconomic'

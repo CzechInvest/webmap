@@ -72,16 +72,17 @@ const GraphLegend = ({labels, colors}) => {
 class DistrictsPanel extends React.Component {
 
   render() {
-    const { districts, dataset, lang } = this.props;
-
+    const { districts, datasets, layer, lang } = this.props;
+    const dataset = datasets.get(layer.datasetId);
     const attribs = dataset.attributes.filter(attr => attr.type === 'number');
-    const ids = Array.from(districts.keys());
-    const colors =  ids.map(id => cssColor(getColor(id, 0.75)));
-    const borders = ids.map(id => cssColor(getColor(id, 1)));
+
     const districtsArray = districts.toList().toJS();
+    const colors =  districtsArray.map(d => cssColor(getColor(d.color, 0.75)));
+    const borders = districtsArray.map(d => cssColor(getColor(d.color, 1)));
+
     const dataArray = attribs.map(attr => {
-      const values = districtsArray.map(properties => properties[attr.property]);
-      const labels = districtsArray.map(properties => properties['Nazev']);
+      const values = districtsArray.map(d => d.data[attr.property]);
+      const labels = districtsArray.map(d => d.label);
       const formattedValues = values.map(val => formatValue(val, attr));
       return {
         labels: values.map(val => ''),
@@ -116,12 +117,13 @@ class DistrictsPanel extends React.Component {
 
 DistrictsPanel.propTypes = {
   districts: PropTypes.object,
-  dataset: PropTypes.object
+  datasets: PropTypes.object,
+  layer: PropTypes.object
 }
 
 export default connect(state => ({
   districts: state.districts.districts,
-  dataset: state.layers.datasets.get('kraje'),
+  datasets: state.layers.datasets,
   lang: state.lang.selectedLanguage
 }), dispatch => bindActionCreators({
 }, dispatch))(DistrictsPanel);
