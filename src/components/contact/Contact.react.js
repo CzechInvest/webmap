@@ -8,7 +8,6 @@ import messages from '../lang/messages/app';
 import Backdrop from '../backdrop/Backdrop.react';
 import { setLanguage } from '../lang/actions';
 import './Contact.scss';
-import aboutLogo from '../../assets/img/plusko.svg';
 
 
 class Contact extends React.Component {
@@ -22,9 +21,7 @@ class Contact extends React.Component {
     const { lang, setLanguage } = this.props;
     return (
       <div className="contact-panel">
-        <button className="about">
-          <img src={aboutLogo} alt="" />
-        </button>
+        <Icon className="logo" glyph="plusko" />
         <button
           className="contact"
           onClick={() => this.setState({open: true})}

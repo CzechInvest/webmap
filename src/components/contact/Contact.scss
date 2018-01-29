@@ -32,16 +32,14 @@
         width: 3.25em;
       }
     }
-    &.about {
-      background: none;
-      position: absolute;
-      left: 1em;
-      bottom: 0.5em;
-
-      img {
-        height: 8em;
-      }
-    }
+  }
+  .logo {
+    position: absolute;
+    left: 0.25em;
+    bottom: 0;
+    height: 5.35em;
+    width: 14em;
+    user-select: none;
   }
 }
 
