@@ -312,15 +312,16 @@ const badgeStyle = new Style({
   })
 });
 
-export function coloredPointIcon(icon) {
+export function coloredPointIcon(config) {
   const pointsIconsCache = {};
   return (colors = ['orange', 'green', 'red'], isGroup, text) => {
     const key = JSON.stringify(colors);
     let iconStyle = pointsIconsCache[key];
     if (!iconStyle) {
-      const svg = svgColoredIcon(colors, icon);
+      const svg = svgColoredIcon(colors, config.icon);
       iconStyle = new Icon({
-        src: 'data:image/svg+xml,' + escape(svg)
+        src: 'data:image/svg+xml,' + escape(svg),
+        anchor: config.anchor || [0.5, 0.75]
       });
       pointsIconsCache[key] = iconStyle;
     }

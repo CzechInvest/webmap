@@ -700,8 +700,9 @@ export default {
         value: 'vtp'
       },
       style: {
-        // type: 'icon',
-        // icon: 'vvi_bod',
+        type: 'icon',
+        icon: 'vvi_bod',
+        anchor: [0.3, 0.7],
         fill: '#DCA28F'
       },
       catId: 'science'
@@ -758,6 +759,9 @@ export default {
         value: 'incubator'
       },
       style: {
+        type: 'icon',
+        icon: 'start_bod',
+        anchor: [0.6, 0.8],
         fill: '#9D9D9C'
       },
       catId: 'startup'
@@ -771,6 +775,9 @@ export default {
         value: 'accelerator'
       },
       style: {
+        type: 'icon',
+        icon: 'start_bod',
+        anchor: [0.6, 0.8],
         fill: '#EB7274'
       },
       catId: 'startup'

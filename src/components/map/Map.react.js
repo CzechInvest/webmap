@@ -120,18 +120,19 @@ class MapComponent extends React.Component {
       // if (layer.datasetId && !layerByDataset[layer.datasetId]) {
       if (layer.datasetId) {
         const dataset = datasets.get(layer.datasetId);
+        const layerDatasetKey = `${layer.catId}:${layer.datasetId}`;
         let source = this.getDataSource(dataset);
         const isPointLayer = dataset.geometryType === 'point';
 
         let vectorLayer;
         if (layer.filter) {
-          if (!layerByDataset[layer.datasetId]) {
+          if (!layerByDataset[layerDatasetKey]) {
             if (isPointLayer) {
               vectorLayer = FilteredPointLayer({
                 source: source,
                 label: layer.style.label,
                 zIndex: 1,
-                styleFn: layer.style.icon? coloredPointIcon(layer.style.icon) : generateColoredDonutStyle
+                styleFn: layer.style.icon? coloredPointIcon(layer.style) : generateColoredDonutStyle
               });
             } else {
               vectorLayer = FilteredPolygonLayer({
@@ -140,10 +141,10 @@ class MapComponent extends React.Component {
                 styleFn: coloredPolygonStyle(layer.style[0])
               });
             }
-            layerByDataset[layer.datasetId] = vectorLayer;
+            layerByDataset[layerDatasetKey] = vectorLayer;
           }
 
-          const olLayer = layerByDataset[layer.datasetId];
+          const olLayer = layerByDataset[layerDatasetKey];
           this.map.layerById[layer.id] = olLayer;
 
           olLayer.addFilter(this.createFilter(layer));
