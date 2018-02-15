@@ -6,6 +6,7 @@ export default Record({
   datasetId: null,
   title: {},
   visible: false,
+  identifiable: true,
   filter: null,
   style: {
     fill: ''

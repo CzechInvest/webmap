@@ -77,7 +77,6 @@ export default {
     },
     {
       id: 'dodavatele',
-      title: 'Dodavatele',
       src: 'web-data/podnikatelska_sit/dodavatele.geojson',
       geometryType: 'point',
       attributes: [
@@ -158,13 +157,13 @@ export default {
     },
     {
       id: 'kraje',
-      src: 'web-data/socioekonomicka/kraje.pbf.geojson',
-      // src: {
-      //   geometry: 'web-data/geometry/kraje.geojson',
-      //   attributes: 'web-data/socioekonomicka/soc_ekon-kraje.json',
-      //   geometryId: 'Kod',
-      //   attributesId: 'kod'
-      // },
+      // src: 'web-data/socioekonomicka/kraje.pbf.geojson',
+      src: {
+        geometry: 'web-data/geometry/kraje.geojson',
+        attributes: 'web-data/socioekonomicka/soc_ekon-kraje.json',
+        geometryId: 'Kod',
+        attributesId: 'Kod'
+      },
       geometryType: 'polygon',
       attributes: [
         { property: 'Nazev' },
@@ -290,7 +289,7 @@ export default {
         geometry: 'web-data/geometry/okresy.pbf.geojson',
         attributes: 'web-data/socioekonomicka/soc_ekon-okresy.json',
         geometryId: 'Kod',
-        attributesId: 'kod'
+        attributesId: 'Kod'
       },
       geometryType: 'polygon',
       attributes: [
@@ -353,7 +352,7 @@ export default {
     {
       id: 'letecka',
       datasetId: 'airports',
-      visible: true,
+      visible: false,
       style: {
         type: 'icon',
         icon: 'airport',
@@ -364,7 +363,7 @@ export default {
     {
       id: 'vodni',
       datasetId: 'ferry',
-      visible: true,
+      visible: false,
       style: {
         type: 'icon',
         icon: 'harbor',
@@ -375,6 +374,7 @@ export default {
     {
       id: 'zeleznicni',
       datasetId: 'rail',
+      identifiable: false,
       style: {
         stroke: '#999',
         strokeWidth: 2
@@ -385,6 +385,7 @@ export default {
       id: 'highway',
       datasetId: 'highway',
       visible: false,
+      identifiable: false,
       style: {
         stroke: [251,140,0, 0.8],
         strokeWidth: 3
@@ -395,6 +396,7 @@ export default {
       id: 'silnice_1tr',
       datasetId: 'silnice_1tr',
       visible: false,
+      identifiable: false,
       style: {
         stroke: [255,193,7 ,0.8],
         strokeWidth: 2
@@ -405,6 +407,7 @@ export default {
       id: 'silnice_2tr',
       datasetId: 'silnice_2tr',
       visible: false,
+      identifiable: false,
       style: {
         stroke: [255,235,59, 0.75]
       },
@@ -574,7 +577,7 @@ export default {
     {
       id: 'whoiswho_ht',
       datasetId: 'whoiswho',
-      visible: true,
+      visible: false,
       filter: {
         attribute: 'sectors',
         value: 'HT'
@@ -905,6 +908,7 @@ export default {
       id: 'kraje',
       datasetId: 'kraje',
       visible: false,
+      identifiable: false,
       style: {
         fill: [255,255,255,0.25],
         stroke: [0, 47, 96, 0.4],
@@ -916,6 +920,7 @@ export default {
       id: 'okresy',
       datasetId: 'okresy',
       visible: false,
+      identifiable: false,
       style: {
         fill: [255,255,255,0.25],
         stroke: [219,0,46, 0.4],
