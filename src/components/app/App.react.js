@@ -5,6 +5,7 @@ import Baselayer from '../baselayer/Baselayer.react';
 import CategoriesMenu from '../categories/Menu.react';
 import Identification from '../identification/Identification.react';
 import DistrictsComparator from '../districts/DistrictsComparator.react';
+import Search from '../search/Search.react';
 import Contact from '../contact/Contact.react';
 import '../../fonts.scss';
 import '../../animations.scss';
@@ -20,5 +21,6 @@ export default () => (
     <CategoriesMenu />
     <Identification />
     <DistrictsComparator />
+    <Search />
   </Map>
 );

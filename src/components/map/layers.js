@@ -128,6 +128,13 @@ export function FilteredPointLayer(config) {
       }
     })
   );
+  olLayer.getStyleFunction().highlight = color => (feature, res) => {
+    if (res < 80 && config.label) {
+      const label = feature.get(config.label);
+      return styleFn([color], false, label);
+    }
+    return styleFn([color]);
+  };
 
   Object.assign(olLayer, {
     isActive(id) {
@@ -148,6 +155,9 @@ export function FilteredPointLayer(config) {
     },
     addFilter(filter) {
       filters.push(filter);
+    },
+    featureFilters(feature) {
+      return activeFilters.filter(filter => filter.filter(feature)).map(filter => filter.id);
     }
   });
   return olLayer;
@@ -218,6 +228,9 @@ export function FilteredPolygonLayer(config) {
       }
     })
   );
+  olLayer.getStyleFunction().highlight = color => (feature) => {
+    return config.styleFn([color]);
+  };
 
   Object.assign(olLayer, {
     isActive(id) {
@@ -238,6 +251,9 @@ export function FilteredPolygonLayer(config) {
     },
     addFilter(filter) {
       filters.push(filter);
+    },
+    featureFilters(feature) {
+      return activeFilters.filter(filter => filter.filter(feature)).map(filter => filter.id);
     }
   });
   return olLayer;

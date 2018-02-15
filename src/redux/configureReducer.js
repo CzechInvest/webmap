@@ -7,6 +7,8 @@ import baselayer from '../components/baselayer/reducer';
 import categories from '../components/categories/reducer';
 import layers from '../components/layers/reducer';
 import districts from '../components/districts/reducer';
+import identification from '../components/identification/reducer';
+
 
 const reducers = {
   app,
@@ -15,7 +17,8 @@ const reducers = {
   view,
   layers,
   baselayer,
-  districts
+  districts,
+  identification
 };
 
 export default () => combineReducers(reducers);

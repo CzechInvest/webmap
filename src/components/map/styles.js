@@ -33,14 +33,30 @@ export function olColor(color) {
 
 export function createLayerStyle(layer) {
   const config = layer.style;
+
   switch (config.type) {
     case 'circle': {
       return createCircleStyle(config);
     }
     case 'icon': {
-      return createIconStyle(config);
+      // return createIconStyle(config);
+      return Object.assign(
+        createIconStyle(config),
+        {
+          highlight: color => createIconStyle(Object.assign({}, config, {fill: color}))
+        }
+      );
     }
-    default: return createPolygonStyle(config);
+    default: {
+      return Object.assign(
+        createPolygonStyle(config),
+        {
+          highlight: (color) => {
+            return createPolygonStyle(Object.assign({}, config, {fill: color}));
+          }
+        }
+      );
+    }
   }
 }
 
@@ -79,7 +95,8 @@ function createIconStyle(config = {}) {
   const svg = `<svg ${attrs.join(' ')}>${iconSymbolEl.innerHTML}</svg>`;
   const style = new Style({
     image: new Icon({
-      src: 'data:image/svg+xml,' + escape(svg)
+      src: 'data:image/svg+xml,' + escape(svg),
+      anchor: [0.5, 0.75]
     }),
     geometry: f => {
       const geom = f.getGeometry();
@@ -337,7 +354,6 @@ export function coloredPointIcon(config) {
 }
 
 function createColorsPattern(colors) {
-  console.log('createColorsPattern', colors)
   const segment = 10;
   const size = segment * colors.length;
   const canvas = document.createElement('canvas');
