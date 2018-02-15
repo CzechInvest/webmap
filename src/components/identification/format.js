@@ -9,7 +9,7 @@ export default function formatValue(value, params = {}) {
     value = Intl.NumberFormat.apply(Intl, params.format || []).format(value);
   }
   if (params.template) {
-    value = params.template.replace(/\$\{value\}/g, value.toString());
+    value = params.template.replace(/\$\{value\}/g, value === undefined ? '' : value.toString());
   }
   return value;
 }

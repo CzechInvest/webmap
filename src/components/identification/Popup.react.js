@@ -4,10 +4,10 @@ import './Popup.scss';
 
 
 const Field = ({index, label, value, html}) => {
-  const classes = classnames('list-item', {uneven: index % 2 === 0});
+  const classes = classnames('list-item', {even: index % 2 === 0});
   return (
     <div className={classes}>
-      <label>{label}:</label>
+      { label && <label>{label}:</label> }
       {html ? <p dangerouslySetInnerHTML={{__html: value}}></p> : <p>{value}</p>}
     </div>
   );
