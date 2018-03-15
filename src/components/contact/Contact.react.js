@@ -5,7 +5,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import Icon from '../../Icon';
 import messages from '../lang/messages/app';
-import Backdrop from '../backdrop/Backdrop.react';
+import Backdrop from '../ui/backdrop/Backdrop.react';
 import { setLanguage } from '../lang/actions';
 import './Contact.scss';
 

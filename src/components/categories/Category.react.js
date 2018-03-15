@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { openCategory, closeCategory } from './actions';
-import Backdrop from '../backdrop/Backdrop.react';
+import Backdrop from '../ui/backdrop/Backdrop.react';
 import Layers from '../layers/Layers.react';
 import Icon from '../../Icon';
 
