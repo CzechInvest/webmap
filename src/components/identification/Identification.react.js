@@ -10,7 +10,7 @@ import Extent from 'ol/extent';
 
 import { showObjectInfo } from './actions';
 import formatValue from './format';
-import Popup from './Popup.react';
+import { Popup, GroupedInfo } from './Popup.react';
 import messages from '../lang/messages/attributes';
 
 
@@ -37,6 +37,11 @@ class Identification extends React.Component {
         if (styleFn.highlight) {
           return styleFn.highlight('red')(f, res);
         }
+        const style = f.layer.getStyle()
+        if (style.highlight) {
+          return style.highlight('red');
+        }
+        console.warn('Highlight style is not defined!')
       }
     });
   }
@@ -83,25 +88,35 @@ class Identification extends React.Component {
     // const dataset = null; // for debugging to show raw names and values of all fields
 
     let fields;
-    if (dataset) {
+    let groups;
+    if (dataset && dataset.attributes && dataset.attributes.length) {
       fields = dataset.attributes
         .filter(attr => feature.get(attr.property) !== undefined)
         .map(attr => ({
+          id: attr.property,
           label: messages[attr.property][lang],
           value: formatValue(feature.get(attr.property), attr),
           html: attr.type === 'html'
         }));
+
+      if (dataset.groups) {
+        groups = Object.keys(dataset.groups).reduce((values, key) => {
+          values[messages[key][lang]] = dataset.groups[key]
+          return values;
+        }, {});
+      }
     } else {
       fields = feature.getKeys()
       .filter(property => (property !== 'geometry' && property !== 'features'))
       .map((property) => ({
+        id: property,
         label: property,
         value: feature.get(property)
       }));
     }
 
     let layerId;
-    const hasMoreLayers = layers.filter(l => l.datasetId === olayer.get('dataset')).size > 1;
+    const hasMoreLayers = layers.filter(l => l.visible && l.datasetId === olayer.get('dataset')).size > 1;
     if (hasMoreLayers) {
       const layersIds = olayer.featureFilters(feature);
       if (layersIds.length === 1) {
@@ -110,10 +125,13 @@ class Identification extends React.Component {
     } else {
       layerId = olayer.get('id')
     }
-    return {
-      title: layerId ? layers.get(layerId).title[lang] : undefined,
-      fields: fields
-    };
+    let title;
+    if (dataset.id === 'pasport') {
+      title = feature.get('Nazev');
+    } else if (layers.get(layerId)) {
+      title = layers.get(layerId).title[lang]
+    }
+    return {title, fields, groups};
   }
 
   componentDidMount() {
@@ -121,7 +139,6 @@ class Identification extends React.Component {
     const map = this.context.map;
 
     map.on('singleclick', (e) => {
-      // console.log('singleclick: identification');
       let { feature, layer } = map.forEachFeatureAtPixel(
         e.pixel,
         (feature, layer) => ({feature, layer}),
@@ -188,12 +205,11 @@ class Identification extends React.Component {
       this.overlay.setOffset(offset);
 
       const objectData = this.getObjectInfo(feature, olLayer);
-      return ReactDOM.createPortal(
-        <Popup
-          {...objectData}
-          onClose={() => {this.clearSelection()}}/>,
-        this.overlay.getElement()
-      );
+      const popup = objectData.groups
+        ? <GroupedInfo {...objectData} onClose={() => {this.clearSelection()}} />
+        : <Popup {...objectData} onClose={() => {this.clearSelection()}} />;
+
+      return ReactDOM.createPortal(popup, this.overlay.getElement());
     }
     return null;
   }
@@ -206,7 +222,7 @@ Identification.propTypes = {
 }
 
 Identification.contextTypes = {
-  map: PropTypes.object.isRequired,
+  map: PropTypes.object.isRequired
 };
 
 export default connect(state => ({

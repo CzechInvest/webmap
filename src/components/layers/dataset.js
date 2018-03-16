@@ -5,5 +5,6 @@ export default Record({
   src: '',
   title: '',
   geometryType: '',
-  attributes: []
+  attributes: [],
+  groups: null
 });

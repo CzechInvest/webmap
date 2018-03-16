@@ -11,6 +11,7 @@
   bottom: 12px;
   left: -50px;
   min-width: 285px;
+  min-width: 20em;
   z-index: 90;
 
   &:before, &:after {
@@ -68,5 +69,43 @@
 
   .close-btn {
     right: 0;
+  }
+
+  .groups {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25em;
+    button {
+      opacity: 0.75;
+      height: 2em;
+      &[disabled] {
+        opacity: 0.25;
+      }
+      &.left {
+        padding-left: 0;
+      }
+      &.right {
+        padding-right: 0;
+      }
+      .icon {
+        fill: $primary-color;
+        width: 1em;
+        height: 1em;
+      }
+    }
+
+    .dropdown {
+      flex-grow: 1;
+      padding-bottom: 0.15em;
+      color: rgba($primary-color, 0.8);
+      cursor: pointer;
+      > span {
+        font-size: 1.063em;
+        font-weight: 500;
+      }
+      .options span.selected {
+        color: $primary-color;
+      }
+    }
   }
 }
