@@ -20,6 +20,9 @@ import { DistinctPointsSource, FilteredPointLayer, FilteredPolygonLayer } from '
 import Geobuf from './formats';
 import AnimatedCluster from './animatedclusterlayer';
 
+function dataUrl(path) {
+  return process.env.DATA_URL + path
+}
 
 class MapComponent extends React.Component {
 
@@ -49,7 +52,7 @@ class MapComponent extends React.Component {
           json.readFeatures = (resp, params) => {
             return JSON.parse(resp);
           };
-          olFeatureLoader.loadFeaturesXhr(dataset.src.attributes, json, attributes => {
+          olFeatureLoader.loadFeaturesXhr(dataUrl(dataset.src.attributes), json, attributes => {
             const attributesKey = dataset.src.attributesId;
             const geometryKey = dataset.src.geometryId;
 
@@ -57,7 +60,7 @@ class MapComponent extends React.Component {
             attributes.forEach(obj => attributesById[obj[attributesKey]] = obj);
 
             olFeatureLoader.loadFeaturesXhr(
-              dataset.src.geometry,
+              dataUrl(dataset.src.geometry),
               this.format_,
               features => {
                 // console.log(features.length, attributes.length);
@@ -74,7 +77,7 @@ class MapComponent extends React.Component {
       });
     } else {
       source = new VectorSource({
-        url: dataset.src,
+        url: dataUrl(dataset.src),
         format: dataset.src.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON(),
       });
     }
