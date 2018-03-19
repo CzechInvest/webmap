@@ -36,15 +36,6 @@
         fill: #ccc;
       }
     }
-    .category-item {
-      height: 1.5em;
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.3em;
-      span {
-        color: gray;
-      }
-    }
   }
   .list-item-checkbox {
     min-height: 2.85em;
@@ -94,6 +85,21 @@
       position: absolute;
       right: 1em;
       top: 0.75em;
+    }
+  }
+}
+
+.legend-list {
+  padding-left: 2em;
+  margin-bottom: 0.25em;
+  .item {
+    min-height: 1.5em;
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.25em;
+    span {
+      color: gray;
+      margin-top: 0.25em;
     }
   }
 }

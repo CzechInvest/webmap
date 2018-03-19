@@ -11,6 +11,7 @@ const Colors = [
   '#73D216',
   '#75507B',
   '#DCA28F',
+  '#CFAAB4'
 ];
 
 export function getColor(index, opacity=1) {

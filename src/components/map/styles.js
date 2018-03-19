@@ -35,10 +35,10 @@ export function createLayerStyle(layer) {
   const config = layer.style;
 
   switch (config.type) {
-    case 'circle': {
+    case 'circle':
       return createCircleStyle(config);
-    }
-    case 'icon': {
+
+    case 'icon':
       // return createIconStyle(config);
       return Object.assign(
         createIconStyle(config),
@@ -46,7 +46,18 @@ export function createLayerStyle(layer) {
           highlight: color => createIconStyle(Object.assign({}, config, {fill: color}))
         }
       );
-    }
+
+    case 'categorized':
+      // return createCategorizedStyle(config);
+      return Object.assign(
+        createCategorizedStyle(config),
+        {
+          highlight: color => {
+            const style = createPolygonStyle(Object.assign({}, config.base, {fill: color}));
+            return (f) => style;
+          }
+        }
+      );
     default: {
       return Object.assign(
         createPolygonStyle(config),
@@ -57,6 +68,49 @@ export function createLayerStyle(layer) {
         }
       );
     }
+  }
+}
+
+function createCategorizedStyle(config) {
+  const filters = config.categories.map(category => {
+    let matchFn;
+    if (category.range) {
+      matchFn = val => val >= category.range[0] && val <= category.range[1];
+    } else if (category.value !== undefined) {
+      matchFn = val => val === category.value;
+    }
+    const styleCfg = Object.assign({}, config.base, category);
+    return {
+      match: matchFn,
+      style: createLayerStyle({style: styleCfg})
+    };
+  });
+  /*
+  return f => {
+    const val = f.get(config.attribute);
+
+    const index = filters.findIndex(filter => filter.match(val));
+    if (index === -1) return null;
+    const sColor = olColor(config.categories[index].fill);
+    const eColor = index + 1 < config.categories.length ? olColor(config.categories[index+1].fill) : [0,0,0,0.75];
+    const range = config.categories[index].range;
+    const k = (val - range[0]) / (range[1] - range[0]);
+
+    // const sColor = olColor(config.categories[0].fill);
+    // const eColor = olColor(config.categories[config.categories.length-1].fill);
+    // const k = val / config.categories[config.categories.length-1].range[1];
+    const color = sColor.map((v, i) => (v + (eColor[i] - v) * k));
+    const styleCfg = Object.assign({}, config.base, {fill: color});
+    return createLayerStyle({style: styleCfg});
+  }
+  */
+  return f => {
+    const val = f.get(config.attribute);
+    const match = filters.find(filter => filter.match(val));
+    if (!match) {
+      console.log('Out of range:', val);
+    }
+    return match ? match.style : null;//createPolygonStyle({fill: 'red'});
   }
 }
 

@@ -9,20 +9,16 @@ import Icon from '../../Icon';
 import { cssColor } from '../map/styles';
 
 
+function formatNumber(value) {
+  return Intl.NumberFormat('cs-CZ', {style: 'decimal'}).format(value);
+}
+
 class Layer extends React.Component {
 
   legendSymbol(geometryType, style) {
     if (style.type === 'icon') {
       return <Icon glyph={style.icon} style={{fill: cssColor(style.fill)}} />;
     }
-    if (style.type === 'circle') {
-      return (
-        <svg className="icon" viewBox="0 0 48 48">
-          <circle cx="24" cy="24" r="20" style={{fill: cssColor(style.fill)}} />
-        </svg>
-      );
-    }
-
     if (geometryType === 'line') {
       const lineStyle = {
         stroke: cssColor(style.stroke),
@@ -57,10 +53,22 @@ class Layer extends React.Component {
     if (Array.isArray(style)) {
       const symbols = style.map(s => this.legendSymbol(geometryType, s));
       return symbols.map((symbol, i) => (
-        <div className="category-item" key={i}>
+        <div className="item" key={i}>
           { symbol } <span>{ style[i].label }</span>
         </div>
       ));
+    }
+    if (style.type === 'categorized') {
+      return style.categories.map((category, i) => {
+        const symbol = this.legendSymbol(geometryType, Object.assign({}, style.base, category))
+        const label = category.label
+          ? category.label
+          : category.range
+            ? category.range.map(formatNumber).join(' - ')
+            : `${category.value}`;
+        return <div className="item" key={i}> { symbol } <span>{ label }</span></div>
+      });
+      return [];
     }
     return this.legendSymbol(geometryType, style);
   }
@@ -79,7 +87,7 @@ class Layer extends React.Component {
               onChange={() => onChange(id, !visible)} />
             <span className="title">{title[lang]}</span>
           </label>
-          { !simpleLegend && legend }
+          { !simpleLegend && visible && <div className="legend-list">{legend}</div> }
         </div>
       </div>
     );
