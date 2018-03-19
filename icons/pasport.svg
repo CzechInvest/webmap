@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Vrstva_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="91.333px" height="85.167px" viewBox="0 0 91.333 85.167" enable-background="new 0 0 91.333 85.167" xml:space="preserve">
+
+<style>
+	/* <![CDATA[ */
+	line, polyline, rect {
+		stroke: gray;
+		stroke-width: 3;
+	}
+	/* ]]> */
+</style>
+<g>
+	
+		<line fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="19.268" y1="59.592" x2="71.45" y2="59.592"/>
+	
+		<polyline fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		24.295,59.592 24.295,19.024 45.36,8.275 66.77,19.198 66.77,59.238 	"/>
+	
+		<polyline fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+		31.579,59.592 31.579,47.283 59.139,47.283 59.139,59.592 	"/>
+	
+		<line fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="45.36" y1="47.283" x2="45.36" y2="59.592"/>
+	
+		<rect x="39.147" y="25.439" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" width="12.307" height="12.309"/>
+</g>
+</svg>
