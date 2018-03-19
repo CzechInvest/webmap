@@ -15,6 +15,7 @@ import { createLayerStyle } from '../map/styles';
 import formatValue from '../identification/format';
 import { showObjectInfo } from '../identification/actions';
 import messages from '../lang/messages/app';
+import { Scrollbars } from 'react-custom-scrollbars';
 import './Search.scss';
 
 
@@ -37,7 +38,15 @@ class Search extends React.Component {
       source: new VectorSource(),
       visible: true,
       zIndex: 2,
-      style: []
+      style: [],
+      style: createLayerStyle({
+        style: {
+          type: 'circle',
+          radius: 10,
+          anchor: [0.5, 0.5],
+          fill: 'green'
+        }
+      })
     });
     this.virtualLayer.getStyleFunction().highlight = color => createLayerStyle({
       style: {
@@ -100,7 +109,6 @@ class Search extends React.Component {
 
   search(text) {
     if (text === '') {
-      // this.virtualLayer.getSource().clear();
       this.setState({objects: null, addresses: null});
       return;
     }
@@ -142,7 +150,12 @@ class Search extends React.Component {
 
   onKeyPress(evt) {
     if (evt.key === 'Enter') {
+      if (this.state.objects) {
+        this.showObjects(this.state.objects);
+      }
       this.search(this.inputEl.value);
+    } else {
+      this.virtualLayer.getSource().clear();
     }
   }
 
@@ -181,6 +194,22 @@ class Search extends React.Component {
     });
   }
 
+  showObjects(items) {
+    const map = this.context.map;
+    const source = this.virtualLayer.getSource();
+    source.clear();
+    const features = items.map(i => {
+      const f = i.feature.clone()
+      let styleFn = map.layerById[i.layerId].getStyleFunction();
+      if (styleFn.highlight) {
+        styleFn = styleFn.highlight('red');
+      }
+      f.setStyle(styleFn);
+      return f;
+    })
+    source.addFeatures(features);
+  }
+
   showAddress(item) {
     console.log(item);
     const extent = proj.transformExtent(item.boundingbox, 'EPSG:4326', this.props.projCode);
@@ -208,8 +237,17 @@ class Search extends React.Component {
     });
   }
 
+  itemIcon(item) {
+    const { layers, categories } = this.props;
+    const layer = layers.get(item.layerId);
+    if (layer.style.icon) {
+      return <Icon glyph={layer.style.icon}></Icon>
+    }
+    return <Icon className="category icon" glyph={categories.get(layer.catId).icon}></Icon>
+  }
+
   renderResults() {
-    const { layers } = this.props;
+    const { layers, categories } = this.props;
     const objects = this.state.objects || [];
     const addresses = this.state.addresses || {results: [], totalResults: 0};
 
@@ -218,15 +256,15 @@ class Search extends React.Component {
     const showedAddresses = addresses.results.slice(0, 10);
     const hiddenAddressesCount = Math.max(0, addresses.totalResults - showedAddresses.length);
 
-    const icons = showedObjects.map(item => {
-      const style = layers.get(item.layerId).style;
-      return style ? style.icon : '';
-    });
+    const bodyBounds = document.body.getBoundingClientRect();
+    const maxHeight = Math.round(bodyBounds.height * 0.75)
+    // const maxHeight = bodyBounds.height -300
     return (
+      <Scrollbars autoHeight autoHeightMax={maxHeight}>
       <div className="search-items">
         {showedObjects.map((item, index) => (
           <div key={index} onClick={() => this.showObject(item)}>
-            <Icon glyph={icons[index]}></Icon>
+            { this.itemIcon(item) }
             <label>{ item.label }</label>
           </div>
         ))}
@@ -242,6 +280,7 @@ class Search extends React.Component {
         ))}
         { hiddenAddressesCount > 0 && <small>And another { hiddenAddressesCount } addresses</small> }
       </div>
+      </Scrollbars>
     );
   }
 
@@ -255,7 +294,7 @@ class Search extends React.Component {
           <input
             placeholder={messages['search'][lang]}
             ref={el => this.inputEl = el}
-            onKeyPress={this.onKeyPress.bind(this)}
+            onKeyUp={this.onKeyPress.bind(this)}
             onKeyDown={debounce(() => this.search(this.inputEl.value), 300)}
           />
           <button onClick={() => this.search(this.inputEl.value)}>
@@ -284,6 +323,7 @@ export default connect(state => ({
   lang: state.lang.selectedLanguage,
   layers: state.layers.layers,
   datasets: state.layers.datasets,
+  categories: state.categories.categories,
   projCode: state.view.projCode,
 }), dispatch => bindActionCreators({
   showObjectInfo
