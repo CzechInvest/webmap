@@ -25,6 +25,11 @@ export default {
       icon: 'nemovitosti'
     },
     {
+      id: 'pasport',
+      icon: 'pasport',
+      selectType: 'radio'
+    },
+    {
       id: 'socioeconomic',
       icon: 'socio',
       selectType: 'radio'
@@ -33,7 +38,7 @@ export default {
   datasets: [
     {
       id: 'airports',
-      src: 'web-data/doprava/airports.geojson',
+      src: 'doprava/airports.geojson',
       // geometryType: 'polygon'
       attributes: [
         { property: 'name' },
@@ -49,7 +54,7 @@ export default {
     },
     {
       id: 'ferry',
-      src: 'web-data/doprava/ferry.geojson',
+      src: 'doprava/ferry.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' }
@@ -57,27 +62,27 @@ export default {
     },
     {
       id: 'rail',
-      src: 'web-data/doprava/rail.pbf.geojson',
+      src: 'doprava/rail.pbf.geojson',
       geometryType: 'line'
     },
     {
       id: 'highway',
-      src: 'web-data/doprava/highway.pbf.geojson',
+      src: 'doprava/highway.pbf.geojson',
       geometryType: 'line'
     },
     {
       id: 'silnice_1tr',
-      src: 'web-data/doprava/primary.pbf.geojson',
+      src: 'doprava/primary.pbf.geojson',
       geometryType: 'line'
     },
     {
       id: 'silnice_2tr',
-      src: 'web-data/doprava/secondary.pbf.geojson',
+      src: 'doprava/secondary.pbf.geojson',
       geometryType: 'line'
     },
     {
       id: 'dodavatele',
-      src: 'web-data/podnikatelska_sit/dodavatele.geojson',
+      src: 'podnikatelska_sit/dodavatele.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -93,7 +98,7 @@ export default {
     },
     {
       id: 'pi_vtp',
-      src: 'web-data/vzdelavani/pi_vtp.geojson',
+      src: 'vzdelavani/pi_vtp.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -110,7 +115,7 @@ export default {
     },
     {
       id: 'whoiswho',
-      src: 'web-data/vzdelavani/whoiswho.geojson',
+      src: 'vzdelavani/whoiswho.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -127,7 +132,7 @@ export default {
     },
     {
       id: 'coworking',
-      src: 'web-data/startup/coworking.geojson',
+      src: 'startup/coworking.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -142,7 +147,7 @@ export default {
     },
     {
       id: 'sub_bic',
-      src: 'web-data/startup/sub_bic.geojson',
+      src: 'startup/sub_bic.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -157,10 +162,10 @@ export default {
     },
     {
       id: 'kraje',
-      // src: 'web-data/socioekonomicka/kraje.pbf.geojson',
+      // src: 'socioekonomicka/kraje.pbf.geojson',
       src: {
-        geometry: 'web-data/geometry/kraje.geojson',
-        attributes: 'web-data/socioekonomicka/soc_ekon-kraje.json',
+        geometry: 'geometry/kraje.geojson',
+        attributes: 'socioekonomicka/soc_ekon-kraje.json',
         geometryId: 'Kod',
         attributesId: 'Kod'
       },
@@ -203,12 +208,12 @@ export default {
     },
     {
       id: 'pz',
-      src: 'web-data/verejna_podpora/pz.geojson',
+      src: 'verejna_podpora/pz.geojson',
       geometryType: 'point'
     },
     {
       id: 'rk',
-      src: 'web-data/rk/reg_offices.geojson',
+      src: 'rk/reg_offices.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -225,7 +230,7 @@ export default {
     },
     {
       id: 'brownfields',
-      src: 'web-data/nemovitosti/brownfields.geojson',
+      src: 'nemovitosti/brownfields.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -235,7 +240,7 @@ export default {
     },
     {
       id: 'business_angels',
-      src: 'web-data/startup/business_angels.geojson',
+      src: 'startup/business_angels.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -246,7 +251,7 @@ export default {
     },
     {
       id: 'startupy',
-      src: 'web-data/startup/startupy.geojson',
+      src: 'startup/startupy.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -261,7 +266,7 @@ export default {
     },
     {
       id: 'orp',
-      src: 'web-data/verejna_podpora/orp.pbf.geojson',
+      src: 'verejna_podpora/orp.pbf.geojson',
       geometryType: 'polygon',
       attributes: [
         { property: 'name' },
@@ -286,8 +291,8 @@ export default {
     {
       id: 'okresy',
       src: {
-        geometry: 'web-data/geometry/okresy.pbf.geojson',
-        attributes: 'web-data/socioekonomicka/soc_ekon-okresy.json',
+        geometry: 'geometry/okresy.pbf.geojson',
+        attributes: 'socioekonomicka/soc_ekon-okresy.json',
         geometryId: 'Kod',
         attributesId: 'Kod'
       },
@@ -322,8 +327,26 @@ export default {
       ],
     },
     {
+      id: 'kindergardens',
+      src: 'vzdelavani/kindergardens.geojson',
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'address' }
+      ]
+    },
+    {
+      id: 'primary_schools',
+      src: 'vzdelavani/primary_schools.geojson',
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'address' }
+      ]
+    },
+    {
       id: 'sskoly',
-      src: 'web-data/vzdelavani/sskoly.geojson',
+      src: 'vzdelavani/sskoly.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -332,7 +355,7 @@ export default {
     },
     {
       id: 'vskoly',
-      src: 'web-data/vzdelavani/vskoly.geojson',
+      src: 'vzdelavani/vskoly.geojson',
       geometryType: 'point',
       attributes: [
         { property: 'name' },
@@ -346,6 +369,156 @@ export default {
           template: '<a target="_blank" href="${value}">${value}</a>'
         }
       ]
+    },
+    {
+      id: 'pasport',
+      src: {
+        geometry: 'geometry/orp.pbf.geojson',
+        attributes: 'pasporty/assets.json',
+        geometryId: 'Kod',
+        attributesId: 'kod'
+      },
+      geometryType: 'polygon',
+      attributes: [
+        { property: 'Nazev' },
+        { property: 'contact' },
+        {
+          property: 'mail',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a href="mailto:${value}">${value}</a>'
+        },
+        {
+          property: 'inhabitans',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'inhabitans_orp',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'airport_distance',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'highway_distance',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'brownfields',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'greenfields',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'size_for_living',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'flat_planned',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal'}]
+        },
+        {
+          property: 'prepared_for_living',
+          type: 'boolean',
+        },
+        {
+          property: 'professions_disponibility',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 3}]
+        },
+        {
+          property: 'technical_workers_disponibility',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 3}]
+        },
+        {
+          property: 'services_disponibility',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 3}]
+        },
+        {
+          property: 'reparers_disponibility',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 3}]
+        },
+        {
+          property: 'machine_service_disponibility',
+          type: 'number',
+          format: ['cs-CZ', {style: 'decimal', maximumFractionDigits: 3}]
+        },
+        {
+          property: 'tradition_spec',
+        },
+        {
+          property: 'city_strategy',
+          type: 'boolean',
+        },
+        {
+          property: 'financial_business_support',
+          type: 'boolean',
+        },
+        {
+          property: 'business_web',
+          type: 'boolean',
+        },
+        {
+          property: 'personal_consultant',
+        },
+        {
+          property: 'regural_meetings',
+          type: 'boolean',
+        },
+        {
+          property: 'decision_involvement',
+          type: 'boolean',
+        }
+      ],
+      groups: {
+        basic_info: [
+          'contact',
+          'mail',
+          'inhabitans',
+          'inhabitans_orp',
+          'airport_distance',
+          'highway_distance'
+        ],
+        technical_infrastructure: [
+          'brownfields',
+          'greenfields'
+        ],
+        social_infrastructure: [
+          'size_for_living',
+          'flat_planned',
+          'prepared_for_living'
+        ],
+        kps: [
+          'professions_disponibility',
+          'technical_workers_disponibility',
+          'services_disponibility',
+          'reparers_disponibility',
+          'machine_service_disponibility'
+        ],
+        business_cooperation: [
+          'tradition_spec',
+          'city_strategy',
+          'financial_business_support',
+          'business_web',
+          'personal_consultant',
+          'regural_meetings',
+          'decision_involvement'
+        ]
+      }
     }
   ],
   layers: [
@@ -711,6 +884,28 @@ export default {
       catId: 'science'
     },
     {
+      id: 'kindergardens',
+      datasetId: 'kindergardens',
+      visible: false,
+      style: {
+        type: 'icon',
+        icon: 'vvi_bod',
+        fill: '#75507B'
+      },
+      catId: 'science'
+    },
+    {
+      id: 'primary_schools',
+      datasetId: 'primary_schools',
+      visible: false,
+      style: {
+        type: 'icon',
+        icon: 'vvi_bod',
+        fill: '#73D216'
+      },
+      catId: 'science'
+    },
+    {
       id: 'sskoly',
       datasetId: 'sskoly',
       visible: false,
@@ -721,37 +916,67 @@ export default {
       },
       catId: 'science'
     },
+    // {
+    //   id: 'vskoly_univerzitni',
+    //   datasetId: 'vskoly',
+    //   visible: false,
+    //   filter: {
+    //     type: 'single',
+    //     attribute: 'vtype',
+    //     value: 'univerzitní'
+    //   },
+    //   style: {
+    //     type: 'icon',
+    //     icon: 'vvi_bod',
+    //     fill: '#F088A4'
+    //   },
+    //   catId: 'science'
+    // },
+    // {
+    //   id: 'vskoly_neuniverzitni',
+    //   datasetId: 'vskoly',
+    //   visible: false,
+    //   filter: {
+    //     type: 'single',
+    //     attribute: 'vtype',
+    //     value: 'neuniverzitní'
+    //   },
+    //   style: {
+    //     type: 'icon',
+    //     icon: 'vvi_bod',
+    //     fill: '#fce94f'
+    //   },
+    //   catId: 'science'
+    // },
     {
-      id: 'vskoly_univerzitni',
+      id: 'vskoly',
       datasetId: 'vskoly',
       visible: false,
-      filter: {
-        type: 'single',
-        attribute: 'vtype',
-        value: 'univerzitní'
-      },
+      catId: 'science',
       style: {
         type: 'icon',
         icon: 'vvi_bod',
-        fill: '#F088A4'
+        fill: '#FCE94F'
       },
-      catId: 'science'
-    },
-    {
-      id: 'vskoly_neuniverzitni',
-      datasetId: 'vskoly',
-      visible: false,
-      filter: {
-        type: 'single',
+      xstyle: {
+        type: 'categorized',
         attribute: 'vtype',
-        value: 'neuniverzitní'
-      },
-      style: {
-        type: 'icon',
-        icon: 'vvi_bod',
-        fill: '#fce94f'
-      },
-      catId: 'science'
+        base: {
+          type: 'icon',
+          icon: 'vvi_bod'
+        },
+        categories: [
+          {
+            value: 'univerzitní',
+            label: 'Univerzitní',
+            fill: '#F088A4'
+          }, {
+            value: 'neuniverzitní',
+            label: 'Neuniverzitní',
+            fill: '#FCE94F'
+          }
+        ]
+      }
     },
     {
       id: 'incubators',
@@ -903,6 +1128,320 @@ export default {
         fill: [62,39,35 ,0.8]
       },
       catId: 'estate'
+    },
+    {
+      id: 'pasporty',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        stroke: '#444',
+        strokeWidth: 1.25,
+        fill: ['#ef9a9a', 0.5]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'free_greenfields',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'greenfields',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            range: [0, 150000],
+            fill: ['#C8E6C9', 0.75]
+          }, {
+            range: [150001, 500000],
+            fill: ['#81C784', 0.75]
+          }, {
+            range: [500001, 1000000],
+            fill: ['#43A047', 0.75]
+          }, {
+            range: [1000001, Infinity],
+            fill: ['#1B5E20', 0.75]
+          }
+        ]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'free_brownfields',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'brownfields',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            range: [0, 100000],
+            fill: ['#D7CCC8', 0.75]
+          }, {
+            range: [100001, 500000],
+            fill: ['#A1887F', 0.75]
+          }, {
+            range: [500001, 1000000],
+            fill: ['#6D4C41', 0.75]
+          }, {
+            range: [1000001, Infinity],
+            fill: ['#3E2723', 0.75]
+          }
+        ]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'prepared_for_living',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'prepared_for_living',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            value: true,
+            label: 'Ano',
+            fill: ['#9CCC65', 0.55]
+          }, {
+            value: false,
+            label: 'Ne',
+            fill: ['#DD4A53', 0.55]
+          }
+        ]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'professions_disponibility',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'professions_disponibility',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            range: [0, 0.5],
+            fill: ['#E1BEE7', 0.75]
+          }, {
+            range: [0.501, 1],
+            fill: ['#BA68C8', 0.75]
+          }, {
+            range: [1.01, 1.5],
+            fill: ['#8E24AA', 0.75]
+          }, {
+            range: [1.501, Infinity],
+            fill: ['#4A148C', 0.75]
+          }
+        ]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'technical_workers_disponibility',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'technical_workers_disponibility',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            range: [0, 0.5],
+            fill: ['#BBDEFB', 0.75]
+          }, {
+            range: [0.501, 1],
+            fill: ['#64B5F6', 0.75]
+          }, {
+            range: [1.01, 1.5],
+            fill: ['#1E88E5', 0.75]
+          }, {
+            range: [1.501, Infinity],
+            fill: ['#0D47A1', 0.75]
+          }
+        ]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'services_disponibility',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'services_disponibility',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            range: [0, 0.5],
+            fill: ['#FFF9C4', 0.75]
+          }, {
+            range: [0.501, 1],
+            fill: ['#FFF176', 0.75]
+          }, {
+            range: [1.01, 1.5],
+            fill: ['#FDD835', 0.75]
+          }, {
+            range: [1.501, Infinity],
+            fill: ['#F9A825', 0.75]
+          }
+        ]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'reparers_disponibility',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'reparers_disponibility',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            range: [0, 0.5],
+            fill: ['#F5F5F5', 0.75]
+          }, {
+            range: [0.501, 1],
+            fill: ['#E0E0E0', 0.75]
+          }, {
+            range: [1.01, 1.5],
+            fill: ['#757575', 0.75]
+          }, {
+            range: [1.501, Infinity],
+            fill: ['#212121', 0.75]
+          }
+        ]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'machine_service_disponibility',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'machine_service_disponibility',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            range: [0, 0.5],
+            fill: ['#FFE0B2', 0.75]
+          }, {
+            range: [0.501, 1],
+            fill: ['#FFB74D', 0.75]
+          }, {
+            range: [1.01, 1.5],
+            fill: ['#FB8C00', 0.75]
+          }, {
+            range: [1.501, Infinity],
+            fill: ['#E65100', 0.75]
+          }
+        ]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'financial_business_support',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'financial_business_support',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            value: true,
+            label: 'Ano',
+            fill: ['green', 0.55]
+          }, {
+            value: false,
+            label: 'Ne',
+            fill: ['red', 0.55]
+          }
+        ]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'business_web',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'business_web',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            value: true,
+            label: 'Ano',
+            fill: ['green', 0.55]
+          }, {
+            value: false,
+            label: 'Ne',
+            fill: ['red', 0.55]
+          }
+        ]
+      },
+      catId: 'pasport'
+    },
+    {
+      id: 'city_strategy',
+      datasetId: 'pasport',
+      visible: false,
+      style: {
+        type: 'categorized',
+        attribute: 'city_strategy',
+        base: {
+          stroke: '#444',
+          strokeWidth: 1.25
+        },
+        categories: [
+          {
+            value: true,
+            label: 'Ano',
+            fill: ['green', 0.55]
+          }, {
+            value: false,
+            label: 'Ne',
+            fill: ['red', 0.55]
+          }
+        ]
+      },
+      catId: 'pasport'
     },
     {
       id: 'kraje',
