@@ -126,7 +126,7 @@ class Identification extends React.Component {
       layerId = olayer.get('id')
     }
     let title;
-    if (dataset.id === 'pasport') {
+    if (dataset && dataset.id === 'pasport') {
       title = feature.get('Nazev');
     } else if (layers.get(layerId)) {
       title = layers.get(layerId).title[lang]
