@@ -116,14 +116,14 @@ class Identification extends React.Component {
     }
 
     let layerId;
-    const hasMoreLayers = layers.filter(l => l.visible && l.datasetId === olayer.get('dataset')).size > 1;
-    if (hasMoreLayers) {
+    const objectLayers = layers.filter(l => l.visible && l.datasetId === olayer.get('dataset')).toList()
+    if (objectLayers.size > 1) {
       const layersIds = olayer.featureFilters(feature);
       if (layersIds.length === 1) {
         layerId = layersIds[0];
       }
     } else {
-      layerId = olayer.get('id')
+      layerId = objectLayers.get(0).id
     }
     let title;
     if (dataset && dataset.id === 'pasport') {
