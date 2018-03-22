@@ -22,9 +22,9 @@ const convertToClick = (e) => {
   e.target.dispatchEvent(evt)
 }
 
-export const Popup = ({ title, fields, onClose }) => {
+export const Popup = ({ title, fields, onClose, className = '' }) => {
   return (
-    <div onMouseUp={convertToClick}>
+    <div className={className} onMouseUp={convertToClick}>
       <h3>{title}</h3>
       <button
         onClick={ () => onClose() }
@@ -47,17 +47,18 @@ export class GroupedInfo extends React.Component {
   }
 
   setGroup(group) {
-    this.setState({group: parseInt(group)});
+    this.setState({group: parseInt(group, 10)});
   }
 
   render() {
-    const { title, fields, groups, onClose } = this.props;
-    const group = this.state.group;
-    const groupAttribs = Object.values(groups)[group]
+    const { title, fields, groups, onClose, className = '' } = this.props;
+    const groupsList = Object.keys(groups);
+    const groupIndex = this.state.group;
+    const groupAttribs = Object.values(groups)[groupIndex]
     const visibleFields = fields.filter(f => groupAttribs.includes(f.id))
 
     return (
-      <div onMouseUp={convertToClick}>
+      <div className={className} onMouseUp={convertToClick}>
         <h3>{title}</h3>
         <button
           onClick={ () => onClose() }
@@ -66,18 +67,18 @@ export class GroupedInfo extends React.Component {
         <div className="groups">
           <button
             className="left"
-            disabled={group < 1}
-            onClick={e => this.setGroup(group - 1)}>
+            disabled={groupIndex < 1}
+            onClick={e => this.setGroup(groupIndex - 1)}>
             <Icon glyph="arrow-left" />
           </button>
           <Dropdown
-            options={Object.keys(groups)}
-            selected={group}
+            options={groupsList}
+            selected={groupIndex}
             onChange={(v, i) => this.setGroup(i)} />
           <button
             className="right"
-            disabled={group === groups.length - 1}
-            onClick={e => this.setGroup(group + 1)}>
+            disabled={groupIndex === groupsList.length - 1}
+            onClick={e => this.setGroup(groupIndex + 1)}>
             <Icon glyph="arrow-right" />
           </button>
         </div>

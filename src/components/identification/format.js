@@ -1,7 +1,7 @@
  
 export default function formatValue(value, params = {}) {
   if (Array.isArray(value)) {
-    value = value.join(', ');
+    value = value.filter(v => v).join(', ');
   }
   if (params.type === 'map') {
     value = params.map[value] || '-';

@@ -122,8 +122,10 @@ class Identification extends React.Component {
       if (layersIds.length === 1) {
         layerId = layersIds[0];
       }
-    } else {
+    } else if (objectLayers.size === 1) {
       layerId = objectLayers.get(0).id
+    } else {
+      layerId = olayer.get('id')
     }
     let title;
     if (dataset && dataset.id === 'pasport') {
@@ -205,9 +207,13 @@ class Identification extends React.Component {
       this.overlay.setOffset(offset);
 
       const objectData = this.getObjectInfo(feature, olLayer);
-      const popup = objectData.groups
-        ? <GroupedInfo {...objectData} onClose={() => {this.clearSelection()}} />
-        : <Popup {...objectData} onClose={() => {this.clearSelection()}} />;
+      const PopupComp = objectData.groups ? GroupedInfo : Popup;
+      const popup = (
+        <PopupComp
+          {...objectData}
+          className={olLayer.get('dataset')}
+          onClose={() => {this.clearSelection()}} />
+        );
 
       return ReactDOM.createPortal(popup, this.overlay.getElement());
     }
