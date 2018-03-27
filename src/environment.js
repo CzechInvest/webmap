@@ -121,7 +121,6 @@ export default {
         { property: 'name' },
         { property: 'address' },
         { property: 'sectors' },
-        { property: 'specialization' },
         {
           property: 'url',
           type: 'html',
@@ -235,7 +234,11 @@ export default {
       attributes: [
         { property: 'name' },
         { property: 'btype' },
-        { property: 'prev_usage' }
+        { property: 'prev_usage' },
+        { property: 'new_usage' },
+        { property: 'area' },
+        { property: 'ecology' },
+        { property: 'ownership' }
       ]
     },
     {
