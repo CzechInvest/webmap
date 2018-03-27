@@ -258,6 +258,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin(Object.assign({}, env.stringified)),
     // In the past, one of webpack’s trade-offs when bundling
     // was that each module in your bundle would be wrapped in
     // individual function closures. These wrapper functions made it slower
