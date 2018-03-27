@@ -90,3 +90,15 @@ out skel qt;
 ### See Also
 - [Geobuf](https://github.com/mapbox/geobuf)
 - [Protocol Buffers](https://developers.google.com/protocol-buffers/)
+
+## Kraje a Okresy
+
+Download data from http://vdp.cuzk.cz/vdp/ruian/vymennyformat/vyhledej e.g.
+http://vdp.cuzk.cz/vymenny_format/soucasna/20171231_ST_UKSH.xml.gz
+
+```
+ogr2ogr -f GeoJSON  -s_srs +init=epsg:5514 -t_srs +init=epsg:4326 -sql "select Kod, Nazev, GeneralizovaneHranice from Okresy" okresy.geojson ~/Stažené/20171231_ST_UKSG.xml 
+ogr2ogr -f GeoJSON  -s_srs +init=epsg:5514 -t_srs +init=epsg:4326 -sql "select Kod, Nazev, GeneralizovaneHranice from ORP" ORP.geojson ~/Stažené/20171231_ST_UKSG.xml 
+ogr2ogr -f GeoJSON  -s_srs +init=epsg:5514 -t_srs +init=epsg:4326 -sql "select Kod, Nazev, GeneralizovaneHranice from Vusc" kraje.geojson ~/Stažené/20171231_ST_UKSG.xml
+```
+
