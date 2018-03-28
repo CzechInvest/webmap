@@ -1,7 +1,16 @@
 # webmap
 Web map application
 
+## Data
+
+Clone or link `web-data` from https://github.com/czechinvest/web-data/ to
+`public` directory
+
 ## Commands
+
+### `npm install`
+
+install dependencies
 
 ### `npm run start`
 
