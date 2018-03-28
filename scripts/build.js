@@ -125,8 +125,9 @@ function build(previousFileSizes) {
 }
 
 function copyPublicFolder() {
+  const absDataPath = paths.appPublic + '/web-data'
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
-    filter: file => file !== paths.appHtml,
+    filter: file => file !== paths.appHtml && !file.startsWith(absDataPath)
   });
 }
