@@ -49,9 +49,8 @@ class MapComponent extends React.Component {
         format: dataset.src.geometry.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON(),
         loader(extent, resolution, projection) {
           const json = new JsonFormat();
-          json.readFeatures = (resp, params) => {
-            return JSON.parse(resp);
-          };
+          json.readFeatures = (resp, params) => JSON.parse(resp);
+
           olFeatureLoader.loadFeaturesXhr(dataUrl(dataset.src.attributes), json, attributes => {
             const attributesKey = dataset.src.attributesId;
             const geometryKey = dataset.src.geometryId;
@@ -70,6 +69,8 @@ class MapComponent extends React.Component {
                   f.setProperties(attributesById[id]);
                 });
                 this.addFeatures(features);
+                // with filter of not paired features
+                // this.addFeatures(features.filter(f => attributesById[f.get(geometryKey)]));
               }
             )(extent, resolution, projection);
           })();
@@ -244,7 +245,7 @@ MapComponent.childContextTypes = {
 
 const visibleLayersSelector = createSelector(
   state => state.layers.layers,
-  (layers) => layers.toList().filter(l => l.visible).map(l => l.id)
+  layers => layers.toList().filter(l => l.visible).map(l => l.id)
 )
 
 export default connect(state => ({

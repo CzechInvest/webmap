@@ -266,7 +266,12 @@ export default {
     },
     {
       id: 'orp',
-      src: 'verejna_podpora/orp.pbf.geojson',
+      src: {
+        geometry: 'geometry/orp.pbf.geojson',
+        attributes: 'verejna_podpora/verejna_podpora.json',
+        geometryId: 'Kod',
+        attributesId: 'Kod'
+      },
       geometryType: 'polygon',
       attributes: [
         { property: 'name' },

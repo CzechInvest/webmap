@@ -196,7 +196,6 @@ function FilteredSource(rootSource) {
 
   filteredSource._loadFeatures = filteredSource.loadFeatures;
   filteredSource.loadFeatures = (extent, resolution, projection) => {
-    console.log('loadFeatures')
     if (rootSource.getFeatures().length) {
       filteredSource._loadFeatures(extent, resolution, projection);
     } else {
@@ -215,6 +214,7 @@ export function FilteredPolygonLayer(config) {
 
   const olLayer = new VectorLayer(
     Object.assign(config, {
+      visible: false,
       source: FilteredSource(config.source),
       style: f => {
         const colors = activeFilters.reduce((values, filter) => {
