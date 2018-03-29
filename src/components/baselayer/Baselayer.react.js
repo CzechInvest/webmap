@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Tile from 'ol/layer/tile';
-import sourceXYZ from 'ol/source/xyz';
+import TileJSON from 'ol/source/tilejson';
 import OSM from 'ol/source/osm';
 
 class Baselayer extends React.Component {
@@ -35,9 +35,11 @@ class Baselayer extends React.Component {
     const { styleId, token, tileSize, visible, opacity } = this.props;
 
     this.layer = new Tile({
-      source: new sourceXYZ({
-        url: this.getSourceURL(styleId, token, tileSize),
-        attributions: OSM.ATTRIBUTION
+      source: new TileJSON({
+        url: 'https://maps.tilehosting.com/styles/positron.json?key=mCnC0rArFsfnBvLPiB6J',
+        // url: this.getSourceURL(styleId, token, tileSize),
+        attributions: OSM.ATTRIBUTION,
+        crossOrigin: 'anonymous'
       }),
       visible,
       opacity
