@@ -7,6 +7,7 @@ import Identification from '../identification/Identification.react';
 import DistrictsComparator from '../districts/DistrictsComparator.react';
 import Search from '../search/Search.react';
 import Contact from '../contact/Contact.react';
+import UrlState from '../map/UrlState.react'
 import '../../fonts.scss';
 import '../../animations.scss';
 import './App.scss';
@@ -22,5 +23,6 @@ export default () => (
     <Identification />
     <DistrictsComparator />
     <Search />
+    <UrlState />
   </Map>
 );
