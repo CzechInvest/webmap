@@ -1,10 +1,11 @@
 # webmap
 Web map application
 
-## Data
+## Using local data (optional)
 
-Clone or link `web-data` from https://github.com/czechinvest/web-data/ to
+1. Clone or link `web-data` from https://github.com/czechinvest/web-data/ to
 `public` directory
+2. Uncomment alternative configuration of **DATA_URL** variable in `./config/env.js`
 
 ## Commands
 
