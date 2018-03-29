@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { setZoom, setCenter } from './actions';
 import { connect } from 'react-redux';
 import View from 'ol/view';
+import debounce from 'lodash/debounce';
 
 
 class ViewComponent extends Component {
@@ -22,10 +23,10 @@ class ViewComponent extends Component {
     });
     this.context.map.setView(this.view);
 
-    this.view.on('change:resolution', e => {
+    this.view.on('change:resolution', debounce(e => {
       const zoom = this.view.getZoom();
       setZoom(zoom);
-    });
+    }, 50));
 
     this.context.map.on('moveend', e => {
       const center = this.view.getCenter();
