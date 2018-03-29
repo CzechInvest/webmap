@@ -216,8 +216,8 @@ function createCircleStyle(config = {}) {
     image: new Circle({
       radius: config.radius || 7,
       stroke: new Stroke({
-        color: 'white',
-        width: 2
+        color: config.stroke || 'white',
+        width: config.strokeWidth || 2
       }),
       fill: new Fill({
         color: olColor(config.fill)

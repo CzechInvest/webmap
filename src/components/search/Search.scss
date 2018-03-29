@@ -1,22 +1,37 @@
+@import '../../theme.scss';
+
 .search-container {
   position: absolute;
   right: 0;
   top: 4em;
   z-index: 90;
   width: 18em;
+  padding-left: 0.5em;
 
-  @media (max-width: 1200px) {
-    display: none;
+  @media (max-width: 960px) {
+    top: 0.5em;
+  }
+
+  @media (min-width: 960px) and (max-width: 1500px) {
+    top: 7.5em;
+
+    .search-toolbar {
+      background-color: rgba(255,255,255,0.6);
+      box-shadow: 0px 1px 5px #aaa;
+    }
   }
 
   .search-toolbar {
     display: flex;
     align-items: center;
-    padding-right: 0.5em;
+    padding: 0.25em;
+    > * {
+      opacity: 0.6;
+    }
     input {
       height: 1.5em;
       background-color: transparent;
-      border: 2px solid #777;
+      border: 2px solid #888;
       border-width: 0 0 2px 0;
       flex-grow: 1;
     }
@@ -26,10 +41,22 @@
       fill: #555;
     }
   }
+  &.focus, &.open {
+    .search-toolbar {
+      input {
+        border-color: lighten($primary-color, 10%);
+      }
+    }
+  }
+  &:hover, &.focus, &.open {
+    .search-toolbar > * {
+      opacity: 1;
+    }
+  }
 
   .search-items {
     background-color: rgba(#eee, 0.9);
-    margin-top: 0.25em;
+    margin-top: 0em;
     border: 1px solid #ccc;
     border-width: 0 1px 1px 1px;
     z-index: 2;

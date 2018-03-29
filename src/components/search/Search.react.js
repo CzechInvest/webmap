@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import proj from 'ol/proj';
@@ -19,7 +20,9 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import './Search.scss';
 
 
-const API_URL = 'https://geocoder.tilehosting.com/cz/q/${text}.js?key=9zgkXtgp35zBipYQKGI9';
+function searchQueryUrl(text) {
+  return `https://geocoder.tilehosting.com/cz/q/${text}.js?key=9zgkXtgp35zBipYQKGI9`
+}
 
 function removeAccents(text) {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -30,6 +33,7 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      focus: false,
       objects: null,
       addresses: null,
       spinner: false
@@ -38,23 +42,18 @@ class Search extends React.Component {
       source: new VectorSource(),
       visible: true,
       zIndex: 2,
-      style: [],
-      style: createLayerStyle({
-        style: {
-          type: 'circle',
-          radius: 10,
-          anchor: [0.5, 0.5],
-          fill: 'green'
-        }
-      })
+      style: [], // empty style, only highlighted objects should be visible
+      // style: createLayerStyle({
+      //   style: { type: 'circle', anchor: [0.5, 0.5], fill: 'green' }
+      // })
     });
     this.virtualLayer.getStyleFunction().highlight = color => createLayerStyle({
       style: {
+        // type: 'icon',
+        // icon: 'point',
         type: 'circle',
         radius: 10,
         anchor: [0.5, 0.5],
-        // type: 'icon',
-        // icon: 'point',
         fill: color
       }
     });
@@ -136,7 +135,7 @@ class Search extends React.Component {
       this.addressRequest.abort();
       this.addressRequest = null;
     }
-    const url = API_URL.replace('${text}', text);
+    const url = searchQueryUrl(text);
     const request = new XMLHttpRequest();
     request.open("GET", url, true);
     request.responseType = "json";
@@ -202,7 +201,7 @@ class Search extends React.Component {
       const f = i.feature.clone()
       let styleFn = map.layerById[i.layerId].getStyleFunction();
       if (styleFn.highlight) {
-        styleFn = styleFn.highlight('red');
+        styleFn = styleFn.highlight('rgb(229,115,115)');
       }
       f.setStyle(styleFn);
       return f;
@@ -247,7 +246,6 @@ class Search extends React.Component {
   }
 
   renderResults() {
-    const { layers, categories } = this.props;
     const objects = this.state.objects || [];
     const addresses = this.state.addresses || {results: [], totalResults: 0};
 
@@ -289,13 +287,15 @@ class Search extends React.Component {
     const { objects, addresses } = this.state;
     const open = objects || addresses;
     return (
-      <div className="search-container">
+      <div className={classnames("search-container", {focus: this.state.focus, open})} >
         <div className="search-toolbar">
           <input
             placeholder={messages['search'][lang]}
             ref={el => this.inputEl = el}
             onKeyUp={this.onKeyPress.bind(this)}
             onKeyDown={debounce(() => this.search(this.inputEl.value), 300)}
+            onFocus={() => this.setState({focus: true})}
+            onBlur={() => this.setState({focus: false})}
           />
           <button onClick={() => this.search(this.inputEl.value)}>
             <Icon glyph="search" />
