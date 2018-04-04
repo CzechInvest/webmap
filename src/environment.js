@@ -527,6 +527,20 @@ export default {
           'decision_involvement'
         ]
       }
+    },
+    {
+      id: 'top_investments',
+      src: 'podnikatelska_sit/top_investice.geojson',
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'sector' },
+        { property: 'origin' },
+        { property: 'investment' },
+        { property: 'places' },
+        { property: 'year' },
+        { property: 'target' }
+      ]
     }
   ],
   layers: [
@@ -751,6 +765,17 @@ export default {
       style: {
         type: 'icon',
         icon: 'site_bod',
+        fill: '#CFAAB4'
+      },
+      catId: 'business'
+    },
+    {
+      id: 'top_investments',
+      datasetId: 'top_investments',
+      visible: false,
+      style: {
+        type: 'icon',
+        icon: 'top_investments',
         fill: '#CFAAB4'
       },
       catId: 'business'
