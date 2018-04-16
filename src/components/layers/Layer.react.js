@@ -68,7 +68,6 @@ class Layer extends React.Component {
             : `${category.value}`;
         return <div className="item" key={i}> { symbol } <span>{ label }</span></div>
       });
-      return [];
     }
     return this.legendSymbol(geometryType, style);
   }
