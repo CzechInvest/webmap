@@ -7,7 +7,8 @@ import 'chartjs-plugin-datalabels';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import { setLayerVisibility } from '../layers/actions';
-import messages from '../lang/messages/attributes';
+import Attributes from '../lang/messages/attributes';
+import AppMessages from '../lang/messages/app';
 import formatValue from '../identification/format';
 import { getColor } from './styles';
 import { cssColor } from '../map/styles';
@@ -77,12 +78,38 @@ class DistrictsPanel extends React.Component {
     setLayerVisibility(layer.id, false);
   }
 
+  layerData() {
+    const { layer } = this.props;
+    const olLayer = this.context.map.layerById[layer.id];
+    const source = olLayer.getSource()
+
+    if (source.data) {
+      const data = source.data.find(i => i.Kod === -1);
+      return {
+        date: data.Date.split('-').reverse().join('/'),
+        globalData: [{
+          color: -1,
+          data: data,
+          label: data.Nazev
+        }]
+      }
+    } else {
+      // wait for data and redraw component
+      source.once('change', () => this.forceUpdate());
+      return {
+        date: '',
+        globalData: []
+      }
+    }
+  }
+
   render() {
     const { districts, datasets, layer, lang } = this.props;
     const dataset = datasets.get(layer.datasetId);
     const attribs = dataset.attributes.filter(attr => attr.type === 'number');
+    const layerData = this.layerData()
 
-    const districtsArray = districts.toList().toJS();
+    const districtsArray = districts.size ? districts.toList().toJS() : layerData.globalData;
     const colors =  districtsArray.map(d => cssColor(getColor(d.color, 0.75)));
     const borders = districtsArray.map(d => cssColor(getColor(d.color, 1)));
 
@@ -109,13 +136,14 @@ class DistrictsPanel extends React.Component {
           <div className="content">
           {attribs.map((field, index) => (
             <div key={index}>
-              <h3>{messages[field.property][lang]}</h3>
+              <h3>{Attributes[field.property][lang]}</h3>
               <Bar height={80} data={dataArray[index]} options={graphOpts} />
               <GraphLegend labels={dataArray[index].legendLabels} colors={borders} />
             </div>
           ))}
           </div>
         </Scrollbars>
+        <div className="date">{AppMessages['updated'][lang]} {layerData.date}</div>
         <button
           onClick={() => this.close()}
           className="close-btn">
@@ -131,6 +159,10 @@ DistrictsPanel.propTypes = {
   layer: PropTypes.object,
   setLayerVisibility: PropTypes.func
 }
+
+DistrictsPanel.contextTypes = {
+  map: PropTypes.object
+};
 
 export default connect(state => ({
   districts: state.districts.districts,

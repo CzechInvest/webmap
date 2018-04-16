@@ -52,6 +52,7 @@ class MapComponent extends React.Component {
           json.readFeatures = (resp, params) => JSON.parse(resp);
 
           olFeatureLoader.loadFeaturesXhr(dataUrl(dataset.src.attributes), json, attributes => {
+            source.data = attributes
             const attributesKey = dataset.src.attributesId;
             const geometryKey = dataset.src.geometryId;
 

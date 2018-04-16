@@ -8,6 +8,7 @@
   border: solid #777;
   box-sizing: border-box;
   position: absolute;
+  padding-bottom: 1.5em;
 
   right: 0;
   bottom: 0;
@@ -25,7 +26,6 @@
     flex-direction: column;
     padding: 0 0.5em;
   }
-
   @media (orientation: portrait) {
     left: 0;
     min-width: auto;
@@ -85,5 +85,14 @@
     right: 0.6em;
     background-color: #fff;
     border-radius: 4px;
+  }
+  .date {
+    margin: 0.15em 0.75em;
+    text-align: right;
+    opacity: 0.75;
+    font-size: 0.875em;
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 }
