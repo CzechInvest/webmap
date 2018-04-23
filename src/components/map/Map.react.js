@@ -14,6 +14,7 @@ import JsonFormat from 'ol/format/jsonfeature';
 import Attribution from 'ol/control/attribution';
 import control from 'ol/control';
 import olFeatureLoader from 'ol/featureloader.js';
+import MouseWheelZoom from 'ol/interaction/mousewheelzoom';
 
 import { createLayerStyle, generateColoredDonutStyle, coloredPointIcon, coloredPolygonStyle } from './styles';
 import { DistinctPointsSource, FilteredPointLayer, FilteredPolygonLayer } from './layers';
@@ -34,6 +35,20 @@ class MapComponent extends React.Component {
     this.map = new Map({
       controls: control.defaults({attribution: false}).extend([attribution])
     });
+    // if map is nested inside main page (in iframe or object),
+    // adjust mouse wheel zooming to work only in combination with
+    // Ctrl or Alt key.
+    // (MouseWheelZoom should have 'condition' option in the future)
+    if (window.top !== window) {
+      const zoomIntercation = this.map.getInteractions().getArray().find(i => i instanceof MouseWheelZoom);
+      zoomIntercation._handleEvent = zoomIntercation.handleEvent;
+      zoomIntercation.handleEvent = function(e) {
+        if (e.type === 'wheel' && !e.originalEvent.ctrlKey && !e.originalEvent.altKey) {
+          return true;
+        }
+        return zoomIntercation._handleEvent(e);
+      }
+    }
     this.dataSources = {};
     this.createLayers();
   }

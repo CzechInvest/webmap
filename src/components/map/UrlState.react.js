@@ -10,7 +10,7 @@ class UrlState extends React.Component {
 
   parseHash() {
     const params = {};
-    window.location.hash.substr(1).split('&').forEach(item => {
+    window.top.location.hash.substr(1).split('&').forEach(item => {
       const [key, value] = item.split('=');
       params[key] = value;
     });
@@ -19,7 +19,7 @@ class UrlState extends React.Component {
 
   setHash(params) {
     const strings = Object.keys(params).map(key => `${key}=${params[key]}`)
-    window.location.hash = strings.join('&')
+    window.top.location.hash = strings.join('&')
   }
 
   componentDidMount() {
