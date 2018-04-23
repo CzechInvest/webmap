@@ -21,6 +21,10 @@
     }
   }
 
+  @media (max-height: 300px) {
+    top: 0.25em;
+  }
+
   .search-toolbar {
     display: flex;
     align-items: center;

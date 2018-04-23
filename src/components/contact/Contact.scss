@@ -41,6 +41,10 @@
     width: 14em;
     user-select: none;
   }
+
+  @media (max-height: 400px) {
+    display: none;
+  }
 }
 
 .contacts-panel {

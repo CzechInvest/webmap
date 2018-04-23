@@ -11,6 +11,7 @@
   justify-content: center;
   border-bottom: 1px solid #ccc;
   pointer-events: none;
+
   .logo {
     left: 0;
     height: 3.5em;
@@ -19,6 +20,24 @@
   }
   .flex-space {
     flex: 1 1;
+  }
+
+  @media (max-width: 960px) {
+    padding-top: 3.25em;
+    .logo {
+      position: absolute;
+      left: 1em;
+      top: 0;
+      height: 2.5em;
+      margin: 0.5em;
+    }
+    .flex-space {
+      display: none;
+    }
+  }
+
+  @media (max-height: 300px) {
+    display: none;
   }
 }
 
@@ -114,22 +133,6 @@
       background-color: $secondary-color;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
-    }
-  }
-}
-
-@media (max-width: 960px) {
-  .main-menu {
-    padding-top: 3.25em;
-    .logo {
-      position: absolute;
-      left: 1em;
-      top: 0;
-      height: 2.5em;
-      margin: 0.5em;
-    }
-    .flex-space {
-      display: none;
     }
   }
 }
