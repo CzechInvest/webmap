@@ -92,12 +92,21 @@ class Identification extends React.Component {
     if (dataset && dataset.attributes && dataset.attributes.length) {
       fields = dataset.attributes
         .filter(attr => feature.get(attr.property) !== undefined)
-        .map(attr => ({
-          id: attr.property,
-          label: messages[attr.property][lang],
-          value: formatValue(feature.get(attr.property), attr),
-          html: attr.type === 'html'
-        }));
+        .map(attr => {
+          // let label;
+          try {
+            var label = messages[attr.property][lang];
+          } catch (e) {
+            label = attr.property;
+            console.warn(`Missing translation of '${attr.property}' attribute`);
+          }
+          return {
+            id: attr.property,
+            label: label,
+            value: formatValue(feature.get(attr.property), attr),
+            html: attr.type === 'html'
+          }
+        });
 
       if (dataset.groups) {
         groups = Object.keys(dataset.groups).reduce((values, key) => {
