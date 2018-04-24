@@ -1,0 +1,65 @@
+@import '../../theme.scss';
+
+.bottom-panel {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $menu-background;
+  border-top: 1px solid #aaa;
+  font-size: 1em;
+  height: 3em;
+/*  box-shadow:
+    -2px 0px 6px 1px rgba(0, 0, 0, 0.14),
+    -2px 0px 8px 3px rgba(0, 0, 0, 0.12);*/
+
+  button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    position: absolute;
+    opacity: 0.85;
+    &:hover {
+      opacity: 1;
+    }
+    &.contact {
+      right: 4.5em;
+      width: 5em;
+      .icon {
+        fill: $primary-color;
+        height: 2.5em;
+        width: 3.25em;
+      }
+    }
+  }
+  .logo {
+    position: absolute;
+    left: 0.25em;
+    bottom: 0;
+    height: 5.35em;
+    width: 14em;
+    user-select: none;
+  }
+
+  ul.lang {
+    position: absolute;
+    right: 0.75em;
+    padding: 0;
+    li {
+      display: inline-block;
+      padding: 0 0.35em;
+      cursor: pointer;
+      color: #555;
+
+      &.active {
+        color: $secondary-color;
+        cursor: default;
+      }
+    }
+  }
+
+  @media (max-height: 400px) {
+    display: none;
+  }
+}

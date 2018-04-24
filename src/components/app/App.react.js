@@ -6,7 +6,7 @@ import CategoriesMenu from '../categories/Menu.react';
 import Identification from '../identification/Identification.react';
 import DistrictsComparator from '../districts/DistrictsComparator.react';
 import Search from '../search/Search.react';
-import Contact from '../contact/Contact.react';
+import BottomPanel from '../bottom-panel/Panel.react';
 import UrlState from '../map/UrlState.react'
 import '../../fonts.scss';
 import '../../animations.scss';
@@ -18,7 +18,7 @@ export default () => (
     <View>
       <Baselayer />
     </View>
-    <Contact />
+    <BottomPanel />
     <CategoriesMenu />
     <Identification />
     <DistrictsComparator />

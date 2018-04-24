@@ -7,10 +7,11 @@ import Icon from '../../Icon';
 import messages from '../lang/messages/app';
 import Backdrop from '../ui/backdrop/Backdrop.react';
 import { setLanguage } from '../lang/actions';
+import './Panel.scss';
 import './Contact.scss';
 
 
-class Contact extends React.Component {
+class Panel extends React.Component {
 
   constructor(props) {
     super(props);
@@ -20,7 +21,7 @@ class Contact extends React.Component {
   render() {
     const { lang, setLanguage } = this.props;
     return (
-      <div className="contact-panel">
+      <div className="bottom-panel">
         <Icon className="logo" glyph="plusko" />
         <button
           className="contact"
@@ -81,4 +82,4 @@ export default connect(state => ({
   lang: state.lang.selectedLanguage
 }), dispatch => bindActionCreators({
   setLanguage
-}, dispatch))(Contact);
+}, dispatch))(Panel);
