@@ -130,8 +130,31 @@ function createPolygonStyle(config = {}) {
   return new Style(opts);
 }
 
-const badge = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" width="12" height="12">'+
-  '<circle cx="6" cy="6" r="7" style="fill:rgba(220,0,46, 0.8)" /></svg>';
+const badge = `
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" width="12" height="12">
+    <circle cx="6" cy="6" r="7" style="fill:rgba(220,0,46, 0.8)" />
+  </svg>`;
+
+function createBadgeStyle(baseWidth, baseHeight) {
+  const offset = [baseWidth / 2 - 6, baseHeight - 3]
+  return new Style({
+    image: new Icon({
+      anchor: [6 - offset[0], 6 + offset[1]],
+      anchorXUnits: 'pixels',
+      anchorYUnits: 'pixels',
+      size: [12, 12],
+      src: 'data:image/svg+xml,' + escape(badge),
+    }),
+    text: new Text({
+      font: 'bold 9px Calibri,sans-serif',
+      offsetX: offset[0],
+      offsetY: -offset[1],
+      fill: new Fill({
+        color: '#fff'
+      })
+    })
+  });
+}
 
 function createIconStyle(config = {}) {
   const iconSymbolEl = document.querySelector(`svg #${config.icon}`);
@@ -142,7 +165,6 @@ function createIconStyle(config = {}) {
     width: 28,
     height: 28,
     viewBox: viewBox,
-    // style: `fill: ${config.fill};background-color: rgba(255,255,255,0.5);border-radius: 12px;`
     style: `fill: ${cssColor(config.fill)}`
   };
   attrs = Object.keys(attrs).map(key => `${key}="${attrs[key]}"`);
@@ -150,7 +172,7 @@ function createIconStyle(config = {}) {
   const style = new Style({
     image: new Icon({
       src: 'data:image/svg+xml,' + escape(svg),
-      anchor: [0.5, 0.75]
+      anchor: [0.5, 1]
     }),
     geometry: f => {
       const geom = f.getGeometry();
@@ -179,28 +201,14 @@ function createIconStyle(config = {}) {
     }));
   }
 
-  const groupStyle = new Style({
-    image: new Icon({
-      anchor: [-0.25,1.15],
-      src: 'data:image/svg+xml,' + escape(badge),
-    }),
-    text: new Text({
-      font: 'bold 9px Calibri,sans-serif',
-      // textBaseline: 'top',
-      offsetX: 9,
-      offsetY: -8,
-      fill: new Fill({
-        color: '#fff'
-      })
-    })
-  });
+  const badgeStyle = createBadgeStyle(28, 28);
 
   return function(feature, res) {
     const groupedFeatures = feature.get('features');
     if (groupedFeatures) {
       if (groupedFeatures.length > 1) {
-        groupStyle.getText().setText(`${groupedFeatures.length}`);
-        return [style, groupStyle];
+        badgeStyle.getText().setText(`${groupedFeatures.length}`);
+        return [style, badgeStyle];
       }
       feature = groupedFeatures[0];
     }
@@ -270,6 +278,105 @@ function createCircleStyle(config = {}) {
 }
 
 
+function svgColoredIcon(colors, icon) {
+  const iconEl = document.querySelector(`svg #${icon}`);
+
+  const segment = 48 / colors.length;
+  const stripes = colors.map((color, index) => {
+    return (
+      <rect
+        key={index}
+        width="48"
+        height={segment}
+        x="0"
+        y={segment * index}
+        fill={cssColor(color)} />
+    )
+  });
+  return ReactDOMServer.renderToString(
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
+      x="0" y="0" width="32px" height="32px" viewBox="0 0 48 48">
+      <defs>
+        <pattern id="stripes" width="48" height="48" patternUnits="userSpaceOnUse">
+          {stripes}
+        </pattern>
+      </defs>
+      <g dangerouslySetInnerHTML={{__html: iconEl.innerHTML}} fill="url(#stripes)"></g>
+    </svg>
+  );
+}
+
+const badgeStyle = createBadgeStyle(32, 32);
+
+export function coloredPointIcon(config) {
+  const pointsIconsCache = {};
+  return (colors = ['orange', 'green', 'red'], isGroup, text) => {
+    const key = JSON.stringify(colors);
+    let iconStyle = pointsIconsCache[key];
+    if (!iconStyle) {
+      const svg = svgColoredIcon(colors, config.icon);
+      iconStyle = new Icon({
+        src: 'data:image/svg+xml,' + escape(svg),
+        anchor: config.anchor || [0.5, 1]
+        // anchor: [0.5, 0]
+      });
+      pointsIconsCache[key] = iconStyle;
+    }
+    iconStyle.setScale(isGroup ? 1 : 0.85);
+    const style = new Style({image: iconStyle});
+
+    if (isGroup) {
+      badgeStyle.getText().setText(text);
+      return [style, badgeStyle];
+    }
+    return [style];
+  }
+}
+
+function createColorsPattern(colors) {
+  const segment = 10;
+  const size = segment * colors.length;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  // ctx.rotate(45);
+  colors.forEach((color, i) => {
+    ctx.fillStyle = cssColor(color);
+    ctx.fillRect(i * segment, 0, segment, size);
+  });
+
+  return ctx.createPattern(canvas, 'repeat');
+}
+
+export function coloredPolygonStyle(baseStyle) {
+  const style = new Style({
+    fill: new Fill({})
+  });
+  if (baseStyle.stroke) {
+    style.setStroke(new Stroke({
+      color: olColor(baseStyle.stroke),
+      width: baseStyle.strokeWidth || 1
+    }));
+  }
+  const cache = {};
+  return (colors) => {
+    if (colors.length > 1) {
+      const key = JSON.stringify(colors);
+      let color = cache[key];
+      if (!color) {
+        color = createColorsPattern(colors);
+        cache[key] = color;
+      }
+      style.getFill().setColor(color);
+    } else {
+      style.getFill().setColor(olColor(colors[0]));
+    }
+    return style;
+  }
+}
+
+/*
 function svgDonut(colors) {
   const r = 10;
   const diameter = 2 * 3.14 * r;
@@ -337,115 +444,4 @@ export function generateColoredDonutStyle(colors, isGroup, text) {
   }
   return [style];
 }
-
-function svgColoredIcon(colors, icon) {
-  const iconEl = document.querySelector(`svg #${icon}`);
-
-  const segment = 48 / colors.length;
-  const stripes = colors.map((color, index) => {
-    return (
-      <rect
-        key={index}
-        width="48"
-        height={segment}
-        x="0"
-        y={segment * index}
-        fill={cssColor(color)} />
-    )
-  });
-  return ReactDOMServer.renderToString(
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
-      x="0" y="0" width="32px" height="32px" viewBox="0 0 48 48">
-      <defs>
-        <pattern id="stripes" width="48" height="48" patternUnits="userSpaceOnUse">
-          {stripes}
-        </pattern>
-      </defs>
-      <g dangerouslySetInnerHTML={{__html: iconEl.innerHTML}} fill="url(#stripes)"></g>
-    </svg>
-  );
-}
-
-
-const badgeStyle = new Style({
-  image: new Icon({
-    anchor: [-0.25,1.15],
-    src: 'data:image/svg+xml,' + escape(badge),
-  }),
-  text: new Text({
-    font: 'bold 9px Calibri,sans-serif',
-    // textBaseline: 'top',
-    offsetX: 9,
-    offsetY: -8,
-    fill: new Fill({
-      color: '#fff'
-    })
-  })
-});
-
-export function coloredPointIcon(config) {
-  const pointsIconsCache = {};
-  return (colors = ['orange', 'green', 'red'], isGroup, text) => {
-    const key = JSON.stringify(colors);
-    let iconStyle = pointsIconsCache[key];
-    if (!iconStyle) {
-      const svg = svgColoredIcon(colors, config.icon);
-      iconStyle = new Icon({
-        src: 'data:image/svg+xml,' + escape(svg),
-        anchor: config.anchor || [0.5, 0.75]
-      });
-      pointsIconsCache[key] = iconStyle;
-    }
-    iconStyle.setScale(isGroup ? 1 : 0.85);
-    const style = new Style({image: iconStyle});
-
-    if (isGroup) {
-      badgeStyle.getText().setText(text);
-      return [style, badgeStyle];
-    }
-    return [style];
-  }
-}
-
-function createColorsPattern(colors) {
-  const segment = 10;
-  const size = segment * colors.length;
-  const canvas = document.createElement('canvas');
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  // ctx.rotate(45);
-  colors.forEach((color, i) => {
-    ctx.fillStyle = cssColor(color);
-    ctx.fillRect(i * segment, 0, segment, size);
-  });
-
-  return ctx.createPattern(canvas, 'repeat');
-}
-
-export function coloredPolygonStyle(baseStyle) {
-  const style = new Style({
-    fill: new Fill({})
-  });
-  if (baseStyle.stroke) {
-    style.setStroke(new Stroke({
-      color: olColor(baseStyle.stroke),
-      width: baseStyle.strokeWidth || 1
-    }));
-  }
-  const cache = {};
-  return (colors) => {
-    if (colors.length > 1) {
-      const key = JSON.stringify(colors);
-      let color = cache[key];
-      if (!color) {
-        color = createColorsPattern(colors);
-        cache[key] = color;
-      }
-      style.getFill().setColor(color);
-    } else {
-      style.getFill().setColor(olColor(colors[0]));
-    }
-    return style;
-  }
-}
+*/

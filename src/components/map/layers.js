@@ -1,7 +1,6 @@
 import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import Cluster from 'ol/source/cluster';
-import { generateColoredDonutStyle } from './styles';
 import AnimatedCluster from './animatedclusterlayer';
 
 
@@ -91,7 +90,7 @@ export function FilteredPointLayer(config) {
   let activeFilters = [];
   const activeFiltersList = new Set();
 
-  const styleFn = config.styleFn || generateColoredDonutStyle;
+  const styleFn = config.styleFn;
   // const olLayer = new VectorLayer(
   const olLayer = new AnimatedCluster(
     Object.assign(config, {

@@ -886,7 +886,7 @@ export default {
       style: {
         type: 'icon',
         icon: 'vvi_bod',
-        anchor: [0.3, 0.7],
+        anchor: [0.3, 0.95],
         fill: '#DCA28F'
       },
       catId: 'science'
@@ -997,7 +997,7 @@ export default {
       style: {
         type: 'icon',
         icon: 'start_bod',
-        anchor: [0.6, 0.8],
+        anchor: [0.6, 1.05],
         fill: '#9D9D9C'
       },
       catId: 'startup'
@@ -1013,7 +1013,7 @@ export default {
       style: {
         type: 'icon',
         icon: 'start_bod',
-        anchor: [0.6, 0.8],
+        anchor: [0.6, 1.05],
         fill: '#EB7274'
       },
       catId: 'startup'
