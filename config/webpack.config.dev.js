@@ -130,7 +130,7 @@ module.exports = {
         // back to the "file" loader at the end of the loader list.
         oneOf: [
           {
-            test: /icons\/.*\.svg$/,
+            test: /icons[\\\/].*\.svg$/,
             use: [
               {
                 loader: 'babel-loader'
@@ -161,7 +161,7 @@ module.exports = {
             test: [/\.svg$/, /\.png$/, /\.jpe?g$/, /\.bmp$/, /\.gif$/],
             loader: require.resolve('url-loader'),
             options: {
-              limit: 10000,
+              limit: 15000,
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
