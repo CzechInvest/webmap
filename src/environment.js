@@ -258,7 +258,9 @@ export default {
       geometryType: 'point',
       attributes: [
         { property: 'name' },
+        { property: 'program' },
         { property: 'address' },
+        { property: 'place_of_business' },
         {
           property: 'url',
           type: 'html',

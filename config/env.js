@@ -74,7 +74,8 @@ function getClientEnvironment(publicUrl) {
         // This should only be used as an escape hatch. Normally you would put
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
-        DATA_URL: 'https://czechinvest.github.io/web-data/'
+        // DATA_URL: 'https://czechinvest.github.io/web-data/'
+        DATA_URL: '/web-data/'
         // Use local data files in develpoment mode (public/web-data/)
         // DATA_URL: process.env.NODE_ENV === 'production'
         //   ? 'https://czechinvest.github.io/web-data/'
