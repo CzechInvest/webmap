@@ -2,6 +2,7 @@ import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
 import Cluster from 'ol/source/cluster';
 import AnimatedCluster from './animatedclusterlayer';
+import { createPointStyle } from './styles';
 
 
 export function DistinctPointsSource(source, r=10) {
@@ -91,42 +92,30 @@ export function FilteredPointLayer(config) {
   const activeFiltersList = new Set();
 
   const styleFn = config.styleFn;
+  const colorify = feature => {
+    const group = feature.get('features') || [feature];
+    const colors = activeFilters.reduce((values, filter) => {
+      for (let i = 0; i < group.length; i++) {
+        const color = filter.filter(group[i]);
+        if (color) {
+          values.push(color);
+          break;
+        }
+      }
+      return values;
+    }, []);
+    return colors;
+  }
+
   // const olLayer = new VectorLayer(
   const olLayer = new AnimatedCluster(
     Object.assign(config, {
       source: FilteredClusterSource(config.source),
       visible: false,
-      style: (feature, res) => {
-        const group = feature.get('features');
-        // const colors = [];
-        // activeFilters.forEach(filter => {
-          // if (group.find(f => filter.filter(f))) {
-          //   colors.push(filter.color);
-          // }
-        // });
-        const colors = activeFilters.reduce((values, filter) => {
-          for (let i = 0; i < group.length; i++) {
-            const color = filter.filter(group[i]);
-            if (color) {
-              values.push(color);
-              break;
-            }
-          }
-          return values;
-        }, []);
-
-        if (group.length > 1) {
-          return styleFn(colors, true, group.length.toString());
-        } else {
-          if (res < 80 && config.label) {
-            const label = group[0].get(config.label);
-            return styleFn(colors, false, label);
-          }
-          return styleFn(colors);
-        }
-      }
+      style: createPointStyle(config.style, colorify)
     })
   );
+  /*
   olLayer.getStyleFunction().highlight = color => (feature, res) => {
     if (res < 80 && config.label) {
       const label = feature.get(config.label);
@@ -134,7 +123,7 @@ export function FilteredPointLayer(config) {
     }
     return styleFn([color]);
   };
-
+  */
   Object.assign(olLayer, {
     isActive(id) {
       return activeFiltersList.has(id);

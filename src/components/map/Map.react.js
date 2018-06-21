@@ -16,7 +16,7 @@ import control from 'ol/control';
 import olFeatureLoader from 'ol/featureloader.js';
 import MouseWheelZoom from 'ol/interaction/mousewheelzoom';
 
-import { createLayerStyle, coloredPointIcon, coloredPolygonStyle } from './styles';
+import { createLayerStyle, createPointStyle, coloredPointIcon, coloredPolygonStyle } from './styles';
 import { DistinctPointsSource, FilteredPointLayer, FilteredPolygonLayer } from './layers';
 import Geobuf from './formats';
 import AnimatedCluster from './animatedclusterlayer';
@@ -120,7 +120,7 @@ class MapComponent extends React.Component {
         break;
       }
       default:
-        fn  = feature => feature.get(filter.attribute).indexOf(filter.value) !== -1 ? layer.style.fill : false;
+        fn = feature => feature.get(filter.attribute).indexOf(filter.value) !== -1 ? layer.style.fill : false;
     }
 
     return {
@@ -150,9 +150,11 @@ class MapComponent extends React.Component {
             if (isPointLayer) {
               vectorLayer = FilteredPointLayer({
                 source: source,
-                label: layer.style.label,
                 zIndex: 1,
-                styleFn: coloredPointIcon(layer.style)
+
+                style: layer.style,
+                // label: layer.style.label,
+                // styleFn: coloredPointIcon(layer.style)
               });
             } else {
               vectorLayer = FilteredPolygonLayer({
@@ -200,7 +202,8 @@ class MapComponent extends React.Component {
           vectorLayer = new Layer({
             source: source,
             visible: layer.visible,
-            style: createLayerStyle(layer),
+            // style: createLayerStyle(layer),
+            style: isPointLayer ? createPointStyle(layer.style) : createLayerStyle(layer),
             zIndex: 1
           });
         }

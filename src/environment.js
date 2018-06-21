@@ -774,9 +774,9 @@ export default {
       datasetId: 'top_investments',
       visible: false,
       style: {
-        type: 'icon',
+        type: 'circle',
         icon: 'top_investments',
-        fill: '#CFAAB4'
+        fill: '#70AAB4'
       },
       catId: 'business'
     },
@@ -986,12 +986,12 @@ export default {
       datasetId: 'vskoly',
       visible: false,
       catId: 'science',
-      style: {
+      xstyle: {
         type: 'icon',
         icon: 'vvi_bod',
         fill: '#FCE94F'
       },
-      xstyle: {
+      style: {
         type: 'categorized',
         attribute: 'vtype',
         base: {

@@ -31,31 +31,30 @@ class Identification extends React.Component {
     this.highlightOverlay = new VectorLayer({
       source: new VectorSource(),
       visible: true,
-      zIndex: 3,
-      style(f, res) {
-        const styleFn = f.layer.getStyleFunction();
-        if (styleFn.highlight) {
-          return styleFn.highlight('red')(f, res);
-        }
-        const style = f.layer.getStyle()
-        if (style.highlight) {
-          return style.highlight('red');
-        }
-        console.warn('Highlight style is not defined!')
-      }
+      zIndex: 3
     });
   }
 
   highlight(feature, layer) {
-    feature.layer = layer;
+    // feature.layer = layer;
+    this.highlightOverlay.getSource().forEachFeature(f => f.setStyle(null));
     this.highlightOverlay.getSource().clear();
+    const styleFn = layer.getStyleFunction();
+    if (styleFn.highlight) {
+      feature.setStyle(styleFn.highlight('red'));
+    } else {
+      const style = layer.getStyle()
+      if (style.highlight) {
+        feature.setStyle(style.highlight('red'));
+      }
+    }
     this.highlightOverlay.getSource().addFeature(feature);
   }
 
   clearSelection() {
     this.position = undefined;
     this.overlay.setPosition(this.position);
-
+    this.highlightOverlay.getSource().forEachFeature(f => f.setStyle(null));
     this.highlightOverlay.getSource().clear();
     const { showObjectInfo } = this.props;
     showObjectInfo(null);
@@ -93,7 +92,6 @@ class Identification extends React.Component {
       fields = dataset.attributes
         .filter(attr => feature.get(attr.property) !== undefined)
         .map(attr => {
-          // let label;
           try {
             var label = messages[attr.property][lang];
           } catch (e) {
