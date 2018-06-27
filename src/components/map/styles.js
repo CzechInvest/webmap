@@ -40,6 +40,18 @@ function svgContent (symbol) {
   return content;
 }
 
+function colorifyCircle(style, colors) {
+  // there is no setFill in ol.style.Circle, so we need to create a new circle
+  const base = style.getImage();
+  style.setImage(
+    new Circle({
+      radius: base.getRadius(),
+      stroke: base.getStroke(),
+      fill: new Fill({ color: olColor(colors[0]) }) // supports only single color
+    })
+  )
+}
+
 function circleStyle(config) {
   const style = new Style({
     image: new Circle({
@@ -53,14 +65,14 @@ function circleStyle(config) {
       })
     })
   });
-  style.setColors = (colors) => {};
+
+  style.setColors = colors => colorifyCircle(style, colors);
 
   const groupStyle = style.clone();
   groupStyle.getImage().setRadius(12);
   groupStyle.setText(
     new Text({
       font: 'bold 12px Calibri,sans-serif',
-      // textBaseline: 'top',
       offsetY: 0.5,
       fill: new Fill({
         color: '#fff'
@@ -68,7 +80,7 @@ function circleStyle(config) {
     })
   );
   groupStyle.setLabel = text => groupStyle.getText().setText(text);
-  groupStyle.setColors = (colors) => {};
+  groupStyle.setColors = colors => colorifyCircle(groupStyle, colors);;
 
   return {
     style: style,
@@ -143,7 +155,7 @@ function categorizedColors(config) {
     } else if (category.value !== undefined) {
       matchFn = val => val === category.value;
     }
-    const styleCfg = Object.assign({}, config.base, category);
+    const styleCfg = {...config.base, ...category};
     return {
       match: matchFn,
       color: category.fill
@@ -224,7 +236,6 @@ export function createPointStyle(config, colorify) {
   //   return [style];
   // }
   styleFn.highlight = function (color) {
-    console.log(config)
     return createPointStyle(config, f => [color]);
   }
   return styleFn;
@@ -234,16 +245,6 @@ export function createLayerStyle(layer) {
   const config = layer.style;
 
   switch (config.type) {
-    case 'circle':
-      return createCircleStyle(config);
-
-    case 'icon':
-      return Object.assign(
-        createIconStyle(config),
-        {
-          highlight: color => createIconStyle(Object.assign({}, config, {fill: color}))
-        }
-      );
 
     case 'categorized':
       // return createCategorizedStyle(config);
@@ -251,7 +252,7 @@ export function createLayerStyle(layer) {
         createCategorizedStyle(config),
         {
           highlight: color => {
-            const style = createPolygonStyle(Object.assign({}, config.base, {fill: color}));
+            const style = createPolygonStyle({...config.base, fill: color});
             return (f) => style;
           }
         }
@@ -261,7 +262,7 @@ export function createLayerStyle(layer) {
         createPolygonStyle(config),
         {
           highlight: (color) => {
-            return createPolygonStyle(Object.assign({}, config, {fill: color}));
+            return createPolygonStyle({...config, fill: color});
           }
         }
       );
@@ -277,7 +278,7 @@ function createCategorizedStyle(config) {
     } else if (category.value !== undefined) {
       matchFn = val => val === category.value;
     }
-    const styleCfg = Object.assign({}, config.base, category);
+    const styleCfg = {...config.base, ...category};
     return {
       match: matchFn,
       color: category.fill,
@@ -356,128 +357,6 @@ function createBadgeStyle(baseWidth, baseHeight) {
     })
   });
 }
-
-function createIconStyle(config = {}) {
-  const iconSymbolEl = document.querySelector(`svg #${config.icon}`);
-  const viewBox = iconSymbolEl.getAttribute('viewBox') || '';
-  let attrs = {
-    version: "1.1",
-    xmlns: "http://www.w3.org/2000/svg",
-    width: 28,
-    height: 28,
-    viewBox: viewBox,
-    style: `fill: ${cssColor(config.fill)}`
-  };
-  attrs = Object.keys(attrs).map(key => `${key}="${attrs[key]}"`);
-  const svg = `<svg ${attrs.join(' ')}>${svgContent(iconSymbolEl)}</svg>`;
-  const style = new Style({
-    image: new Icon({
-      src: 'data:image/svg+xml,' + escape(svg),
-      anchor: [0.5, 1]
-    }),
-    geometry: f => {
-      const geom = f.getGeometry();
-      switch (geom.getType()) {
-        case 'Polygon':
-          return geom.getInteriorPoint();
-        case 'MultiPolygon':
-          return geom.getPolygon(0).getInteriorPoint();
-        default:
-          return geom;
-      }
-    }
-  });
-  if (config.label) {
-    style.setText(new Text({
-      font: '13px Calibri,sans-serif',
-      textBaseline: 'top',
-      offsetY: 9,
-      fill: new Fill({
-        color: '#444'
-      }),
-      stroke: new Stroke({
-        color: olColor(config.fill),
-        width: 1
-      })
-    }));
-  }
-
-  const badgeStyle = createBadgeStyle(28, 28);
-
-  return function(feature, res) {
-    const groupedFeatures = feature.get('features');
-    if (groupedFeatures) {
-      if (groupedFeatures.length > 1) {
-        badgeStyle.getText().setText(`${groupedFeatures.length}`);
-        return [style, badgeStyle];
-      }
-      feature = groupedFeatures[0];
-    }
-    if (config.label) {
-      style.getText().setText(res < 50 ? feature.get(config.label) : '');
-    }
-    return [style];
-  }
-}
-
-function createCircleStyle(config = {}) {
-  const style = new Style({
-    image: new Circle({
-      radius: config.radius || 7,
-      stroke: new Stroke({
-        color: config.stroke || 'white',
-        width: config.strokeWidth || 2
-      }),
-      fill: new Fill({
-        color: olColor(config.fill)
-      })
-    })
-  });
-  if (config.label) {
-    style.setText(
-      new Text({
-        font: '13px Calibri,sans-serif',
-        textBaseline: 'top',
-        offsetY: 9,
-        fill: new Fill({
-          color: '#444'
-        }),
-        stroke: new Stroke({
-          color: olColor(config.fill),
-          width: 1
-        })
-      })
-    );
-  }
-  const groupStyle = style.clone();
-  groupStyle.getImage().setRadius(12);
-  groupStyle.setText(
-    new Text({
-      font: 'bold 12px Calibri,sans-serif',
-      // textBaseline: 'top',
-      offsetY: 0.5,
-      fill: new Fill({
-        color: '#fff'
-      })
-    })
-  );
-
-  return (feature, res) => {
-    const groupedFeatures = feature.get('features');
-    if (groupedFeatures) {
-      if (groupedFeatures.length > 1) {
-        groupStyle.getText().setText(`${groupedFeatures.length}`);
-        return [groupStyle];
-      }
-      feature = groupedFeatures[0];
-    }
-    if (config.label) {
-      style.getText().setText(res < 50 ? feature.get(config.label) : '');
-    }
-    return [style];
-  }
-}
-
 
 function svgColoredIcon(colors, icon, size=32) {
   const iconEl = document.querySelector(`svg #${icon}`);
