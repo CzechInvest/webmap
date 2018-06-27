@@ -19,6 +19,18 @@ class Layer extends React.Component {
     if (style.type === 'icon') {
       return <Icon glyph={style.icon} style={{fill: cssColor(style.fill)}} />;
     }
+    if (geometryType === 'point') {
+      const cssStyle = {
+        fill: cssColor(style.fill || style.base.fill),
+        stroke: cssColor(style.stroke || style.base.stroke),
+        strokeWidth: 2*(style.strokeWidth || 1)
+      }
+      return (
+        <svg className="icon" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="20" style={cssStyle} />
+        </svg>
+      );
+    }
     if (geometryType === 'line') {
       const lineStyle = {
         stroke: cssColor(style.stroke),
@@ -42,8 +54,6 @@ class Layer extends React.Component {
         </svg>
       );
     }
-
-    return <Icon glyph="donut" style={{fill: cssColor(style.fill)}} />;
   }
 
   legend() {
@@ -59,15 +69,20 @@ class Layer extends React.Component {
       ));
     }
     if (style.type === 'categorized') {
-      return style.categories.map((category, i) => {
-        const symbol = this.legendSymbol(geometryType, Object.assign({}, style.base, category))
-        const label = category.label
-          ? category.label
-          : category.range
-            ? category.range.map(formatNumber).join(' - ')
-            : `${category.value}`;
-        return <div className="item" key={i}> { symbol } <span>{ label }</span></div>
-      });
+      const symbols = style.categories
+        .filter(category => category.label || category.range)
+        .map((category, i) => {
+          const symbol = this.legendSymbol(geometryType, {...style.base, ...category});
+          const label = category.label
+            ? category.label
+            : category.range
+              ? category.range.map(formatNumber).join(' - ')
+              : `${category.value}`;
+          return <div className="item" key={i}> { symbol } <span>{ label }</span></div>
+        });
+      if (symbols.length) {
+        return symbols;
+      }
     }
     return this.legendSymbol(geometryType, style);
   }
