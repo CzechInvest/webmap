@@ -80,7 +80,7 @@ function circleStyle(config) {
     })
   );
   groupStyle.setLabel = text => groupStyle.getText().setText(text);
-  groupStyle.setColors = colors => colorifyCircle(groupStyle, colors);;
+  groupStyle.setColors = colors => colorifyCircle(groupStyle, colors);
 
   return {
     style: style,
@@ -155,7 +155,6 @@ function categorizedColors(config) {
     } else if (category.value !== undefined) {
       matchFn = val => val === category.value;
     }
-    const styleCfg = {...config.base, ...category};
     return {
       match: matchFn,
       color: category.fill
@@ -299,7 +298,6 @@ function createCategorizedStyle(config) {
         .map(val => filters.find(filter => filter.match(val)))
         .filter(match => match)
         .map(match => match.color)
-      // console.log('cluster', colors);
       return baseStyle(colors, true, cluster.length.toString());
     }
     if (cluster) {

@@ -16,7 +16,7 @@ import control from 'ol/control';
 import olFeatureLoader from 'ol/featureloader.js';
 import MouseWheelZoom from 'ol/interaction/mousewheelzoom';
 
-import { createLayerStyle, createPointStyle, coloredPointIcon, coloredPolygonStyle } from './styles';
+import { createLayerStyle, createPointStyle, coloredPolygonStyle } from './styles';
 import { DistinctPointsSource, FilteredPointLayer, FilteredPolygonLayer } from './layers';
 import Geobuf from './formats';
 import AnimatedCluster from './animatedclusterlayer';
@@ -154,7 +154,6 @@ class MapComponent extends React.Component {
 
                 style: layer.style,
                 // label: layer.style.label,
-                // styleFn: coloredPointIcon(layer.style)
               });
             } else {
               vectorLayer = FilteredPolygonLayer({

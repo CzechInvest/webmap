@@ -91,7 +91,6 @@ export function FilteredPointLayer(config) {
   let activeFilters = [];
   const activeFiltersList = new Set();
 
-  const styleFn = config.styleFn;
   const colorify = feature => {
     const group = feature.get('features') || [feature];
     const colors = activeFilters.reduce((values, filter) => {
