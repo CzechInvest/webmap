@@ -1036,30 +1036,31 @@ export default {
       datasetId: 'vskoly',
       visible: false,
       catId: 'science',
-      xstyle: {
+      style: {
         type: 'icon',
         icon: 'vvi_bod',
         fill: '#FCE94F'
       },
-      style: {
-        type: 'categorized',
-        attribute: 'vtype',
-        base: {
-          type: 'icon',
-          icon: 'vvi_bod'
-        },
-        categories: [
-          {
-            value: 'univerzitní',
-            label: 'Univerzitní',
-            fill: '#F088A4'
-          }, {
-            value: 'neuniverzitní',
-            label: 'Neuniverzitní',
-            fill: '#FCE94F'
-          }
-        ]
-      }
+      // Categorized style
+      // style: {
+      //   type: 'categorized',
+      //   attribute: 'vtype',
+      //   base: {
+      //     type: 'icon',
+      //     icon: 'vvi_bod'
+      //   },
+      //   categories: [
+      //     {
+      //       value: 'univerzitní',
+      //       label: 'Univerzitní',
+      //       fill: '#F088A4'
+      //     }, {
+      //       value: 'neuniverzitní',
+      //       label: 'Neuniverzitní',
+      //       fill: '#FCE94F'
+      //     }
+      //   ]
+      // }
     },
     {
       id: 'incubators',
