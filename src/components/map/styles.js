@@ -129,7 +129,7 @@ function iconStyle(config) {
       imgSize: [28, 28],
       anchor: [0.5, 1]
     })
-  })
+  });
   style.setColors = colors => style.setImage(coloredIcon(colors, 0.85));
 
   const groupIcon = style.clone();

@@ -171,7 +171,11 @@ AnimatedCluster.prototype.animate = function(e) {
         if (vectorContext.setStyle) {
           if (s.getImage() && s.getImage().getAnchor()) {
             vectorContext.setStyle(s);
-            vectorContext.drawGeometry(geo);
+            try {
+              vectorContext.drawGeometry(geo);
+            } catch (err) {
+              // ignore nasty IE bugs
+            }
           }
         }
         // older version
