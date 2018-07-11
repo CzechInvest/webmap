@@ -45,3 +45,16 @@ The output is placed into docs directory.<br>
 ### `npm run docmd`
 
 Create documentation in markdown language.<br>
+
+## Data URL
+
+Data can be stored anywhere. It's a clone of
+https://github.com/czechinvest/web-data
+
+You have to adjust `DATA_URL` parameter in `config/env.js`
+
+## New layers
+
+See
+https://github.com/CzechInvest/webmap/commit/889771652742baed7fe589b8a3e680a2c2e082d0
+for example
