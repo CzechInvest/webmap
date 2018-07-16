@@ -12,11 +12,18 @@
   border-bottom: 1px solid #ccc;
   pointer-events: none;
 
-  .logo {
-    left: 0;
-    height: 3.5em;
-    margin: 1em;
-    flex: 1 0;
+  .logo-container {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+
+    .logo {
+      left: 0;
+      height: 3.5em;
+      width: 4em;
+      margin: 1em;
+      flex: 1 0;
+    }
   }
   .flex-space {
     flex: 1 1;
@@ -24,12 +31,17 @@
 
   @media (max-width: 960px) {
     padding-top: 3.25em;
-    .logo {
+    .logo-container {
       position: absolute;
+      display: block;
       left: 1em;
       top: 0;
-      height: 2.5em;
-      margin: 0.5em;
+
+      .logo {
+        width: auto;
+        height: 2.5em;
+        margin: 0.5em;
+      }
     }
     .flex-space {
       display: none;

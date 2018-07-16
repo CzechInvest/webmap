@@ -14,7 +14,9 @@ class CategoriesMenu extends React.Component {
 
     return (
       <div className="main-menu" style={{zIndex: activeId ? 100 : 80}}>
-        <img className="logo" src={logo} alt="CzechInvest" />
+        <div className="logo-container">
+          <img className="logo" src={logo} alt="CzechInvest" />
+        </div>
         <div className="categories-menu">
           {categories.toList().map(c => <Category key={c.id} {...c.toJS()} />)}
         </div>
