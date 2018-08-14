@@ -1,11 +1,11 @@
-export const SET_BASELAYER_STYLE = 'SET_BASELAYER_STYLE';
+export const SET_BASELAYER_TYPE = 'SET_BASELAYER_TYPE';
 export const SET_BASELAYER_VISIBILITY = 'SET_BASELAYER_VISIBILITY';
 export const SET_BASELAYER_OPACITY = 'SET_BASELAYER_OPACITY';
 
-export const setBaselayerStyle = (styleId = 'light-v9') => ({
-  type: SET_BASELAYER_STYLE,
+export const setBaselayer = type => ({
+  type: SET_BASELAYER_TYPE,
   payload: {
-    styleId
+    type
   }
 });
 

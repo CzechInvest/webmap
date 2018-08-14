@@ -2,81 +2,100 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Tile from 'ol/layer/tile';
-import TileJSON from 'ol/source/tilejson';
-import OSM from 'ol/source/osm';
+import { setBaselayer } from './actions';
+import { Tile } from 'ol/layer';
+import './baselayer.scss';
+
+import {setOrtofoto, setPositron} from './config';
 
 class Baselayer extends React.Component {
-
-  shouldComponentUpdate() {
-    return false;
+  constructor() {
+    super();
+    this.onClick = this.onClick.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  onClick() {
+    const { setBaselayer, activeLayer } = this.props;
+    setBaselayer(activeLayer === Baselayer.layerType.ORTOFOTO ?
+      Baselayer.layerType.POSITRON : Baselayer.layerType.ORTOFOTO);
+  }
 
-    if (nextProps.visible !== this.props.visible) {
-      this.layer.setVisible(nextProps.visible)
+  componentDidUpdate(prevProps) {
+    const { visible, opacity, activeLayer } = this.props;
+
+    if (prevProps.visible !== visible) {
+      this.layer.setVisible(visible)
     }
 
-    if (nextProps.opacity !== this.props.opacity) {
-      this.layer.setOpacity(nextProps.opacity)
+    if (prevProps.opacity !== opacity) {
+      this.layer.setOpacity(opacity)
     }
 
-    if (nextProps.styleId !== this.props.styleId ||
-    nextProps.token !== this.props.token ||
-    nextProps.tileSize !== this.props.tileSize) {
-      const url = this.getSourceURL(nextProps.styleId, nextProps.token, nextProps.tileSize);
-      this.layer.getSource().setUrl(url);
+    if (prevProps.activeLayer !== activeLayer) {
+        this.switchSource();
     }
 
   }
 
   componentDidMount() {
-    const { styleId, token, tileSize, visible, opacity } = this.props;
+    const {  visible, opacity } = this.props;
 
     this.layer = new Tile({
-      source: new TileJSON({
-        url: 'https://maps.tilehosting.com/styles/positron.json?key=mCnC0rArFsfnBvLPiB6J',
-        // url: this.getSourceURL(styleId, token, tileSize),
-        attributions: OSM.ATTRIBUTION,
-        crossOrigin: 'anonymous'
-      }),
       visible,
       opacity
     });
 
+    this.switchSource();
+
     this.context.map.addLayer(this.layer);
   }
 
-  getSourceURL(styleId, token, tileSize) {
-    return `https://api.mapbox.com/styles/v1/mapbox/${styleId}/tiles/${tileSize}/{z}/{x}/{y}?access_token=${token}`;
+  switchSource() {
+    const { activeLayer } = this.props;
+    switch (activeLayer) {
+      case Baselayer.layerType.ORTOFOTO:
+        return setOrtofoto(this.layer);
+      case Baselayer.layerType.POSITRON:
+        return setPositron(this.layer);
+      default:
+        return setPositron(this.layer);
+    }
+
   }
 
   render() {
-    return null;
+    return (
+      <div className="ci-switcher">
+        <button onClick={this.onClick}>
+          ahoj
+        </button>
+      </div>
+    );
   }
 }
 
 
 Baselayer.propTypes = {
-  styleId: PropTypes.string.isRequired,
-  token: PropTypes.string.isRequired,
+  setBaselayer: PropTypes.func.isRequired,
+  activeLayer: PropTypes.string.isRequired,
   opacity: PropTypes.number.isRequired,
   visible: PropTypes.bool.isRequired,
-  tileSize: PropTypes.number.isRequired
-}
+};
 
 
 Baselayer.contextTypes = {
   map: PropTypes.object
 };
 
+Baselayer.layerType = {
+  ORTOFOTO: 'ortofoto',
+  POSITRON: 'positron'
+};
 
 export default connect(state => ({
-  styleId: state.baselayer.styleId,
-  token: state.baselayer.token,
+  activeLayer: state.baselayer.activeLayer,
   opacity: state.baselayer.opacity,
   visible: state.baselayer.visible,
-  tileSize: state.baselayer.tileSize
 }), dispatch => bindActionCreators({
+    setBaselayer
 }, dispatch))(Baselayer);
