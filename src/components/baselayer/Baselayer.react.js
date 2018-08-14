@@ -7,7 +7,7 @@ import { Tile } from 'ol/layer';
 import './Baselayer.scss';
 import messages from '../lang/messages/app';
 
-import {setOrtofoto, setPositron} from './config';
+import { setSourceToLayer, baseLayerType } from './config';
 
 class Baselayer extends React.Component {
   constructor() {
@@ -17,8 +17,8 @@ class Baselayer extends React.Component {
 
   onClick() {
     const { setBaselayer, activeLayer } = this.props;
-    setBaselayer(activeLayer === Baselayer.layerType.ORTOFOTO ?
-      Baselayer.layerType.POSITRON : Baselayer.layerType.ORTOFOTO);
+    setBaselayer(activeLayer === baseLayerType.ORTO ?
+      baseLayerType.POSITRON : baseLayerType.ORTO);
   }
 
   componentDidUpdate(prevProps) {
@@ -33,42 +33,29 @@ class Baselayer extends React.Component {
     }
 
     if (prevProps.activeLayer !== activeLayer) {
-        this.switchSource();
+        setSourceToLayer(activeLayer, this.layer);
     }
 
   }
 
   componentDidMount() {
-    const {  visible, opacity } = this.props;
+    const {  visible, opacity, activeLayer } = this.props;
 
     this.layer = new Tile({
       visible,
       opacity
     });
 
-    this.switchSource();
+    setSourceToLayer(activeLayer, this.layer);
 
     this.context.map.addLayer(this.layer);
-  }
-
-  switchSource() {
-    const { activeLayer } = this.props;
-    switch (activeLayer) {
-      case Baselayer.layerType.ORTOFOTO:
-        return setOrtofoto(this.layer);
-      case Baselayer.layerType.POSITRON:
-        return setPositron(this.layer);
-      default:
-        return setPositron(this.layer);
-    }
-
   }
 
   render() {
     const { activeLayer, lang } = this.props;
 
-    const img = activeLayer === Baselayer.layerType.ORTOFOTO ?
-      Baselayer.layerType.POSITRON : Baselayer.layerType.ORTOFOTO;
+    const img = activeLayer === baseLayerType.ORTO ?
+      baseLayerType.POSITRON : baseLayerType.ORTO;
 
     return (
       <div className="ci-switcher">
@@ -95,10 +82,6 @@ Baselayer.contextTypes = {
   map: PropTypes.object
 };
 
-Baselayer.layerType = {
-  ORTOFOTO: 'ortofoto',
-  POSITRON: 'positron'
-};
 
 export default connect(state => ({
   activeLayer: state.baselayer.activeLayer,

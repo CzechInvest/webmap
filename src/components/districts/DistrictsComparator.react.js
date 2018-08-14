@@ -72,6 +72,8 @@ class DistrictsComparator extends React.Component {
   }
 
   toggleSelection(feature) {
+    const { districts } = this.props;
+
     if (!feature) return;
     const isSelected = this.isSelected(feature);
 
@@ -80,7 +82,7 @@ class DistrictsComparator extends React.Component {
     } else if (isSelected) {
       this.unselectDistrict(feature);
     }
-    if (!isSelected) {
+    if (!isSelected && districts.size < 7) {
       this.selectDistrict(feature);
     }
   }
@@ -97,7 +99,7 @@ class DistrictsComparator extends React.Component {
   }
 
   activate() {
-    const { layer } = this.props;
+    const { layer, districts } = this.props;
     const map = this.context.map;
     this.olLayer = map.layerById[layer.id];
 
@@ -106,7 +108,7 @@ class DistrictsComparator extends React.Component {
     const layerFilter = ol => (ol === this.olLayer);
 
     this.clickListener = map.on('singleclick', e => {
-      const f = map.forEachFeatureAtPixel(e.pixel, f => f, {layerFilter});
+      const f = map.forEachFeatureAtPixel(e.pixel, f => f, { layerFilter });
       this.toggleSelection(f);
       e.stopPropagation();
     });

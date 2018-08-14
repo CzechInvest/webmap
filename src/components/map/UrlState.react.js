@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { setVisibleLayers } from '../layers/actions';
 import { setZoom, setCenter } from '../view/actions';
+import { setBaselayer } from '../baselayer/actions';
 
 class UrlState extends React.Component {
 
@@ -23,7 +24,7 @@ class UrlState extends React.Component {
   }
 
   componentDidMount() {
-    const { setVisibleLayers, setZoom, setCenter } = this.props;
+    const { setVisibleLayers, setZoom, setCenter, setBaselayer } = this.props;
     const params = this.parseHash();
 
     if (params.x && params.y) {
@@ -44,16 +45,21 @@ class UrlState extends React.Component {
     if (params.layers) {
       setVisibleLayers(params.layers.split(','));
     }
+
+    if (params.base) {
+      setTimeout(() => setBaselayer(params.base), 200);
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { x, y, z, visibleLayers } = this.props;
+    const { x, y, z, visibleLayers, activeBaseLayer } = this.props;
     this.setHash({
       layers: visibleLayers.toList().toJS().join(','),
       // extent: this.context.map.getView().calculateExtent().map(v => Math.round(v)).join(','),
       x: Math.round(x),
       y: Math.round(y),
-      z: Math.round(z)
+      z: Math.round(z),
+      base: activeBaseLayer
     });
   }
 
@@ -75,9 +81,11 @@ export default connect(state => ({
   x: state.view.x,
   y: state.view.y,
   z: state.view.z,
-  visibleLayers: visibleLayersSelector(state)
+  visibleLayers: visibleLayersSelector(state),
+  activeBaseLayer: state.baselayer.activeLayer,
 }), dispatch => bindActionCreators({
   setVisibleLayers,
   setZoom,
-  setCenter
+  setCenter,
+  setBaselayer
 }, dispatch))(UrlState);

@@ -1,11 +1,11 @@
 import * as actions from './actions';
 import { Record } from 'immutable';
-import Baselayer from './Baselayer.react';
+import { baseLayerType } from './config';
 
 const InitialState = new Record({
   visible: true,
   opacity: 1,
-  activeLayer: Baselayer.layerType.ORTOFOTO,
+  activeLayer: baseLayerType.ORTO,
 });
 
 const initialState = new InitialState();

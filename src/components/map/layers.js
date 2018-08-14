@@ -1,7 +1,7 @@
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import { Cluster } from 'ol/source';
-import AnimatedCluster from './animatedclusterlayer';
+import AnimatedCluster from './AnimatedClusterLayer';
 import { createPointStyle } from './styles';
 
 

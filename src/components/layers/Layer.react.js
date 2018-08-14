@@ -64,7 +64,7 @@ class Layer extends React.Component {
       const symbols = style.map(s => this.legendSymbol(geometryType, s));
       return symbols.map((symbol, i) => (
         <div className="item" key={i}>
-          { symbol } <span>{ style[i].label }</span>
+          { symbol } <span> { style[i].label } </span>
         </div>
       ));
     }

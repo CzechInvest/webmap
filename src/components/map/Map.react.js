@@ -19,7 +19,7 @@ import { MouseWheelZoom } from 'ol/interaction';
 import { createLayerStyle, createPointStyle, coloredPolygonStyle } from './styles';
 import { DistinctPointsSource, FilteredPointLayer, FilteredPolygonLayer } from './layers';
 import Geobuf from './formats';
-import AnimatedCluster from './animatedclusterlayer';
+import AnimatedCluster from './AnimatedClusterLayer';
 
 function dataUrl(path) {
   return process.env.DATA_URL + path
@@ -33,7 +33,7 @@ class MapComponent extends React.Component {
       collapsible: false
     });
     this.map = new Map({
-      controls: defaults({attribution: false}).extend([attribution])
+      controls: defaults({ attribution: false }).extend([attribution])
     });
     // if map is nested inside main page (in iframe or object),
     // adjust mouse wheel zooming to work only in combination with
@@ -224,7 +224,7 @@ class MapComponent extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { layers, visibleLayers } = this.props;
-    
+
     if (prevProps.layers !== layers || prevProps.visibleLayers !== visibleLayers) {
       layers.toList().forEach(layer => {
         const olLayer = this.map.layerById[layer.id];

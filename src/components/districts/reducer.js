@@ -18,7 +18,8 @@ export default function districtsReducer(state = initialState, action) {
   switch (action.type) {
 
     case actions.ADD_DISTRICT_TO_COMPARE: {
-      return state.setIn(['districts', action.payload.id], action.payload.properties);
+      const { id, properties } = action.payload;
+      return state.setIn(['districts', id], properties);
     }
 
     case actions.REMOVE_DISTRICT_TO_COMPARE: {
@@ -26,7 +27,7 @@ export default function districtsReducer(state = initialState, action) {
     }
 
     case actions.CLEAR_DISTRICTS_SELECTION: {
-      return state.clear('districts');
+      return state.set('districts', new OrderedMap())
     }
 
     default:

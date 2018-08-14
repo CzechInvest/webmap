@@ -1,22 +1,10 @@
 /*
+  INSPIRATED BY:
   Copyright (c) 2015 Jean-Marc VIGLINO,
   released under the CeCILL-B license (http://www.cecill.info/).
 
   ol.layer.AnimatedCluster is a vector layer tha animate cluster
-
-  olx.layer.AnimatedClusterOptions: extend olx.layer.Options
-  { animationDuration {Number} animation duration in ms, default is 700ms
-    animationMethod {function} easing method to use, default ol.easing.easeOut
-  }
 */
-
-/**
-* @constructor AnimatedCluster
-* @extends {ol.layer.Vector}
-* @param {olx.layer.AnimatedClusterOptions=} options
-* @todo
-*/
-
 import { easeOut } from 'ol/easing';
 import { buffer as extentBuffer } from 'ol/extent';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -38,10 +26,11 @@ export default class AnimatedCluster extends VectorLayer {
     this.animate = this.animate.bind(this);
     this.saveCluster = this.saveCluster.bind(this);
     this.postanimate = this.postanimate.bind(this);
+    this.init();
   }
 
 
-  initialize() {
+  init() {
     // Save cluster before change
     this.getSource().on('change', this.saveCluster);
     // Animate the cluster

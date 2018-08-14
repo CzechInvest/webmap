@@ -3,6 +3,21 @@ import { OSM } from 'ol/source';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS.js';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities.js';
 
+export const baseLayerType = {
+  ORTO: 'orto',
+  POSITRON: 'positron'
+}
+
+export const setSourceToLayer = (type, layer) => {
+  switch (type) {
+    case baseLayerType.ORTO:
+      setOrtofoto(layer);
+      break;
+    default:
+      setPositron(layer);  
+  }
+}
+
 export const setOrtofoto = (layer) => {
   const parser = new WMTSCapabilities();
   fetch('http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx?service=WMTS&request=GetCapabilities')
