@@ -1,3 +1,5 @@
+@import '../../theme.scss';
+
 .ci-switcher {
   position: absolute;
   top: 50%;
@@ -9,11 +11,10 @@
 
   button {
     cursor: pointer;
-    background-color: white;
     width: 40px;
     height: 40px;
     border-radius: 100%;
-    border: 2px solid #002f60;
+    border: 2px solid $primary-color;
     box-shadow: 0px 4px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 12px 1px rgba(0, 0, 0, 0.14), 0px 3px 15px 3px rgba(0, 0, 0, 0.12);
   }
 }
