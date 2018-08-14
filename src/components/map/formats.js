@@ -1,4 +1,4 @@
-import GeoJSON from 'ol/format/geojson';
+import { GeoJSON } from 'ol/format';
 import geobuf from 'geobuf';
 import Pbf from 'pbf';
 

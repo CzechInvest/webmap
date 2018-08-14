@@ -1,8 +1,8 @@
-import Fill from 'ol/style/fill';
-import Style from 'ol/style/style';
-import OlColor from 'ol/color';
+import { Fill } from 'ol/style';
+import { Style } from 'ol/style';
+import { asArray } from 'ol/color';
 
-const Colors = [
+const colors = [
   '#002E5F',
   '#DB002E',
   '#F3914E',
@@ -14,12 +14,15 @@ const Colors = [
   '#CFAAB4'
 ];
 
-export function getColor(index, opacity=1) {
-  const color = OlColor.asArray(Colors[index]);
+export function getColor(index, opacity = 1) {
+  if (index < 0) {
+    return [0, 0, 0];
+  }
+    const color = asArray(colors[index]);
   return color.slice(0, 3).concat(opacity);
 }
 
-export const MapStyles = Colors.map((color, index) => (
+export const MapStyles = colors.map((color, index) => (
   new Style({
     fill: new Fill({color: getColor(index, 0.6)})
   })

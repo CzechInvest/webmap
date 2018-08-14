@@ -1,6 +1,6 @@
 import * as actions from './actions';
 import { Record } from 'immutable';
-import Proj from 'ol/proj'
+import { transform } from 'ol/proj'
 
 const InitialState = new Record({
   x: 1744000,
@@ -23,7 +23,7 @@ export default function viewReducer(state = initialState, action) {
 
     case actions.SET_CENTER: {
       const { x, y, projCode = state.projCode } = action.payload;
-      const coors = Proj.transform([x, y], projCode, state.projCode);
+      const coors = transform([x, y], projCode, state.projCode);
       return state.set('x', coors[0])
         .set('y', coors[1]);
     }

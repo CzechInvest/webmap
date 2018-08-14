@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import VectorLayer from 'ol/layer/vector';
-import VectorSource from 'ol/source/vector';
-import proj from 'ol/proj';
-import Extent from 'ol/extent';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
+import { transformExtent } from 'ol/proj';
+import { buffer as extentBuffer, getCenter } from 'ol/extent';
 import debounce from 'lodash/debounce';
-import Feature from 'ol/feature';
-import Point from 'ol/geom/point';
+import { Feature } from 'ol';
+import { Point } from 'ol/geom';
 
 import Icon from '../../Icon';
 import { createLayerStyle } from '../map/styles';
@@ -167,7 +167,7 @@ class Search extends React.Component {
 
   zoomToObject(feature) {
     const map = this.context.map;
-    
+
     return new Promise((resolve, reject) => {
       if (feature.getGeometry().getType() === 'Point') {
         const viewExtent = map.getView().calculateExtent();
@@ -181,7 +181,7 @@ class Search extends React.Component {
       } else {
         const extent = feature.getGeometry().getExtent();
         const buffer = 2 * Math.max(Math.abs(extent[2]-extent[0]), Math.abs(extent[3]-extent[1]));
-        map.getView().fit(Extent.buffer(extent, buffer), {duration: 450, callback: resolve});
+        map.getView().fit(extentBuffer(extent, buffer), {duration: 450, callback: resolve});
       }
     });
   }
@@ -211,11 +211,11 @@ class Search extends React.Component {
 
   showAddress(item) {
     console.log(item);
-    const extent = proj.transformExtent(item.boundingbox, 'EPSG:4326', this.props.projCode);
+    const extent = transformExtent(item.boundingbox, 'EPSG:4326', this.props.projCode);
     // this.context.map.getView().fit(extent, {duration: 450, maxZoom: 16});
 
     const feature = new Feature({
-      geometry: new Point(Extent.getCenter(extent)),
+      geometry: new Point(getCenter(extent)),
     });
     feature.layer = this.virtualLayer;
     feature.setProperties({'': item.display_name});

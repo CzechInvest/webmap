@@ -3,15 +3,11 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { setZoom, setCenter } from './actions';
 import { connect } from 'react-redux';
-import View from 'ol/view';
+import { View } from 'ol';
 import debounce from 'lodash/debounce';
 
 
 class ViewComponent extends Component {
-
-  shouldComponentUpdate() {
-    return false;
-  }
 
   componentDidMount() {
     const { x, y, z, projCode, setZoom, setCenter } = this.props;
@@ -35,24 +31,24 @@ class ViewComponent extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { z, x, y } = nextProps;
+  componentDidUpdate(prevProps) {
+    const { z, x, y } = this.props;
 
-    if ( z !== this.props.z && this.view.getZoom() !== z) {
+    if ( z !== prevProps.z && this.view.getZoom() !== z) {
       this.view.setZoom(z);
     }
 
-    if ( x !== this.props.x && this.view.getCenter[0] !== x) {
+    if ( x !== prevProps.x && this.view.getCenter[0] !== x) {
       this.view.setCenter([x, y]);
     }
 
-    if ( y !== this.props.y && this.view.getCenter[1] !== y) {
+    if ( y !== prevProps.y && this.view.getCenter[1] !== y) {
       this.view.setCenter([x, y]);
     }
   }
 
   render() {
-    return this.props.children; 
+    return this.props.children;
   }
 }
 

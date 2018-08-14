@@ -1,10 +1,10 @@
 import app from './createApp';
 import { setZoom, setCenter } from './components/view/actions';
-import { setBaselayerStyle, setBaselayerVisibility, setBaselayerOpacity } from './components/baselayer/actions';
+import { setBaselayer, setBaselayerVisibility, setBaselayerOpacity } from './components/baselayer/actions';
 import { setLanguage } from './components/lang/actions';
 import { openCategory, closeCategory } from './components/categories/actions';
 import { setLayerVisibility } from './components/layers/actions';
-import Proj from 'ol/proj'
+import { transform } from 'ol/proj'
 
 export default class Cimap {
  /**
@@ -42,7 +42,7 @@ export default class Cimap {
     const x = this._app.getIn('view', ['x']);
     const y = this._app.getIn('view', ['y']);
     const projCodeSource = this._app.getIn('view', ['projCode']);
-    return Proj.transform([x, y], projCodeSource, projCode.toUpperCase());
+    return transform([x, y], projCodeSource, projCode.toUpperCase());
   };
 
 
@@ -68,11 +68,11 @@ export default class Cimap {
 
   /**
    * Set style of baselayer.
-   * @param {Cimap.MapBoxStyle} style Mapbox default style.
+   * @param {Baselayer.layerType} type Values: 'ortofoto', 'positron'
    * @api
   */
-  setBaselayerStyle(style = Cimap.MapBoxStyle.LIGHT) {
-    this._app.dispatch(setBaselayerStyle(style));
+  setBaselayer(type) {
+    this._app.dispatch(setBaselayer(type));
   }
 
 
@@ -164,20 +164,6 @@ Cimap.Lang = {
   EN: 'en',
   SK: 'sk'
 }
-
-
-/**
- * Mapbox baselayer style.
- * @readonly
- * @enum {string}
-*/
-Cimap.MapBoxStyle = {
-    LIGHT: 'light-v9',
-    BRIGHT: 'bright-v9',
-    DARK: 'dark-v9',
-    STREETS: 'streets-v9',
-    SATELLITE: 'satellite-v9'
-};
 
 
 window.ci = {

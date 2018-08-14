@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import Map from 'ol/map';
+import { Map } from 'ol';
 import 'ol/ol.css';
 import './Map.scss';
-import VectorLayer from 'ol/layer/vector';
-import VectorSource from 'ol/source/vector';
-import Cluster from 'ol/source/cluster';
-import GeoJSON from 'ol/format/geojson';
-import JsonFormat from 'ol/format/jsonfeature';
-import Attribution from 'ol/control/attribution';
-import control from 'ol/control';
-import olFeatureLoader from 'ol/featureloader.js';
-import MouseWheelZoom from 'ol/interaction/mousewheelzoom';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
+import { Cluster } from 'ol/source';
+import { GeoJSON } from 'ol/format';
+import JSONFeature from 'ol/format/JSONFeature';
+import { Attribution } from 'ol/control';
+import { defaults } from 'ol/control';
+import { loadFeaturesXhr }  from 'ol/featureloader';
+import { MouseWheelZoom } from 'ol/interaction';
 
 import { createLayerStyle, createPointStyle, coloredPolygonStyle } from './styles';
 import { DistinctPointsSource, FilteredPointLayer, FilteredPolygonLayer } from './layers';
@@ -33,7 +33,7 @@ class MapComponent extends React.Component {
       collapsible: false
     });
     this.map = new Map({
-      controls: control.defaults({attribution: false}).extend([attribution])
+      controls: defaults({attribution: false}).extend([attribution])
     });
     // if map is nested inside main page (in iframe or object),
     // adjust mouse wheel zooming to work only in combination with
@@ -63,10 +63,10 @@ class MapComponent extends React.Component {
       source = new VectorSource({
         format: dataset.src.geometry.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON(),
         loader(extent, resolution, projection) {
-          const json = new JsonFormat();
+          const json = new JSONFeature();
           json.readFeatures = (resp, params) => JSON.parse(resp);
 
-          olFeatureLoader.loadFeaturesXhr(dataUrl(dataset.src.attributes), json, attributes => {
+          loadFeaturesXhr(dataUrl(dataset.src.attributes), json, attributes => {
             source.data = attributes
             const attributesKey = dataset.src.attributesId;
             const geometryKey = dataset.src.geometryId;
@@ -74,7 +74,7 @@ class MapComponent extends React.Component {
             const attributesById = {};
             attributes.forEach(obj => attributesById[obj[attributesKey]] = obj);
 
-            olFeatureLoader.loadFeaturesXhr(
+          loadFeaturesXhr(
               dataUrl(dataset.src.geometry),
               this.format_,
               features => {
@@ -218,27 +218,26 @@ class MapComponent extends React.Component {
     return { map: this.map };
   }
 
-  shouldComponentUpdate() {
-    return false;
-  }
-
   componentDidMount() {
     this.map.setTarget(this.mapEl);
   }
 
-  componentWillReceiveProps(props) {
-    const { layers, visibleLayers } = props;
-    layers.toList().forEach(layer => {
-      const olLayer = this.map.layerById[layer.id];
-      const visible = visibleLayers.indexOf(layer.id) !== -1;
-      if (olLayer) {
-        if (layer.filter && olLayer.setActive) {
-          olLayer.setActive(layer.id, visible);
-        } else {
-          olLayer.setVisible(visible);
+  componentDidUpdate(prevProps) {
+    const { layers, visibleLayers } = this.props;
+    
+    if (prevProps.layers !== layers || prevProps.visibleLayers !== visibleLayers) {
+      layers.toList().forEach(layer => {
+        const olLayer = this.map.layerById[layer.id];
+        const visible = visibleLayers.indexOf(layer.id) !== -1;
+        if (olLayer) {
+          if (layer.filter && olLayer.setActive) {
+            olLayer.setActive(layer.id, visible);
+          } else {
+            olLayer.setVisible(visible);
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   render() {

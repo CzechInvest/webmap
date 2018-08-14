@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Overlay from 'ol/overlay';
-import VectorLayer from 'ol/layer/vector';
-import VectorSource from 'ol/source/vector';
-import Extent from 'ol/extent';
+import { Overlay } from 'ol';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
+import { buffer as extentBuffer, extend as extentExtend, getCenter } from 'ol/extent';
 
 import { showObjectInfo } from './actions';
 import formatValue from './format';
@@ -65,9 +65,9 @@ class Identification extends React.Component {
     const extent = feature.getGeometry().getExtent();
     const features = feature.get('features');
     if (features.length < 5) {
-      features.forEach(f => Extent.extend(extent, f.getGeometry().getExtent()));
+      features.forEach(f => extentExtend(extent, f.getGeometry().getExtent()));
       const buffer = 2 * Math.max(Math.abs(extent[2]-extent[0]), Math.abs(extent[3]-extent[1]));
-      map.getView().fit(Extent.buffer(extent, buffer), {duration: 450});
+      map.getView().fit(extentBuffer(extent, buffer), {duration: 450});
     } else {
       const center = [
         (extent[0] + extent[2])/2,
@@ -209,7 +209,7 @@ class Identification extends React.Component {
           this.position = object.marker || geom.getPolygon(0).getInteriorPoint().flatCoordinates;
           break;
         default:
-          this.position = object.marker || Extent.getCenter(geom.getExtent());
+          this.position = object.marker || getCenter(geom.getExtent());
       }
       this.overlay.setOffset(offset);
 

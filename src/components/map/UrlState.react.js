@@ -46,8 +46,8 @@ class UrlState extends React.Component {
     }
   }
 
-  componentWillReceiveProps(props) {
-    const { x, y, z, visibleLayers } = props;
+  componentDidUpdate(prevProps) {
+    const { x, y, z, visibleLayers } = this.props;
     this.setHash({
       layers: visibleLayers.toList().toJS().join(','),
       // extent: this.context.map.getView().calculateExtent().map(v => Math.round(v)).join(','),

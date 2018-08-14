@@ -3,10 +3,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import VectorLayer from 'ol/layer/vector';
-import VectorSource from 'ol/source/vector';
-import Observable from 'ol/observable';
-// import throttle from 'lodash/throttle';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
+import { unByKey } from 'ol/Observable';
 import debounce from 'lodash/debounce';
 
 import { MapStyles } from './styles.js';
@@ -17,6 +16,10 @@ import DistrictsPanel from './DistrictsPanel.react.js';
 const featureId = f => f.get('Kod');
 
 class DistrictsComparator extends React.Component {
+  constructor() {
+    super();
+    this.initializeSelection = this.initializeSelection.bind(this);
+  }
 
   initializeOverlay() {
     this.selectionOverlay = new VectorLayer({
@@ -30,7 +33,7 @@ class DistrictsComparator extends React.Component {
       this.initializeSelection();
     } else {
       // wait for layer's data
-      this.olLayer.getSource().once('change', this.initializeSelection, this);
+      this.olLayer.getSource().once('change', this.initializeSelection);
     }
   }
 
@@ -102,7 +105,7 @@ class DistrictsComparator extends React.Component {
 
     const layerFilter = ol => (ol === this.olLayer);
 
-    this.clickListener = map.on('singleclick', (e) => {
+    this.clickListener = map.on('singleclick', e => {
       const f = map.forEachFeatureAtPixel(e.pixel, f => f, {layerFilter});
       this.toggleSelection(f);
       e.stopPropagation();
@@ -121,8 +124,8 @@ class DistrictsComparator extends React.Component {
   deactivate() {
     const { clearDistrictsSelection } = this.props;
     this.context.map.removeLayer(this.selectionOverlay);
-    Observable.unByKey(this.moveListener);
-    Observable.unByKey(this.clickListener);
+    unByKey(this.moveListener);
+    unByKey(this.clickListener);
 
     clearDistrictsSelection();
     this.selectionOverlay.getSource().clear();

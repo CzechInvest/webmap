@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import Fill from 'ol/style/fill';
-import Stroke from 'ol/style/stroke';
-import Style from 'ol/style/style';
-import Text from 'ol/style/text';
-import Circle from 'ol/style/circle';
-import Icon from 'ol/style/icon';
-import OlColor from 'ol/color';
+import { Fill } from 'ol/style';
+import { Stroke } from 'ol/style';
+import { Style } from 'ol/style';
+import { Text } from 'ol/style';
+import { Circle } from 'ol/style';
+import { Icon } from 'ol/style';
+import { asArray } from 'ol/color';
 
 
 export function cssColor(color) {
@@ -14,7 +14,7 @@ export function cssColor(color) {
     switch (color.length) {
       // case 2: return OlColor.asArray(color[0]).slice(0, 3).concat(color[1]);
       case 2: {
-        const rgb = OlColor.asArray(color[0]).slice(0, 3);
+        const rgb = asArray(color[0]).slice(0, 3);
         return `rgba(${rgb.join(',')}, ${color[1]})`;
       }
       case 3: return `rgb(${color.join(',')})`;
@@ -26,7 +26,7 @@ export function cssColor(color) {
 
 export function olColor(color) {
   if (Array.isArray(color) && color.length === 2) {
-    return OlColor.asArray(color[0]).slice(0, 3).concat(color[1]);
+    return asArray(color[0]).slice(0, 3).concat(color[1]);
   }
   return color;
 }
