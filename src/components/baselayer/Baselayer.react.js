@@ -61,7 +61,7 @@ class Baselayer extends React.Component {
       <div className="ci-switcher">
         <button onClick={this.onClick}
           title={messages['baselayerTitle'][lang]}
-          style={{ background: `url('/img/${img}.png') no-repeat`}}
+          style={{ background: `url('img/${img}.png') no-repeat`}}
         />
       </div>
     );

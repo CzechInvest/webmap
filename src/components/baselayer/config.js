@@ -14,13 +14,13 @@ export const setSourceToLayer = (type, layer) => {
       setOrtofoto(layer);
       break;
     default:
-      setPositron(layer);  
+      setPositron(layer);
   }
 }
 
 export const setOrtofoto = (layer) => {
   const parser = new WMTSCapabilities();
-  fetch('http://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx?service=WMTS&request=GetCapabilities')
+  fetch('https://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx?service=WMTS&request=GetCapabilities')
   .then( res => res.text())
   .then(text => {
     const result = parser.read(text);
