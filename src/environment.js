@@ -543,6 +543,16 @@ export default {
         { property: 'year' },
         { property: 'target' }
       ]
+    },
+    {
+      id: 'avcr',
+      src: 'vzdelavani/avcr.geojson',
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'scope' },
+        { property: 'address' }
+      ]
     }
   ],
   layers: [
@@ -831,6 +841,17 @@ export default {
         ]
       },
       catId: 'business'
+    },
+    {
+      id: 'avcr',
+      datasetId: 'avcr',
+      visible: false,
+      style: {
+        type: 'icon',
+        icon: 'vvi_bod',
+        fill: '#002E5F'
+      },
+      catId: 'science'
     },
     {
       id: 'whoiswho_ht',
