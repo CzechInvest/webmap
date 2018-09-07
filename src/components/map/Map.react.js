@@ -51,6 +51,7 @@ class MapComponent extends React.Component {
     }
     this.dataSources = {};
     this.createLayers();
+    this.state = { isMounted: false };
   }
 
   getDataSource(dataset) {
@@ -219,6 +220,7 @@ class MapComponent extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ isMounted: true });
     this.map.setTarget(this.mapEl);
   }
 
@@ -246,7 +248,8 @@ class MapComponent extends React.Component {
         id="map"
         ref={node => {this.mapEl = node} }
       >
-        { this.props.children }
+        <div className='ci-zoom' />
+        { this.state.isMounted && this.props.children }
       </div>
     );
   }

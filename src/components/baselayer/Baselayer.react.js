@@ -1,13 +1,14 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setBaselayer } from './actions';
-import { Tile } from 'ol/layer';
+import { Group } from 'ol/layer';
 import './Baselayer.scss';
 import messages from '../lang/messages/app';
 
-import { setSourceToLayer, baseLayerType } from './config';
+import { setLayers, baseLayerType } from './config';
 
 class Baselayer extends React.Component {
   constructor() {
@@ -25,15 +26,15 @@ class Baselayer extends React.Component {
     const { visible, opacity, activeLayer } = this.props;
 
     if (prevProps.visible !== visible) {
-      this.layer.setVisible(visible)
+      this.layerGroup.setVisible(visible)
     }
 
     if (prevProps.opacity !== opacity) {
-      this.layer.setOpacity(opacity)
+      this.layerGroup.setOpacity(opacity)
     }
 
     if (prevProps.activeLayer !== activeLayer) {
-        setSourceToLayer(activeLayer, this.layer);
+        setLayers(activeLayer, this.layerGroup);
     }
 
   }
@@ -41,30 +42,32 @@ class Baselayer extends React.Component {
   componentDidMount() {
     const {  visible, opacity, activeLayer } = this.props;
 
-    this.layer = new Tile({
+    this.layerGroup = new Group({
       visible,
       opacity
     });
 
-    setSourceToLayer(activeLayer, this.layer);
+    setLayers(activeLayer, this.layerGroup);
 
-    this.context.map.addLayer(this.layer);
+    this.context.map.addLayer(this.layerGroup);
   }
 
-  render() {
+  renderSwitcher() {
     const { activeLayer, lang } = this.props;
 
     const img = activeLayer === baseLayerType.ORTO ?
       baseLayerType.POSITRON : baseLayerType.ORTO;
 
     return (
-      <div className="ci-switcher">
-        <button onClick={this.onClick}
-          title={messages['baselayerTitle'][lang]}
-          style={{ background: `url('img/${img}.png') no-repeat`}}
-        />
-      </div>
+      <button className="ci-switcher" onClick={this.onClick}
+        title={messages['baselayerTitle'][lang]}
+        style={{ background: `url('img/${img}.png') no-repeat`}}
+      />
     );
+  }
+
+  render() {
+    return ReactDOM.createPortal(this.renderSwitcher(), document.body);
   }
 }
 
