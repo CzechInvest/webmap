@@ -23,7 +23,7 @@ class Baselayer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { visible, opacity, activeLayer } = this.props;
+    const { visible, opacity, activeLayer, datasets } = this.props;
 
     if (prevProps.visible !== visible) {
       this.layerGroup.setVisible(visible)
@@ -34,20 +34,20 @@ class Baselayer extends React.Component {
     }
 
     if (prevProps.activeLayer !== activeLayer) {
-        setLayers(activeLayer, this.layerGroup);
+        setLayers(activeLayer, this.layerGroup, datasets, this.context.map);
     }
 
   }
 
   componentDidMount() {
-    const {  visible, opacity, activeLayer } = this.props;
+    const {  visible, opacity, activeLayer, datasets } = this.props;
 
     this.layerGroup = new Group({
       visible,
       opacity
     });
 
-    setLayers(activeLayer, this.layerGroup);
+    setLayers(activeLayer, this.layerGroup, datasets, this.context.map);
 
     this.context.map.addLayer(this.layerGroup);
   }
@@ -77,6 +77,7 @@ Baselayer.propTypes = {
   setBaselayer: PropTypes.func.isRequired,
   activeLayer: PropTypes.string.isRequired,
   opacity: PropTypes.number.isRequired,
+  datasets: PropTypes.object.isRequired,
   visible: PropTypes.bool.isRequired,
 };
 
@@ -90,7 +91,8 @@ export default connect(state => ({
   activeLayer: state.baselayer.activeLayer,
   opacity: state.baselayer.opacity,
   visible: state.baselayer.visible,
-  lang: state.lang.selectedLanguage
+  lang: state.lang.selectedLanguage,
+  datasets: state.layers.datasets
 }), dispatch => bindActionCreators({
     setBaselayer
 }, dispatch))(Baselayer);

@@ -4,25 +4,32 @@ import { OSM, TileWMS } from 'ol/source';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS.js';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities.js';
 import Collection from 'ol/Collection';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
+import { GeoJSON } from 'ol/format';
+import Geobuf from '../map/formats';
+import {Stroke, Style, Fill, Text} from 'ol/style.js';
+
+const dataUrl = (path) => {
+  return process.env.DATA_URL + path
+}
 
 export const baseLayerType = {
   ORTO: 'orto',
   POSITRON: 'positron'
 }
 
-export const setLayers = (type, layer) => {
+export const setLayers = (type, layer, datasets, map) => {
   switch (type) {
     case baseLayerType.ORTO:
-      setOrtofoto(layer);
+      setOrtofoto(layer, datasets, map);
       break;
     default:
       setPositron(layer);
   }
 }
 
-export const setOrtofoto = layerGroup => {
-  const parser = new WMTSCapabilities();
-
+const getWMSborders = () => {
   const layers = [
     // 'AU.3rdOrder.Okres.AdministrativeBoundary',
     // 'AU.3rdOrder.Okres.AdministrativeUnitLabel',
@@ -31,7 +38,7 @@ export const setOrtofoto = layerGroup => {
     'AU.2ndOrder.Kraj.AdministrativeBoundary',
     //'AU.2ndOrder.Kraj.AdministrativeUnitLabel'
   ];
-  const borders = new Tile({
+  return new Tile({
     source: new TileWMS({
         url: 'http://services.cuzk.cz/wms/local-UX-wms.asp?service=WMS',
         attributions: '<a href="http://www.cuzk.cz" target="blank"> Czech Office for Surveying, Mapping and Cadastre</a>',
@@ -42,9 +49,53 @@ export const setOrtofoto = layerGroup => {
         },
     })
   });
+}
+
+const styleFunction = color => (feature, resolution) => {
+ return new Style({
+   stroke: new Stroke({ width: 2, color }),
+   text: new Text({
+     //textAlign: 'center',
+     //textBaseline: 'baseline',
+     font: 'bold 14px sans-serif',
+     text: feature.get('Nazev'),
+     fill: new Fill({color: 'whitesmoke'}),
+     stroke: new Stroke({color: '#444444', width: 4}),
+     //offsetX: offsetX,
+     //offsetY: offsetY,
+     //placement: placement,
+     //maxAngle: maxAngle,
+     //overflow: overflow,
+     //rotation: rotation
+    })
+  })
+};
+
+const createVectorLayer = (map, dataset, minZ, maxZ, color) => {
+
+  const source = new VectorSource({
+    url: dataUrl(dataset.src.geometry),
+    format: dataset.src.geometry.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON(),
+  });
+  return new VectorLayer({
+    source,
+    style: styleFunction(color),
+    minResolution: map.getView().getResolutionForZoom(maxZ),
+    maxResolution: map.getView().getResolutionForZoom(minZ)
+  });
+}
+
+export const setOrtofoto = (layerGroup, datasets, map) => {
+
+  const parser = new WMTSCapabilities();
   const wmtsLayer = new Tile({});
 
-  layerGroup.setLayers(new Collection([wmtsLayer, borders]));
+  layerGroup.setLayers(new Collection([
+    wmtsLayer,
+    createVectorLayer(map, datasets.get('kraje'), 5, 7, 'indianred'),
+    createVectorLayer(map, datasets.get('okresy'), 7, 9, 'skyblue'),
+    createVectorLayer(map, datasets.get('orp'), 9, 20, 'whitesmoke'),
+  ]));
 
   fetch('https://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx?service=WMTS&request=GetCapabilities')
   .then( res => res.text())
