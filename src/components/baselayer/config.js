@@ -92,9 +92,9 @@ export const setOrtofoto = (layerGroup, datasets, map) => {
 
   layerGroup.setLayers(new Collection([
     wmtsLayer,
-    createVectorLayer(map, datasets.get('kraje'), 5, 7, 'indianred'),
-    createVectorLayer(map, datasets.get('okresy'), 7, 9, 'skyblue'),
-    createVectorLayer(map, datasets.get('orp'), 9, 20, 'whitesmoke'),
+    createVectorLayer(map, datasets.get('kraje'), 7, 8, 'indianred'),
+    createVectorLayer(map, datasets.get('okresy'), 8, 10, 'skyblue'),
+    createVectorLayer(map, datasets.get('orp'), 10, 21, 'whitesmoke'),
   ]));
 
   fetch('https://geoportal.cuzk.cz/WMTS_ORTOFOTO/WMTService.aspx?service=WMTS&request=GetCapabilities')
