@@ -9,6 +9,7 @@ import { Vector as VectorSource } from 'ol/source';
 import { GeoJSON } from 'ol/format';
 import Geobuf from '../map/formats';
 import {Stroke, Style, Fill, Text} from 'ol/style.js';
+import "isomorphic-fetch";
 
 const dataUrl = (path) => {
   return process.env.DATA_URL + path
