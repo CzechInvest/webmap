@@ -5,6 +5,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import Icon from '../../Icon';
 import messages from '../lang/messages/app';
+import PrintButton from '../print/PrintButton.react';
 import Backdrop from '../ui/backdrop/Backdrop.react';
 import { setLanguage } from '../lang/actions';
 import './Panel.scss';
@@ -23,6 +24,7 @@ class Panel extends React.Component {
     return (
       <div className="bottom-panel">
         <Icon className="logo" glyph="plusko" />
+        <PrintButton />
         <button
           className="contact"
           onClick={() => this.setState({open: true})}

@@ -1,0 +1,12 @@
+@import '../../theme.scss';
+
+.ci-print-button {
+    right: 8em;
+    width: 5em;
+    .icon {
+      fill: $primary-color;
+      height: 2.5em;
+      width: 3.25em;
+    }
+
+}

@@ -8,6 +8,7 @@ import categories from '../components/categories/reducer';
 import layers from '../components/layers/reducer';
 import districts from '../components/districts/reducer';
 import identification from '../components/identification/reducer';
+import print from '../components/print/reducer';
 
 
 const reducers = {
@@ -15,6 +16,7 @@ const reducers = {
   lang,
   categories,
   view,
+  print,
   layers,
   baselayer,
   districts,
