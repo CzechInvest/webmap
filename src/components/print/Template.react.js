@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { activatePrint } from './actions';
-import Panel from '../bottom-panel/Panel.react';
 import Icon from '../../Icon';
 import logo from '../../assets/img/logo_CI.svg';
 import './Template.scss';
@@ -14,6 +13,13 @@ class PrintTemplate extends React.Component {
   constructor() {
     super();
     this.onClick = this.onClick.bind(this);
+  }
+
+  componentDidMount() {
+    const mapEl = this.context.map.getTarget();
+    const templateMap = document.querySelector('#templateMap');
+    templateMap.appendChild(mapEl);
+    this.context.map.updateSize();
   }
 
   onClick() {
@@ -49,6 +55,7 @@ class PrintTemplate extends React.Component {
     return (
       <div className="ci-template-backdrop">
         <div className="ci-template">
+          <div id="templateMap" />
           { this.renderTopPanel() }
           { this.renderBottomPanel() }
         </div>

@@ -244,12 +244,13 @@ class MapComponent extends React.Component {
 
   render() {
     return (
-      <div
-        id="map"
-        ref={node => {this.mapEl = node} }
-      >
-        <div className='ci-zoom' />
-        { this.state.isMounted && this.props.children }
+      <div>
+        <div
+          id="map"
+          ref={node => {this.mapEl = node} }
+        />
+          <div className='ci-zoom' />
+          { this.state.isMounted && this.props.children }
       </div>
     );
   }
