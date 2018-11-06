@@ -55,6 +55,8 @@ You have to adjust `DATA_URL` parameter in `config/env.js`
 
 ## New layers
 
+Fix src/environment.js
+
 See
 https://github.com/CzechInvest/webmap/commit/889771652742baed7fe589b8a3e680a2c2e082d0
 for example
