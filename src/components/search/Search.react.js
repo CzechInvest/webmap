@@ -17,6 +17,7 @@ import formatValue from '../identification/format';
 import { showObjectInfo } from '../identification/actions';
 import messages from '../lang/messages/app';
 import { Scrollbars } from 'react-custom-scrollbars';
+import unorm from 'unorm';
 import './Search.scss';
 
 
@@ -25,7 +26,7 @@ function searchQueryUrl(text) {
 }
 
 function removeAccents(text) {
-  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return unorm.nfd(text).replace(/[\u0300-\u036f]/g, '');
 }
 
 class Search extends React.Component {
@@ -141,7 +142,11 @@ class Search extends React.Component {
     request.responseType = "json";
 
     request.onload = event => {
-      this.setState({addresses: event.target.response, spinner: false});
+      let addresses = event.target.response;
+      if (typeof addresses === "string") {
+        addresses = JSON.parse(addresses);
+      }
+      this.setState({addresses, spinner: false});
     };
     request.send();
     this.addressRequest = request;
@@ -247,11 +252,14 @@ class Search extends React.Component {
 
   renderResults() {
     const objects = this.state.objects || [];
-    const addresses = this.state.addresses || {results: [], totalResults: 0};
-
+    let addresses = this.state.addresses;
+    if (!addresses) {
+      addresses = {results: [], totalResults: 0};
+    }
     const showedObjects = objects.slice(0, 10);
     const hiddenObjectsCount = Math.max(0, objects.length - showedObjects.length);
-    const showedAddresses = addresses.results.slice(0, 10);
+
+    const showedAddresses = addresses['results'].slice(0, 10);
     const hiddenAddressesCount = Math.max(0, addresses.totalResults - showedAddresses.length);
 
     const bodyBounds = document.body.getBoundingClientRect();
