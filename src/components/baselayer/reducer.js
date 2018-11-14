@@ -5,7 +5,7 @@ import { baseLayerType } from './config';
 const InitialState = new Record({
   visible: true,
   opacity: 1,
-  activeLayer: baseLayerType.ORTO,
+  activeLayer: baseLayerType.POSITRON,
 });
 
 const initialState = new InitialState();
