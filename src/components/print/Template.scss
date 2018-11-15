@@ -13,15 +13,23 @@
       align-items: center;
 }
 
+.ci-template-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .ci-template {
     position: relative;
-    width: 210mm;
-    height: 148mm;
     background: white;
 }
 
 #templateMap {
   width: 100%;
   height: 100%;
-  background-color: red;
+  background-color: grey;
+  .ol-zoom {
+    display: none;
+  }
+
 }

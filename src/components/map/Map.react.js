@@ -244,7 +244,7 @@ class MapComponent extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="map-container">
         <div
           id="map"
           ref={node => {this.mapEl = node} }

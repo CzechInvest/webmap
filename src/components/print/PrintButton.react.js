@@ -24,7 +24,6 @@ class PrintButton extends React.Component {
 
   render() {
     const { lang, active } = this.props;
-    console.log(active);
     return (
       <span>
         { active && <Template /> }

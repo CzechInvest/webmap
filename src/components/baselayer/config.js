@@ -41,7 +41,7 @@ const getWMSborders = () => {
   ];
   return new Tile({
     source: new TileWMS({
-        url: 'http://services.cuzk.cz/wms/local-UX-wms.asp?service=WMS',
+        url: 'https://services.cuzk.cz/wms/local-UX-wms.asp?service=WMS',
         attributions: '<a href="http://www.cuzk.cz" target="blank"> Czech Office for Surveying, Mapping and Cadastre</a>',
         params: {
           'LAYERS': layers.join(','),
@@ -106,6 +106,8 @@ export const setOrtofoto = (layerGroup, datasets, map) => {
       layer: 'orto',
       matrixSet: 'wgs84:pseudomercator:epsg:3857'
     });
+    options.urls = options.urls.map(url => url.replace('http://', 'https://'));
+    options.crossOrigin = "Anonymous";
     wmtsLayer.setSource(new WMTS(options));
   });
 }
