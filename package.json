@@ -4,12 +4,12 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "canvas2image-es6": "^1.2.0",
     "chart.js": "^2.7.1",
     "chartjs-plugin-datalabels": "^0.4.0",
     "es6-promise": "^4.2.5",
     "geobuf": "^3.0.0",
     "html2canvas": "^1.0.0-alpha.12",
-    "html2pdf.js": "^0.9.1",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
     "ol": "^5.1.3",

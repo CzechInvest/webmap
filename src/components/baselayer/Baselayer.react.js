@@ -48,7 +48,6 @@ class Baselayer extends React.Component {
     });
 
     setLayers(activeLayer, this.layerGroup, datasets, this.context.map);
-
     this.context.map.addLayer(this.layerGroup);
   }
 
@@ -59,7 +58,7 @@ class Baselayer extends React.Component {
       baseLayerType.POSITRON : baseLayerType.ORTO;
 
     return (
-      <button className="ci-switcher" onClick={this.onClick}
+      <button onClick={this.onClick}
         title={messages['baselayerTitle'][lang]}
         style={{ background: `url('img/${img}.png') no-repeat`}}
       />
@@ -67,7 +66,8 @@ class Baselayer extends React.Component {
   }
 
   render() {
-    return ReactDOM.createPortal(this.renderSwitcher(), document.body);
+    const { renderToBody } = this.props;
+    return renderToBody ? ReactDOM.createPortal( <div  className="ci-switcher"> {this.renderSwitcher()} </div>, document.body) : this.renderSwitcher();
   }
 }
 
@@ -79,6 +79,7 @@ Baselayer.propTypes = {
   opacity: PropTypes.number.isRequired,
   datasets: PropTypes.object.isRequired,
   visible: PropTypes.bool.isRequired,
+  renderToBody: PropTypes.bool.isRequired,
 };
 
 

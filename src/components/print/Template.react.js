@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { activatePrint } from './actions';
-import Icon from '../../Icon';
-import logo from '../../assets/img/logo_CI.svg';
-import html2pdf from 'html2pdf.js';
-import './Template.scss';
-
 import html2canvas from 'html2canvas';
+import canvas2image from 'canvas2image-es6';
+import Baselayer from '../baselayer/Baselayer.react';
+import './Template.scss';
 
 
 class PrintTemplate extends React.Component {
@@ -17,7 +15,9 @@ class PrintTemplate extends React.Component {
     super();
     this.handlePrint = this.handlePrint.bind(this);
     this.handleDeActivatePrint = this.handleDeActivatePrint.bind(this);
+    this.handleAddDistrictPanel = this.handleAddDistrictPanel.bind(this);
     this.state = { width: 210, height: 148, units: 'mm' };
+    console.log(canvas2image);
   }
 
   componentDidMount() {
@@ -35,13 +35,13 @@ class PrintTemplate extends React.Component {
     const element = document.querySelector('.ci-template');
     const { width, height } = this.state;
     const options = {
-      margin:       0,
-      filename:     'myfile.pdf',
-      image:        { type: 'jpeg', quality: 1 },
-      html2canvas:  { scale: 4 },
-      jsPDF:        { unit: 'mm', format: [height + 1, width + 1], orientation: 'landscape' }
+      scale: 10,
     };
-    html2pdf().set(options).from(element).save();
+
+    html2canvas(element, options).then(canvas => {
+      console.log(canvas);
+      canvas2image.saveAsJPEG(canvas,  width * 10, height * 10);
+    });
   }
 
   handleDeActivatePrint() {
@@ -50,15 +50,17 @@ class PrintTemplate extends React.Component {
     activatePrint(false);
   }
 
+  handleAddDistrictPanel() {
+    const district = document.querySelector('.districts-panel');
+    const emptyone = document.querySelector('#emptyone');
+    console.log(district, emptyone);
+    emptyone.appendChild(district);
+  }
+
 
   renderTopPanel() {
     return (
-      <div className="main-menu">
-        {
-        false && <div className="logo-container">
-          <img className="logo" src={logo} alt="CzechInvest" />
-        </div>
-        }
+      <div>
         <div className="categories-menu">
           {''}
         </div>
@@ -70,7 +72,7 @@ class PrintTemplate extends React.Component {
   renderBottomPanel() {
     return (
       <div className="bottom-panel">
-        <Icon className="logo" glyph="plusko" />
+        <img className="logo" src="img/plusko.png" />
       </div>
     );
   }
@@ -87,17 +89,23 @@ class PrintTemplate extends React.Component {
     return (
       <div className="ci-template-backdrop">
         <div className="ci-template-buttons">
+
           <button onClick={this.handleDeActivatePrint}>
-            close
+            X
           </button>
+          <Baselayer />
           <button onClick={this.handlePrint}>
-            print
+            p
+          </button>
+          <button onClick={this.handleAddDistrictPanel}>
+            d
           </button>
         </div>
         <div className="ci-template" style={style}>
           <div id="templateMap" />
           { this.renderTopPanel() }
           { this.renderBottomPanel() }
+          <div id="emptyone" />
         </div>
       </div>
     );

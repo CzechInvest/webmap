@@ -23,7 +23,7 @@ class Panel extends React.Component {
     const { lang, setLanguage } = this.props;
     return (
       <div className="bottom-panel">
-        <Icon className="logo" glyph="plusko" />
+        <img className="logo" src="img/plusko.png" />
         <PrintButton />
         <button
           className="contact"

@@ -1,6 +1,7 @@
 @import '../../theme.scss';
 
 .ci-switcher {
+  button {
     position: absolute;
     top: calc(50% - 76px);
     left: 0;
@@ -23,4 +24,5 @@
         0px 4px 5px -3px rgba(0, 0, 0, 0.2),
         0px 8px 12px 1px rgba(0, 0, 0, 0.14),
         0px 3px 15px 3px rgba(0, 0, 0, 0.12);
+  }
 }

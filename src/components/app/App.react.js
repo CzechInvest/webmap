@@ -16,7 +16,7 @@ import './App.scss';
 export default () => (
   <Map>
     <View>
-      <Baselayer />
+      <Baselayer renderToBody />
     </View>
     <BottomPanel />
     <CategoriesMenu />

@@ -28,6 +28,7 @@ export const setLayers = (type, layer, datasets, map) => {
     default:
       setPositron(layer);
   }
+  console.log(map.getLayers().getArray());
 }
 
 const getWMSborders = () => {
