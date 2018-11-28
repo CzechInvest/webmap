@@ -858,7 +858,7 @@ export default {
       datasetId: 'whoiswho',
       visible: false,
       filter: {
-        attribute: 'sectors',
+        attribute: 'sector_shortcuts',
         value: 'HT'
       },
       style: {
@@ -873,7 +873,7 @@ export default {
       datasetId: 'whoiswho',
       visible: false,
       filter: {
-        attribute: 'sectors',
+        attribute: 'sector_shortcuts',
         value: 'AE'
       },
       style: {
@@ -888,7 +888,7 @@ export default {
       datasetId: 'whoiswho',
       visible: false,
       filter: {
-        attribute: 'sectors',
+        attribute: 'sector_shortcuts',
         value: 'AU'
       },
       style: {
@@ -903,7 +903,7 @@ export default {
       datasetId: 'whoiswho',
       visible: false,
       filter: {
-        attribute: 'sectors',
+        attribute: 'sector_shortcuts',
         value: 'BI'
       },
       style: {
@@ -918,7 +918,7 @@ export default {
       datasetId: 'whoiswho',
       visible: false,
       filter: {
-        attribute: 'sectors',
+        attribute: 'sector_shortcuts',
         value: 'IT'
       },
       style: {
@@ -933,7 +933,7 @@ export default {
       datasetId: 'whoiswho',
       visible: false,
       filter: {
-        attribute: 'sectors',
+        attribute: 'sector_shortcuts',
         value: 'NN'
       },
       style: {
@@ -948,7 +948,7 @@ export default {
       datasetId: 'whoiswho',
       visible: false,
       filter: {
-        attribute: 'sectors',
+        attribute: 'sector_shortcuts',
         value: 'EE'
       },
       style: {
