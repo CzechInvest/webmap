@@ -15,6 +15,7 @@ import { Attribution } from 'ol/control';
 import { defaults } from 'ol/control';
 import { loadFeaturesXhr }  from 'ol/featureloader';
 import { MouseWheelZoom } from 'ol/interaction';
+import PrintTemplate from '../print/Template.react';
 
 import { createLayerStyle, createPointStyle, coloredPolygonStyle } from './styles';
 import { DistinctPointsSource, FilteredPointLayer, FilteredPolygonLayer } from './layers';
@@ -243,8 +244,10 @@ class MapComponent extends React.Component {
   }
 
   render() {
+    const { printActive } = this.props;
     return (
       <div id="map-container">
+        { printActive && <PrintTemplate /> }
         <div
           id="map"
           ref={node => {this.mapEl = node} }
@@ -270,6 +273,7 @@ const visibleLayersSelector = createSelector(
 )
 
 export default connect(state => ({
+  printActive: state.print.active,
   layers: state.layers.layers,
   datasets: state.layers.datasets,
   visibleLayers: visibleLayersSelector(state)

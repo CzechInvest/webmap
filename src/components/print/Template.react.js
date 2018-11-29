@@ -7,6 +7,7 @@ import { activatePrint } from './actions';
 import html2canvas from 'html2canvas';
 import canvas2image from 'canvas2image-es6';
 import Baselayer from '../baselayer/Baselayer.react';
+import Icon from '../../Icon';
 import './Template.scss';
 
 
@@ -17,7 +18,6 @@ class PrintTemplate extends React.Component {
     this.handleDeActivatePrint = this.handleDeActivatePrint.bind(this);
     this.handleAddDistrictPanel = this.handleAddDistrictPanel.bind(this);
     this.state = { width: 210, height: 148, units: 'mm' };
-    console.log(canvas2image);
   }
 
   componentDidMount() {
@@ -72,13 +72,13 @@ class PrintTemplate extends React.Component {
   renderBottomPanel() {
     return (
       <div className="bottom-panel">
-        <img className="logo" src="img/plusko.png" />
+        <img alt="" className="logo" src="img/plusko.png" />
       </div>
     );
   }
 
   renderComponent() {
-    const { lang } = this.props;
+    const { lang, districts } = this.props;
     const { width, height } = this.state;
 
     const style = {
@@ -91,14 +91,14 @@ class PrintTemplate extends React.Component {
         <div className="ci-template-buttons">
 
           <button onClick={this.handleDeActivatePrint}>
-            X
+            <Icon glyph="times-solid" />
           </button>
           <Baselayer />
+          { !!districts.size && <button onClick={this.handleAddDistrictPanel}>
+            <Icon glyph="chart-bar-solid" />
+          </button> }
           <button onClick={this.handlePrint}>
-            p
-          </button>
-          <button onClick={this.handleAddDistrictPanel}>
-            d
+            <Icon glyph="print-solid" />
           </button>
         </div>
         <div className="ci-template" style={style}>
@@ -130,6 +130,7 @@ PrintTemplate.contextTypes = {
 
 export default connect(state => ({
   active: state.print.active,
+  districts: state.districts.districts,
 }), dispatch => bindActionCreators({
     activatePrint
 }, dispatch))(PrintTemplate);

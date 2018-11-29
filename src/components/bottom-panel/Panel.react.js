@@ -20,7 +20,10 @@ class Panel extends React.Component {
   }
 
   render() {
-    const { lang, setLanguage } = this.props;
+    const { lang, setLanguage, printActive, renderToBody } = this.props;
+
+    if (renderToBody && printActive) return null;
+
     return (
       <div className="bottom-panel">
         <img className="logo" src="img/plusko.png" />
@@ -81,6 +84,7 @@ class Panel extends React.Component {
 }
 
 export default connect(state => ({
+  printActive: state.print.active,
   lang: state.lang.selectedLanguage
 }), dispatch => bindActionCreators({
   setLanguage

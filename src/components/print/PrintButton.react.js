@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { activatePrint } from './actions';
-import Template from './Template.react';
 import Icon from '../../Icon';
 
 import './Print.scss';
@@ -25,7 +24,6 @@ class PrintButton extends React.Component {
     const { lang, active } = this.props;
     return (
       <span>
-        { active && <Template /> }
         <button className="ci-print-button" onClick={this.onClick}
           // title={messages['PrintButtonTitle'][lang]}
         >

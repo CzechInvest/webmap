@@ -66,13 +66,14 @@ class Baselayer extends React.Component {
   }
 
   render() {
-    const { renderToBody } = this.props;
-    return renderToBody ? ReactDOM.createPortal( <div  className="ci-switcher"> {this.renderSwitcher()} </div>, document.body) : this.renderSwitcher();
+    const { renderToBody, printActive } = this.props;
+    return (renderToBody && !printActive) ? ReactDOM.createPortal( <div  className="ci-switcher"> {this.renderSwitcher()} </div>, document.body) : this.renderSwitcher();
   }
 }
 
 
 Baselayer.propTypes = {
+  printActive: PropTypes.bool.isRequired,
   lang: PropTypes.string.isRequired,
   setBaselayer: PropTypes.func.isRequired,
   activeLayer: PropTypes.string.isRequired,
@@ -89,6 +90,7 @@ Baselayer.contextTypes = {
 
 
 export default connect(state => ({
+  printActive: state.print.active,
   activeLayer: state.baselayer.activeLayer,
   opacity: state.baselayer.opacity,
   visible: state.baselayer.visible,
