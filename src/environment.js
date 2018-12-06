@@ -381,6 +381,22 @@ export default {
       ]
     },
     {
+      id: 'faculties',
+      src: 'vzdelavani/faculties.geojson',
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'sectors' },
+        { property: 'address' },
+        {
+          property: 'url',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a target="_blank" href="${value}">${value}</a>'
+        }
+      ]
+    },
+    {
       id: 'pasport',
       src: {
         geometry: 'geometry/orp.pbf.geojson',
@@ -1084,6 +1100,17 @@ export default {
       //     }
       //   ]
       // }
+    },
+    {
+      id: 'faculties',
+      datasetId: 'faculties',
+      visible: false,
+      catId: 'science',
+      style: {
+        type: 'icon',
+        icon: 'vvi_bod',
+        fill: '#9C9C9C'
+      }
     },
     {
       id: 'incubators',
