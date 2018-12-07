@@ -990,6 +990,17 @@ export default {
       catId: 'science'
     },
     {
+      id: 'faculties',
+      datasetId: 'faculties',
+      visible: false,
+      catId: 'science',
+      style: {
+        type: 'icon',
+        icon: 'vvi_bod',
+        fill: '#9C9C9C'
+      }
+    },
+    {
       id: 'vtp',
       datasetId: 'pi_vtp',
       visible: false,
@@ -1100,17 +1111,6 @@ export default {
       //     }
       //   ]
       // }
-    },
-    {
-      id: 'faculties',
-      datasetId: 'faculties',
-      visible: false,
-      catId: 'science',
-      style: {
-        type: 'icon',
-        icon: 'vvi_bod',
-        fill: '#9C9C9C'
-      }
     },
     {
       id: 'incubators',
