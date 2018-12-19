@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "canvas2image-es6": "^1.2.0",
     "chart.js": "^2.7.1",
     "chartjs-plugin-datalabels": "^0.4.0",
     "es6-promise": "^4.2.5",
+    "file-saver": "^2.0.0",
     "geobuf": "^3.0.0",
     "html2canvas": "^1.0.0-alpha.12",
     "immutable": "^3.8.1",

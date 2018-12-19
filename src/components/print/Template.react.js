@@ -5,11 +5,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { activatePrint } from './actions';
 import html2canvas from 'html2canvas';
-import canvas2image from 'canvas2image-es6';
+import FileSaver from 'file-saver';
 import Baselayer from '../baselayer/Baselayer.react';
 import Icon from '../../Icon';
 import messages from '../lang/messages/app';
 import './Template.scss';
+import { throws } from 'assert';
 
 
 class PrintTemplate extends React.Component {
@@ -18,11 +19,27 @@ class PrintTemplate extends React.Component {
     this.handlePrint = this.handlePrint.bind(this);
     this.handleDeActivatePrint = this.handleDeActivatePrint.bind(this);
     this.handleAddDistrictPanel = this.handleAddDistrictPanel.bind(this);
-    this.state = { width: 210, height: 148, units: 'mm' };
+    this.state = { width: 210, height: 148, units: 'mm', ratio: 1 };
   }
 
   componentDidMount() {
+    const { ratio } = this.state;
     this.setMapContainer('#templateMap');
+    const template = document.querySelector('.ci-template');
+    const height = template.offsetHeight;
+    const width = template.offsetWidth;
+
+    const dw = (window.innerWidth - 20) - width ;
+    const dh = (window.innerHeight - 120) - height;
+    
+    const rdw = (window.innerWidth - 20 - dw) / (window.innerWidth - 20);
+    const rdh =  (window.innerHeight - 120 - dh) / (window.innerHeight - 120);
+
+    this.setState({ ratio: Math.min(ratio / rdw, ratio / rdh) });
+  }
+
+  componentDidUpdate() {
+    this.context.map.updateSize();
   }
 
   setMapContainer(selector) {
@@ -32,17 +49,36 @@ class PrintTemplate extends React.Component {
     this.context.map.updateSize();
   }
 
-  handlePrint() {
-    const element = document.querySelector('.ci-template');
-    const { width, height } = this.state;
-    const options = {
-      scale: 10,
-    };
+  dataURItoBlob(dataURI) {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const dw = new DataView(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      dw.setUint8(i, byteString.charCodeAt(i));
+    }
+    return new Blob([ab], { type: mimeString });
+  }
 
-    html2canvas(element, options).then(canvas => {
-      console.log(canvas);
-      canvas2image.saveAsJPEG(canvas,  width * 10, height * 10);
-    });
+  handlePrint() {
+    const createMapImage = () => {
+      this.context.map.updateSize();
+      this.context.map.once('postcompose', () => {
+        const element = document.querySelector('.ci-template');
+
+        html2canvas(element, { scale: 3 }).then(canvas => {
+          const dataURL = canvas.toDataURL("image/jpeg");
+          const blob = this.dataURItoBlob(dataURL);
+          FileSaver.saveAs(blob, 'CzechInvest_mapa.jpeg');
+        });
+      });
+      
+    }
+
+    //const oldRatio = this.state.ratio;
+    // this.setState({ ratio: 10 });
+    
+    setTimeout(createMapImage, 0);
   }
 
   handleDeActivatePrint() {
@@ -84,11 +120,11 @@ class PrintTemplate extends React.Component {
 
   renderComponent() {
     const { lang, districts } = this.props;
-    const { width, height } = this.state;
+    const { width, height, ratio } = this.state;
 
     const style = {
-      width: `${width}mm`,
-      height: `${height}mm`
+      width: `${width * ratio}mm`,
+      height: `${height * ratio}mm`
     };
 
     return (
@@ -106,9 +142,9 @@ class PrintTemplate extends React.Component {
               <Icon glyph="chart-bar-solid" />
             </button> 
           }
-          <button onClick={this.handlePrint} title={messages['createImage'][lang]}>
+          <a className="ci-print-download" download={"czechinvest.jpeg"} onClick={this.handlePrint} title={messages['createImage'][lang]}>
             <Icon glyph="print-solid" />
-          </button>
+          </a>
         </div>
         <div className="ci-template" style={style}>
           <div id="templateMap" />
