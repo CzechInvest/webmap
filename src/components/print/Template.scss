@@ -57,11 +57,17 @@
     background: white;
     border: 6px solid rgba(0, 0, 0, .28);
 
+    #districts-panel-anchor {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      height: calc(100% - 85px);
+    }
+
     .districts-panel {
-      transform: scale(0.5);
-      height: 170%;
-      top: -230px;
-      right: -70px;
+      position: relative;
+      transform: scale(0.5) translate(50%, -50%);
+      height: 200%;
       border-width: 2px;
       box-shadow: none;
 

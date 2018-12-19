@@ -83,6 +83,12 @@ class PrintTemplate extends React.Component {
 
   handleDeActivatePrint() {
     const { activatePrint } = this.props;
+    const district = document.querySelector('.districts-panel');
+    const districtWraper = document.querySelector('.districts-panel-wrapper');
+    const dpAnchor = document.querySelector('#districts-panel-anchor');
+    if (dpAnchor.innerHTML !== '' && district) {
+      districtWraper.appendChild(district);
+    }
     this.setMapContainer('#map-container');
     activatePrint(false);
   }
@@ -90,9 +96,9 @@ class PrintTemplate extends React.Component {
   handleAddDistrictPanel() {
     const district = document.querySelector('.districts-panel');
     const districtWraper = document.querySelector('.districts-panel-wrapper');
-    const emptyone = document.querySelector('#emptyone');
-    if (emptyone.innerHTML === '') {
-      emptyone.appendChild(district);
+    const dpAnchor = document.querySelector('#districts-panel-anchor');
+    if (dpAnchor.innerHTML === '') {
+      dpAnchor.appendChild(district);
     } else {
       districtWraper.appendChild(district);
     }
@@ -150,7 +156,7 @@ class PrintTemplate extends React.Component {
           <div id="templateMap" />
           { this.renderTopPanel() }
           { this.renderBottomPanel() }
-          <div id="emptyone" />
+          <div id="districts-panel-anchor" />
         </div>
       </div>
     );
