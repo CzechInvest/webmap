@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { activatePrint } from './actions';
 import Icon from '../../Icon';
+import messages from '../lang/messages/app';
 
 import './Print.scss';
 
@@ -25,7 +26,7 @@ class PrintButton extends React.Component {
     return (
       <span>
         <button className="ci-print-button" onClick={this.onClick}
-          // title={messages['PrintButtonTitle'][lang]}
+          title={messages['printButtonTitle'][lang]}
         >
           <Icon glyph={'image'} />
         </button>
@@ -38,6 +39,7 @@ class PrintButton extends React.Component {
 PrintButton.propTypes = {
   active: PropTypes.bool.isRequired,
   activatePrint: PropTypes.func.isRequired,
+  lang: PropTypes.string.isRequired,
 };
 
 
@@ -48,6 +50,7 @@ PrintButton.contextTypes = {
 
 export default connect(state => ({
   active: state.print.active,
+  lang: state.lang.selectedLanguage,
 }), dispatch => bindActionCreators({
     activatePrint
 }, dispatch))(PrintButton);

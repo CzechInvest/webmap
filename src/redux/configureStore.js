@@ -11,8 +11,8 @@ export default function configureStore(initialState) {
 
   // Enable redux dev tools in development
   if (process.env.NODE_ENV === 'development') {
-    if (window.devToolsExtension) {
-      createReduxStore = compose(applyMiddleware(...middleware), window.devToolsExtension());
+    if (window.__REDUX_DEVTOOLS_EXTENSION__) {
+      createReduxStore = compose(applyMiddleware(...middleware), window.__REDUX_DEVTOOLS_EXTENSION__());
     }
   }
 

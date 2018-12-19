@@ -164,7 +164,7 @@ class DistrictsComparator extends React.Component {
     return (
       <TransitionGroup>
         {active && <CSSTransition classNames="slide-left" timeout={{ enter: 300, exit: 300 }}>
-          <DistrictsPanel layer={layer} />
+          <div className="districts-panel-wrapper"> <DistrictsPanel layer={layer} /> </div>
         </CSSTransition>}
       </TransitionGroup>
     );

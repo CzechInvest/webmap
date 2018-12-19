@@ -8,6 +8,7 @@ import html2canvas from 'html2canvas';
 import canvas2image from 'canvas2image-es6';
 import Baselayer from '../baselayer/Baselayer.react';
 import Icon from '../../Icon';
+import messages from '../lang/messages/app';
 import './Template.scss';
 
 
@@ -52,9 +53,13 @@ class PrintTemplate extends React.Component {
 
   handleAddDistrictPanel() {
     const district = document.querySelector('.districts-panel');
+    const districtWraper = document.querySelector('.districts-panel-wrapper');
     const emptyone = document.querySelector('#emptyone');
-    console.log(district, emptyone);
-    emptyone.appendChild(district);
+    if (emptyone.innerHTML === '') {
+      emptyone.appendChild(district);
+    } else {
+      districtWraper.appendChild(district);
+    }
   }
 
 
@@ -90,14 +95,18 @@ class PrintTemplate extends React.Component {
       <div className="ci-template-backdrop">
         <div className="ci-template-buttons">
 
-          <button onClick={this.handleDeActivatePrint}>
+          <button onClick={this.handleDeActivatePrint} 
+            title={messages['closePrint'][lang]}
+          >
             <Icon glyph="times-solid" />
           </button>
           <Baselayer />
-          { !!districts.size && <button onClick={this.handleAddDistrictPanel}>
-            <Icon glyph="chart-bar-solid" />
-          </button> }
-          <button onClick={this.handlePrint}>
+          { !!districts.size && 
+            <button onClick={this.handleAddDistrictPanel} title={messages['addComparing'][lang]} >
+              <Icon glyph="chart-bar-solid" />
+            </button> 
+          }
+          <button onClick={this.handlePrint} title={messages['createImage'][lang]}>
             <Icon glyph="print-solid" />
           </button>
         </div>
@@ -120,6 +129,7 @@ class PrintTemplate extends React.Component {
 PrintTemplate.propTypes = {
   active: PropTypes.bool.isRequired,
   activatePrint: PropTypes.func.isRequired,
+  lang: PropTypes.string.isRequired,
 };
 
 
@@ -130,6 +140,7 @@ PrintTemplate.contextTypes = {
 
 export default connect(state => ({
   active: state.print.active,
+  lang: state.lang.selectedLanguage,
   districts: state.districts.districts,
 }), dispatch => bindActionCreators({
     activatePrint
