@@ -569,6 +569,21 @@ export default {
         { property: 'scope' },
         { property: 'address' }
       ]
+    },
+    {
+      id: 'ai',
+      src: 'vzdelavani/ai.geojson',
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'sector' },
+        { property: 'address' },
+        { property: 'url',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a target="_blank" href="${value}">${value}</a>'
+        }
+      ]
     }
   ],
   layers: [
@@ -866,6 +881,17 @@ export default {
         type: 'icon',
         icon: 'vvi_bod',
         fill: '#002E5F'
+      },
+      catId: 'science'
+    },
+    {
+      id: 'ai',
+      datasetId: 'ai',
+      visible: false,
+      style: {
+        type: 'icon',
+        icon: 'vvi_bod',
+        fill: '#000000'
       },
       catId: 'science'
     },
