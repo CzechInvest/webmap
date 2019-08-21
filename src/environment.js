@@ -164,7 +164,7 @@ export default {
       // src: 'socioekonomicka/kraje.pbf.geojson',
       src: {
         geometry: 'geometry/kraje.geojson',
-        attributes: 'socioekonomicka/soc_ekon-kraje.json',
+        attributes: 'socioekonomicka/soc_ekon-kraje-2019.json',
         geometryId: 'Kod',
         attributesId: 'Kod'
       },
@@ -302,7 +302,7 @@ export default {
       id: 'okresy',
       src: {
         geometry: 'geometry/okresy.pbf.geojson',
-        attributes: 'socioekonomicka/soc_ekon-okresy.json',
+        attributes: 'socioekonomicka/soc_ekon-orp-2019.json',
         geometryId: 'Kod',
         attributesId: 'Kod'
       },
