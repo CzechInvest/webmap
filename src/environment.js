@@ -24,11 +24,11 @@ export default {
       id: 'estate',
       icon: 'nemovitosti'
     },
-    {
+    /*{
       id: 'pasport',
       icon: 'pasport',
       selectType: 'radio'
-    },
+    },*/
     {
       id: 'socioeconomic',
       icon: 'socio',
@@ -216,7 +216,7 @@ export default {
       geometryType: 'point',
       attributes: [
         { property: 'name' },
-        { property: 'contact' },
+        { property: 'director' },
         { property: 'phone' },
         {
           property: 'email',
