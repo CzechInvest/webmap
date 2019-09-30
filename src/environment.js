@@ -584,6 +584,30 @@ export default {
           template: '<a target="_blank" href="${value}">${value}</a>'
         }
       ]
+    },
+    {
+      id: 'circular',
+      src: 'vzdelavani/circular_economy.geojson',
+      geometryType: 'point',
+      attributes: [
+        { property: 'name' },
+        { property: 'contact' },
+        {
+          property: 'email',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a href="mailto:${value}">${value}</a>'
+        },
+        { property: 'address' },
+        { property: 'url',
+          type: 'html',
+          // eslint-disable-next-line
+          template: '<a target="_blank" href="${value}">${value}</a>'
+        },
+        {
+          property: "description"
+        }
+      ]
     }
   ],
   layers: [
@@ -892,6 +916,17 @@ export default {
         type: 'icon',
         icon: 'vvi_bod',
         fill: '#000000'
+      },
+      catId: 'science'
+    },
+    {
+      id: 'circular',
+      datasetId: 'circular',
+      visible: false,
+      style: {
+        type: 'icon',
+        icon: 'vvi_bod',
+        fill: '#990099'
       },
       catId: 'science'
     },
