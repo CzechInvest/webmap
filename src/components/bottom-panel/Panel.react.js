@@ -48,15 +48,15 @@ class Panel extends React.Component {
                   <tbody>
                     <tr>
                       <td className="label">{messages['phone'][lang]}</td>
-                      <td>296 342 500</td>
+                      <td>+420 296 342 743</td>
                     </tr>
                     <tr>
                       <td className="label">{messages['mobilePhone'][lang]}</td>
-                      <td>+420 296 342 456 (podatelna)</td>
+                      <td>+420 724 969 782</td>
                     </tr>
                     <tr>
                       <td className="label">{messages['email'][lang]}</td>
-                      <td><a href="mailto:info@czechinvest.org">info@czechinvest.org</a></td>
+                      <td><a href="mailto:lukas.cerny@czechinvest.org">lukas.cerny@czechinvest.org</a></td>
                     </tr>
                     <tr>
                       <td className="label">{messages['address'][lang]}</td>
