@@ -1040,7 +1040,7 @@ export default {
       datasetId: 'whoiswho',
       visible: false,
       filter: {
-        attribute: 'sectors',
+        attribute: 'sector_shortcuts',
         value: 'CT'
       },
       style: {
