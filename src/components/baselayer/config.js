@@ -112,7 +112,7 @@ export const setOrtofoto = (layerGroup, datasets, map) => {
 
 export const setPositron = layerGroup => {
   const source = new TileJSON({
-    url: 'https://api.maptiler.com/maps/positron/style.json?key=mCnC0rArFsfnBvLPiB6J',
+    url: 'https://api.maptiler.com/maps/positron/256/tiles.json?key=mCnC0rArFsfnBvLPiB6J',
     attributions: OSM.ATTRIBUTION,
     crossOrigin: 'anonymous'
   });
