@@ -1262,57 +1262,57 @@ export default {
       },
       catId: 'handshake'
     },
-    {
-      id: 'investice',
-      datasetId: 'orp',
-      visible: false,
-      filter: {
-        attribute: 'investice',
-        type: 'oneOf',
-        values: [1, 0]
-      },/*
-      style: {
-        type: 'categorized',
-        fill: ['#7C88C377', '#DD4A53'],
-        stroke: 'red'
-      },*/
-      style: [
-        {
-          label: '50 milionů Kč',
-          fill: ['#475A8F', 0.7],
-          stroke: 'red'
-        },
-        {
-          label: '100 milionů Kč',
-          fill: ['#002E5F99', 0.7],
-          stroke: 'red'
-        }
-      ],
-      catId: 'handshake'
-    },
-    {
-      id: 'granty',
-      datasetId: 'orp',
-      visible: false,
-      filter: {
-        attribute: 'granty',
-        type: 'oneOf',
-        values: [0, 1]
-      },
-      style: [
-        {
-          label: '100 000 Kč na prac. místo, 25 % na školení',
-          fill: ['#DD4A53', 0.7],
-          stroke: 'red'
-        },
-        {
-          label: '200 000 Kč na prac. místo, 50 % na školení',
-          fill: ['#DB002E', 0.7],
-          stroke: 'red'
-        }
-      ],
-      catId: 'handshake'
-    },
+    //{
+    //  id: 'investice',
+    //  datasetId: 'orp',
+    //  visible: false,
+    //  filter: {
+    //    attribute: 'investice',
+    //    type: 'oneOf',
+    //    values: [1, 0]
+    //  },/*
+    //  style: {
+    //    type: 'categorized',
+    //    fill: ['#7C88C377', '#DD4A53'],
+    //    stroke: 'red'
+    //  },*/
+    //  style: [
+    //    {
+    //      label: '50 milionů Kč',
+    //      fill: ['#475A8F', 0.7],
+    //      stroke: 'red'
+    //    },
+    //    {
+    //      label: '100 milionů Kč',
+    //      fill: ['#002E5F99', 0.7],
+    //      stroke: 'red'
+    //    }
+    //  ],
+    //  catId: 'handshake'
+    //},
+    //{
+    //  id: 'granty',
+    //  datasetId: 'orp',
+    //  visible: false,
+    //  filter: {
+    //    attribute: 'granty',
+    //    type: 'oneOf',
+    //    values: [0, 1]
+    //  },
+    //  style: [
+    //    {
+    //      label: '100 000 Kč na prac. místo, 25 % na školení',
+    //      fill: ['#DD4A53', 0.7],
+    //      stroke: 'red'
+    //    },
+    //    {
+    //      label: '200 000 Kč na prac. místo, 50 % na školení',
+    //      fill: ['#DB002E', 0.7],
+    //      stroke: 'red'
+    //    }
+    //  ],
+    //  catId: 'handshake'
+    //},
     {
       id: 'brownfields',
       datasetId: 'brownfields',
