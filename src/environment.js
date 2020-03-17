@@ -836,67 +836,67 @@ export default {
       },
       catId: 'business'
     },
-    {
-      id: 'top_investments',
-      datasetId: 'top_investments',
-      visible: false,
-      style: {
-        type: 'categorized',
-        attribute: 'kraj',
-        base: {
-          type: 'circle',
-          fill: '#aaa',
-          stroke: '#333',
-          strokeWidth: 1
-        },
-        categories: [
-          {
-            value: 19,
-            fill: '#002E5F'
-          }, {
-            value: 27,
-            fill: '#DB002E'
-          }, {
-            value: 35,
-            fill: '#DCA28F'
-          }, {
-            value: 43,
-            fill: '#7C88C3'
-          }, {
-            value: 51,
-            fill: '#DD4A53'
-          }, {
-            value: 60,
-            fill: '#EB7274'
-          }, {
-            value: 78,
-            fill: '#D8A881'
-          }, {
-            value: 86,
-            fill: '#F3914E'
-          }, {
-            value: 94,
-            fill: '#FCE94F'
-          }, {
-            value: 108,
-            fill: '#75507B'
-          }, {
-            value: 116,
-            fill: '#73D216'
-          }, {
-            value: 124,
-            fill: '#CFAAB4'
-          }, {
-            value: 132,
-            fill: '#475A8F'
-          }, {
-            value: 141,
-            fill: '#F088A4'
-          }
-        ]
-      },
-      catId: 'business'
-    },
+    //{
+    //  id: 'top_investments',
+    //  datasetId: 'top_investments',
+    //  visible: false,
+    //  style: {
+    //    type: 'categorized',
+    //    attribute: 'kraj',
+    //    base: {
+    //      type: 'circle',
+    //      fill: '#aaa',
+    //      stroke: '#333',
+    //      strokeWidth: 1
+    //    },
+    //    categories: [
+    //      {
+    //        value: 19,
+    //        fill: '#002E5F'
+    //      }, {
+    //        value: 27,
+    //        fill: '#DB002E'
+    //      }, {
+    //        value: 35,
+    //        fill: '#DCA28F'
+    //      }, {
+    //        value: 43,
+    //        fill: '#7C88C3'
+    //      }, {
+    //        value: 51,
+    //        fill: '#DD4A53'
+    //      }, {
+    //        value: 60,
+    //        fill: '#EB7274'
+    //      }, {
+    //        value: 78,
+    //        fill: '#D8A881'
+    //      }, {
+    //        value: 86,
+    //        fill: '#F3914E'
+    //      }, {
+    //        value: 94,
+    //        fill: '#FCE94F'
+    //      }, {
+    //        value: 108,
+    //        fill: '#75507B'
+    //      }, {
+    //        value: 116,
+    //        fill: '#73D216'
+    //      }, {
+    //        value: 124,
+    //        fill: '#CFAAB4'
+    //      }, {
+    //        value: 132,
+    //        fill: '#475A8F'
+    //      }, {
+    //        value: 141,
+    //        fill: '#F088A4'
+    //      }
+    //    ]
+    //  },
+    //  catId: 'business'
+    //},
     {
       id: 'avcr',
       datasetId: 'avcr',
