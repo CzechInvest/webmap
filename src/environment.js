@@ -12,10 +12,10 @@ export default {
       id: 'science',
       icon: 'vvi'
     },
-    {
-      id: 'startup',
-      icon: 'start'
-    },
+    //{
+    //  id: 'startup',
+    //  icon: 'start'
+    //},
     {
       id: 'handshake',
       icon: 'podpora'
