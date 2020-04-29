@@ -9,8 +9,6 @@ process.on('unhandledRejection', err => {
   throw err;
 });
 require('babel-core/register')({ presets: ['env'] });
-// Ensure environment variables are read.
-require('../config/env');
 
 const chalk = require('chalk');
 const fs = require('fs-extra');
