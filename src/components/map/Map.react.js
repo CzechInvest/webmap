@@ -1,25 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
-import { Map } from 'ol';
+import {
+  bindActionCreators
+} from 'redux';
+import {
+  connect
+} from 'react-redux';
+import {
+  createSelector
+} from 'reselect';
+import {
+  Map
+} from 'ol';
 import 'ol/ol.css';
 import './Map.scss';
-import { Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
-import { Cluster } from 'ol/source';
-import { GeoJSON } from 'ol/format';
+import {
+  Vector as VectorLayer
+} from 'ol/layer';
+import {
+  Vector as VectorSource
+} from 'ol/source';
+import {
+  Cluster
+} from 'ol/source';
+import {
+  GeoJSON
+} from 'ol/format';
 import JSONFeature from 'ol/format/JSONFeature';
-import { Attribution } from 'ol/control';
-import { defaults } from 'ol/control';
-import { loadFeaturesXhr }  from 'ol/featureloader';
-import { MouseWheelZoom } from 'ol/interaction';
+import {
+  Attribution
+} from 'ol/control';
+import {
+  defaults
+} from 'ol/control';
+import {
+  MouseWheelZoom
+} from 'ol/interaction';
 
-import { createLayerStyle, createPointStyle, coloredPolygonStyle } from './styles';
-import { DistinctPointsSource, FilteredPointLayer, FilteredPolygonLayer } from './layers';
+import {
+  createLayerStyle,
+  createPointStyle,
+  coloredPolygonStyle
+} from './styles';
+import {
+  DistinctPointsSource,
+  FilteredPointLayer,
+  FilteredPolygonLayer
+} from './layers';
 import Geobuf from './formats';
 import AnimatedCluster from './AnimatedClusterLayer';
+import axios from 'axios';
 
 function dataUrl(path) {
   return process.env.DATA_URL + path
@@ -33,7 +63,9 @@ class MapComponent extends React.Component {
       collapsible: false
     });
     this.map = new Map({
-      controls: defaults({ attribution: false }).extend([attribution])
+      controls: defaults({
+        attribution: false
+      }).extend([attribution])
     });
     // if map is nested inside main page (in iframe or object),
     // adjust mouse wheel zooming to work only in combination with
@@ -42,7 +74,7 @@ class MapComponent extends React.Component {
     if (window.top !== window) {
       const zoomIntercation = this.map.getInteractions().getArray().find(i => i instanceof MouseWheelZoom);
       zoomIntercation._handleEvent = zoomIntercation.handleEvent;
-      zoomIntercation.handleEvent = function(e) {
+      zoomIntercation.handleEvent = function (e) {
         if (e.type === 'wheel' && !e.originalEvent.ctrlKey && !e.originalEvent.altKey) {
           return true;
         }
@@ -51,7 +83,9 @@ class MapComponent extends React.Component {
     }
     this.dataSources = {};
     this.createLayers();
-    this.state = { isMounted: false };
+    this.state = {
+      isMounted: false
+    };
   }
 
   getDataSource(dataset) {
@@ -59,40 +93,38 @@ class MapComponent extends React.Component {
       return this.dataSources[dataset.id];
     }
     let source;
-
-    if (dataset.src === Object(dataset.src)) {
+  
+    if (typeof dataset.src === "object") {
+      const isPBF = dataset.src.geometry.indexOf('.pbf') !== -1
       source = new VectorSource({
-        format: dataset.src.geometry.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON(),
-        loader(extent, resolution, projection) {
-          const json = new JSONFeature();
-          json.readFeatures = (resp, params) => JSON.parse(resp);
+        loader: function (extent, resolution, projection) {
+          axios.get(dataUrl(dataset.src.geometry), {
+            responseType: isPBF ? 'arraybuffer' : 'json',
+          }).then(response => {
+            const format = isPBF ? Geobuf({
+              dataProjection: 'EPSG:4326',
+              featureProjection: 'EPSG:3857',
+            }) : new GeoJSON({
+              dataProjection: 'EPSG:4326',
+              featureProjection: 'EPSG:3857',
+            })
+            const features = format.readFeatures(response.data);
 
-          loadFeaturesXhr(dataUrl(dataset.src.attributes), json, attributes => {
-            source.data = attributes
-            const attributesKey = dataset.src.attributesId;
-            const geometryKey = dataset.src.geometryId;
+            this.addFeatures(features);
 
-            const attributesById = {};
-            attributes.forEach(obj => attributesById[obj[attributesKey]] = obj);
-
-          loadFeaturesXhr(
-              dataUrl(dataset.src.geometry),
-              this.format_,
-              features => {
-                // console.log(features.length, attributes.length);
-                features.forEach((f, index) => {
-                  const id = f.get(geometryKey);
-                  // console.log(f.getProperties(), attributesById[id]);
-                  f.setProperties(attributesById[id]);
-                });
-                this.addFeatures(features);
-                // with filter of not paired features
-                // this.addFeatures(features.filter(f => attributesById[f.get(geometryKey)]));
-              }
-            )(extent, resolution, projection);
-          })();
+            axios.get(dataUrl(dataset.src.attributes)).then(response => {
+              features.forEach(feature => {
+                const kod = feature.get('Kod');
+                const properties = response.data.find(data =>
+                  data.Kod === kod
+                )
+                feature.setProperties(properties);
+              })
+            })
+          })
         }
-      });
+      })
+
     } else {
       source = new VectorSource({
         url: dataUrl(dataset.src),
@@ -108,9 +140,12 @@ class MapComponent extends React.Component {
   }
 
   createFilter(layer) {
-    const { id, filter } = layer;
+    const {
+      id,
+      filter
+    } = layer;
     let fn;
-    switch(filter.type) {
+    switch (filter.type) {
       case 'single': {
         fn = feature => feature.get(filter.attribute) === filter.value ? layer.style.fill : false;
         break;
@@ -133,7 +168,10 @@ class MapComponent extends React.Component {
   createLayers() {
     this.map.layerById = {};
     const layerByDataset = {};
-    const { layers, datasets } = this.props;
+    const {
+      layers,
+      datasets
+    } = this.props;
 
     layers.forEach(l => {
       const layer = l.toJS();
@@ -196,7 +234,10 @@ class MapComponent extends React.Component {
         }
         if (!vectorLayer) {
           if (isPointLayer) {
-            source = new Cluster({source, distance: 30})
+            source = new Cluster({
+              source,
+              distance: 30
+            })
           }
           const Layer = isPointLayer ? AnimatedCluster : VectorLayer;
           vectorLayer = new Layer({
@@ -216,16 +257,23 @@ class MapComponent extends React.Component {
   }
 
   getChildContext() {
-    return { map: this.map };
+    return {
+      map: this.map
+    };
   }
 
   componentDidMount() {
-    this.setState({ isMounted: true });
+    this.setState({
+      isMounted: true
+    });
     this.map.setTarget(this.mapEl);
   }
 
   componentDidUpdate(prevProps) {
-    const { layers, visibleLayers } = this.props;
+    const {
+      layers,
+      visibleLayers
+    } = this.props;
 
     if (prevProps.layers !== layers || prevProps.visibleLayers !== visibleLayers) {
       layers.toList().forEach(layer => {
@@ -243,14 +291,18 @@ class MapComponent extends React.Component {
   }
 
   render() {
-    return (
-      <div
-        id="map"
-        ref={node => {this.mapEl = node} }
-      >
-        <div className='ci-zoom' />
-        { this.state.isMounted && this.props.children }
-      </div>
+    return ( <
+      div id = "map"
+      ref = {
+        node => {
+          this.mapEl = node
+        }
+      } >
+      <
+      div className = 'ci-zoom' / > {
+        this.state.isMounted && this.props.children
+      } <
+      /div>
     );
   }
 }
@@ -272,5 +324,4 @@ export default connect(state => ({
   layers: state.layers.layers,
   datasets: state.layers.datasets,
   visibleLayers: visibleLayersSelector(state)
-}), dispatch => bindActionCreators({
-}, dispatch))(MapComponent);
+}), dispatch => bindActionCreators({}, dispatch))(MapComponent);
