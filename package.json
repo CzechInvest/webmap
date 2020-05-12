@@ -31,6 +31,8 @@
     "babel-register": "^6.26.0",
     "babel-runtime": "6.26.0",
     "chalk": "^2.4.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^1.0.1",
     "dotenv": "6.0.0",
     "enzyme": "^3.11.0",
@@ -68,12 +70,14 @@
     "svgo-loader": "^2.2.1",
     "url-loader": "1.1.0",
     "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-manifest-plugin": "^1.3.1"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "start": "DATA_URL=/web-data/ NODE_ENV=development webpack-dev-server --mode development --config config/webpack.config.dev.js --port 3000",
+    "start:prod_data": "DATA_URL=https://czechinvest.github.io/web-data/ NODE_ENV=development webpack-dev-server --mode development --config config/webpack.config.dev.js --port 3000",
+    "build": "DATA_URL=https://czechinvest.github.io/web-data/ NODE_ENV=production webpack --bail --config config/webpack.config.prod.js --progress --profile --colors",
     "doc": "./node_modules/.bin/jsdoc src/index.js --destination 'build/doc'",
     "docmd": "./node_modules/.bin/jsdoc2md src/index.js",
     "deploy": "npm run build && npm run doc && node scripts/deploy.js"

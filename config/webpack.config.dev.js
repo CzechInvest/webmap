@@ -16,6 +16,11 @@ module.exports = {
     require.resolve('react-dev-utils/webpackHotDevClient'),
     paths.appIndexJs,
   ],
+  devServer: {
+    contentBase: ['./public'],
+    hot: true,
+    watchContentBase: true,
+  },
   output: {
     path: paths.appBuild,
     pathinfo: true,
@@ -140,6 +145,7 @@ module.exports = {
     new MiniCssExtractPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'ENVIRONMENT', 'DATA_URL']),
   ],
   node: {
     dgram: 'empty',

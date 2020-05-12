@@ -4,7 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const {
+  CleanWebpackPlugin
+} = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const publicPath = paths.servedPath;
 
@@ -34,8 +37,8 @@ module.exports = {
     publicPath,
     devtoolModuleFilenameTemplate: info =>
       path
-        .relative(paths.appSrc, info.absoluteResourcePath)
-        .replace(/\\/g, '/'),
+      .relative(paths.appSrc, info.absoluteResourcePath)
+      .replace(/\\/g, '/'),
   },
   resolve: {
     extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx'],
@@ -48,28 +51,23 @@ module.exports = {
   },
   module: {
     strictExportPresence: true,
-    rules: [
-      {
+    rules: [{
         test: /\.(js|jsx)$/,
         enforce: 'pre',
-        use: [
-          {
-            options: {
-              formatter: eslintFormatter,
-              eslintPath: require.resolve('eslint'),
+        use: [{
+          options: {
+            formatter: eslintFormatter,
+            eslintPath: require.resolve('eslint'),
 
-            },
-            loader: require.resolve('eslint-loader'),
           },
-        ],
+          loader: require.resolve('eslint-loader'),
+        }, ],
         include: paths.appSrc,
       },
       {
-        oneOf: [
-          {
+        oneOf: [{
             test: /icons[\\\/].*\.svg$/,
-            use: [
-              {
+            use: [{
                 loader: 'babel-loader'
               },
               {
@@ -139,7 +137,11 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'ENVIRONMENT', 'DATA_URL']),
+    new CleanWebpackPlugin(),
+    new CopyPlugin([
+      { from: './public', to: '', ignore: ['**/web-data/**'] }
+    ]),
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,
@@ -156,8 +158,9 @@ module.exports = {
         minifyURLs: true,
       },
     }),
-    new MiniCssExtractPlugin(),
+
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
   ],
   node: {
     dgram: 'empty',
