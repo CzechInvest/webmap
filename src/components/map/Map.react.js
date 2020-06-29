@@ -52,6 +52,10 @@ import AnimatedCluster from './AnimatedClusterLayer';
 import axios from 'axios';
 
 function dataUrl(path) {
+  
+  if (path.includes('http://') || path.includes('https://')) {
+    return path;
+  }
   return process.env.DATA_URL + path
 }
 
@@ -93,7 +97,7 @@ class MapComponent extends React.Component {
       return this.dataSources[dataset.id];
     }
     let source;
-  
+  // SOURCE IS OBJECT
     if (typeof dataset.src === "object") {
       const isPBF = dataset.src.geometry.indexOf('.pbf') !== -1
       source = new VectorSource({
@@ -126,8 +130,22 @@ class MapComponent extends React.Component {
       })
 
     } else {
+      // SOURCE IS STRING
       source = new VectorSource({
-        url: dataUrl(dataset.src),
+        loader: function (extent, resolution, projection) {
+          axios.get(dataUrl(dataset.src)).then(response => {
+            const format = new GeoJSON({
+              dataProjection: 'EPSG:4326',
+              featureProjection: 'EPSG:3857',
+            })
+            
+            const featureCollection = response.data.results || response.data;
+            console.log(featureCollection);
+            const features = format.readFeatures(featureCollection);
+
+            this.addFeatures(features);
+          })
+        },
         format: dataset.src.indexOf('.pbf') !== -1 ? Geobuf() : new GeoJSON(),
       });
     }

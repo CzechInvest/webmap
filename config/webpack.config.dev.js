@@ -20,6 +20,14 @@ module.exports = {
     contentBase: ['./public'],
     hot: true,
     watchContentBase: true,
+    proxy: {
+      '/https://10.10.202.202/api/*': {
+        changeOrigin: true,
+        target: 'https://10.10.202.202/api/',
+        pathRewrite: { '^/https://10.10.202.202/api': '' },
+        secure: false
+      },
+    }
   },
   output: {
     path: paths.appBuild,
@@ -145,7 +153,7 @@ module.exports = {
     new MiniCssExtractPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new webpack.EnvironmentPlugin(['NODE_ENV', 'ENVIRONMENT', 'DATA_URL']),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'ENVIRONMENT', 'DATA_URL', 'ENV_URL']),
   ],
   node: {
     dgram: 'empty',

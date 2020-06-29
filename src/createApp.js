@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './components/app/App.react';
 import configureStore from './redux/configureStore';
 import { Provider } from 'react-redux';
-import { startApp } from './components/app/actions';
+
 
 
 export default class app {
@@ -28,7 +28,7 @@ export default class app {
     if (module.hot) {
       this._renderHotReload();
     }
-    this._store.dispatch(startApp());
+
   }
 
   _renderHotReload() {

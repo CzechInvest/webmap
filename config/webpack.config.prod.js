@@ -137,7 +137,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.EnvironmentPlugin(['NODE_ENV', 'ENVIRONMENT', 'DATA_URL']),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'ENVIRONMENT', 'DATA_URL', 'ENV_URL']),
     new CleanWebpackPlugin(),
     new CopyPlugin([
       { from: './public', to: '', ignore: ['**/web-data/**'] }

@@ -13,7 +13,7 @@ import { addDistrictToCompare, removeDistrictToCompare, clearDistrictsSelection 
 import DistrictsPanel from './DistrictsPanel.react.js';
 
 
-const featureId = f => f.get('Kod');
+const featureId = f => f.get('Kod') || f.get('code') ;
 
 class DistrictsComparator extends React.Component {
   constructor() {
@@ -56,7 +56,7 @@ class DistrictsComparator extends React.Component {
     delete properties.geometry;
 
     const district = {
-      label: properties['Nazev'],
+      label: properties['Nazev'] || properties['name'],
       color: MapStyles.map((c, i) => i).find(index => !usedColors.contains(index)),
       data: properties
     };

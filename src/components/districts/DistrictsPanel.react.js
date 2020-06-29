@@ -130,13 +130,14 @@ class DistrictsPanel extends React.Component {
         }]
       };
     });
+    
     return (
       <div className="districts-panel">
         <Scrollbars className="scroll-area">
           <div className="content">
           {attribs.map((field, index) => (
             <div key={index}>
-              <h3>{Attributes[field.property][lang]}</h3>
+              <h3>{Attributes[field.property] ? Attributes[field.property][lang] : field.property}</h3>
               <Bar height={80} data={dataArray[index]} options={graphOpts} />
               <GraphLegend labels={dataArray[index].legendLabels} colors={borders} />
             </div>
