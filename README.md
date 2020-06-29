@@ -46,6 +46,7 @@ The output is placed into docs directory.<br>
 
 Create documentation in markdown language.<br>
 
+
 ## Data URL
 
 Data can be stored anywhere. It's a clone of
@@ -57,13 +58,9 @@ In `package.json` in scripts `(start` and `build` ) change `DATA_URL` parameter 
 Example: 
 
 ``` 
-"build": "DATA_URL=https://czechinvest.github.io/web-data/ NODE_ENV=production webpack --bail --config config/webpack.config.prod.js --progress --profile --colors",
+"build": "DATA_URL=https://czechinvest.github.io/web-data/ ENV_URL=/envs/default.json NODE_ENV=production webpack --bail --config config/webpack.config.prod.js --progress --profile --colors",
 ```
 
-## New layers
+## Environment parametrization
 
-Fix src/environment.js
-
-See
-https://github.com/CzechInvest/webmap/commit/889771652742baed7fe589b8a3e680a2c2e082d0
-for example
+Environments are loaded dynamically for URL specified in `package.json` in scripts `start` (`start:api`) or `build`. Overwrite parameter `ENV_URL` (default `ENV_URL=/envs/default.json`). Absolute or relative uri could be specified. Default environment (`default.json`) can be found in `{PROJECT_ROOT}/public/envs/default.json`. 
