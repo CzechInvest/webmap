@@ -59,7 +59,7 @@
     "promise": "8.0.1",
     "rc-checkbox": "^2.2.0",
     "react": "^16.13.1",
-    "react-dev-utils": "^5.0.3",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",
     "redux-logger": "^3.0.6",
