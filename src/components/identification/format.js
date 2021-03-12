@@ -9,6 +9,11 @@ export default function formatValue(value, params = {}) {
     value = Intl.NumberFormat.apply(Intl, params.format || []).format(value);
   } else if (params.type === 'boolean') {
     value = value ? 'Ano' : 'Ne';
+  } else if (params.type === 'object') {
+    var keys = params["value"].split(".");
+    for (var i = 1; i < keys.length; i++) {
+      value = value[keys[i]]
+    }
   }
   if (value === undefined || value === null) {
     value = '';

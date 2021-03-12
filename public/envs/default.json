@@ -255,7 +255,7 @@
     },
     {
       "id": "rk",
-      "src": "rk/reg_offices.geojson",
+      "src": "https://ciis-testing.azurewebsites.net/api/rks.json",
       "geometryType": "point",
       "attributes": [{
           "property": "name"
@@ -272,7 +272,9 @@
           "template": "<a href=\"mailto:${value}\">${value}</a>"
         },
         {
-          "property": "address"
+          "property": "address",
+          "type": "object",
+          "value": "address.text_address"
         }
       ]
     },

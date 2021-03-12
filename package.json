@@ -77,6 +77,7 @@
   "scripts": {
     "start": "DATA_URL=/web-data/ ENV_URL=/envs/default.json NODE_ENV=development webpack-dev-server --mode development --config config/webpack.config.dev.js --port 3000",
     "start:api": "DATA_URL=/web-data/ ENV_URL=/envs/new_api.json NODE_ENV=development webpack-dev-server --mode development --config config/webpack.config.dev.js --port 3000",
+    "start:api_local": "DATA_URL=/web-data/ ENV_URL=/envs/local_api.json NODE_ENV=development webpack-dev-server --mode development --config config/webpack.config.dev.js --port 3000",
     "start:prod_data": "DATA_URL=https://czechinvest.github.io/web-data/ NODE_ENV=development webpack-dev-server --mode development --config config/webpack.config.dev.js --port 3000",
     "build": "DATA_URL=https://czechinvest.github.io/web-data/  ENV_URL=./envs/default.json NODE_ENV=production webpack --bail --config config/webpack.config.prod.js --progress --profile --colors",
     "doc": "./node_modules/.bin/jsdoc src/index.js --destination 'build/doc'",
