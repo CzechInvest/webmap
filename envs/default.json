@@ -272,7 +272,9 @@
           "template": "<a href=\"mailto:${value}\">${value}</a>"
         },
         {
-          "property": "address.text_address"
+          "property": "address",
+          "type": "html",
+          "template": "${value}['text_address']"
         }
       ]
     },
