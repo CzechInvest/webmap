@@ -273,8 +273,8 @@
         },
         {
           "property": "address",
-          "type": "html",
-          "template": "${value}['text_address']"
+          "type": "object",
+          "value": "address.text_address"
         }
       ]
     },
